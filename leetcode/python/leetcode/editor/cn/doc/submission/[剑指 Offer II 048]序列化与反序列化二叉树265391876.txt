@@ -1,0 +1,87 @@
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+from collections import deque
+
+
+class Codec:
+    """
+    方法1：层序遍历
+    """
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        :type root: TreeNode
+        :rtype: str
+        """
+        res = []
+        if not root:
+            return res
+        q = deque()
+        q.append(root)
+        while q:
+            for _ in range(len(q)):
+                node = q.popleft()
+                if node:
+                    res.append(str(node.val))
+                    q.append(node.left)
+                    q.append(node.right)
+                else:
+                    res.append('None')
+        return ','.join(res)
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        使用队列还原
+        :type data: str
+        :rtype: TreeNode
+        """
+        res = []
+        if not data:
+            return []
+        data = data.split(',')
+        root = TreeNode(data[0])
+        d = deque([root])
+        i = 1
+        while d:
+            node = d.popleft()
+            if data[i] != 'None':
+                left = TreeNode(data[i])
+                node.left = left
+                d.append(left)
+
+            i += 1
+            if data[i] != 'None':
+                right = TreeNode(data[i])
+                node.right = right
+                d.append(right)
+            i += 1
+        return root
+
+# class Codec:
+#
+#     def serialize(self, root):
+#         """Encodes a tree to a single string.
+#
+#         :type root: TreeNode
+#         :rtype: str
+#         """
+#
+#     def deserialize(self, data):
+#         """Decodes your encoded data to tree.
+#
+#         :type data: str
+#         :rtype: TreeNode
+#         """
+
+
+# Your Codec object will be instantiated and called as such:
+# ser = Codec()
+# deser = Codec()
+# ans = deser.deserialize(ser.serialize(root))
+
+# runtime:104 ms
+# memory:20.5 MB

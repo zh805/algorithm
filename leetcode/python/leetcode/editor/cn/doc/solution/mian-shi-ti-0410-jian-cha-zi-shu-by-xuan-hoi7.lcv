@@ -1,0 +1,27 @@
+### 代码
+
+* java
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean checkSubTree(TreeNode t1, TreeNode t2) {
+        return (t1!=null&&t2!=null)&&
+        (recur(t1,t2)||checkSubTree(t1.left,t2)||checkSubTree(t1.right,t2));
+    }
+    boolean recur(TreeNode A,TreeNode B){
+        if(B==null)return true;
+        if(A==null||A.val!=B.val)return false;
+        return recur(A.left,B.left)&&recur(A.right,B.right);
+    }
+}
+```
+

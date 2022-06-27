@@ -1,0 +1,36 @@
+思路：求连续子树组的个数，“连续子树组”很强的暗示———使用滑动窗口。本题只需记录**以每个数字为右边界所形成的有效子数组的个数**。
+1. 初始化 left、right 两个指针，我们计算 [left,right] 区间内的数字组成的乘积。注意到 nums[i] 和 k 的取值范围（1 <= nums[i] <= 1000，0 <= k <= 10^6），即使目前的乘积为 10^6，如果再来一个 1000，乘积为 10^9，不会超过 int 的取值范围，所以我们可以将乘积定义为 int 类型。
+2. right 指针每划过一个数，我们就将该数字与前面的乘积进行累乘。 `product *= nums[right++];`
+3. 如果当前乘积 >= k，我们就开始移动 left 指针以期减少累乘的结果。 `product /= nums[left++];`
+4. 计算以 right 为右边界所形成的有效子数组的个数（right - left + 1，我代码里没加 1 是因为我先把 right 自加了 1）。（如下图示意）
+
+![图片.png](https://pic.leetcode-cn.com/1648909889-uQPmeI-%E5%9B%BE%E7%89%87.png)
+
+* java
+
+```java
+class Solution {
+    public int numSubarrayProductLessThanK(int[] nums, int k) {
+        // 滑动窗口：寻找以每个 right 指针为右边界的有效连续子树组的个数
+        int length = nums.length;
+        int product = 1;
+        int cnt = 0;
+        int left = 0, right = 0;
+        while (right < length) {
+            product *= nums[right++];
+            
+            while (left < right && product >= k) {
+                product /= nums[left++];
+            }
+
+            cnt += (right - left);
+        }
+
+        return cnt;
+    }
+}
+```
+
+- 时间复杂度：O(N)——有些朋友看到嵌套 while 循环可能觉到这个算法是 O(N^2) 的时间复杂度，其实不然。滑动窗口的时间复杂度分析是这样的：right 指针是一直往右走（不回退），所以 right 最多遍历每个元素一次；而 left 指针是有条件的往右走，最多遍历每个元素一次。所以整体上，**nums 中的每个元素最多进出窗口一次**，所以时间复杂度最多是 O(2*N)，去掉常数项可得 O(N)
+- 空间复杂度：O(1)——我们一般说的空间复杂度是指**额外空间复杂度**，本题使用额外的变量是常量级别的，所以额外空间复杂度为 O(1)
+

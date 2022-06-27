@@ -1,0 +1,43 @@
+### 解题思路
+
+虽然效率不太高，但是搞出来还是很感人的，代码附有注释
+注意：
+做好条件，避免越界或者不能完整遍历
+"wordgoodgoodgoodbestword"
+["word","good","best","good"]，试试这个用例
+预防出现每个单词的后面的字母可能是下一个单词的情况
+才了解到可以直接用==判断两哈希表是否相等
+
+### 代码
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        int n = s.size();
+        int m = words.size(),len=words[0].length();//len表示每个单词的长度
+        int j = m*len; //单词连接后的字符总长度
+        vector<int> ans;
+        unordered_map<string,int> temp_1;
+        //temp_1记录words信息,key 为单词,value为出现次数
+        for(string x:words){
+            temp_1[x]++;
+        }
+        unordered_map<string,int> temp_2;//记录当下的单词信息
+        for(int start=0;start+j-1<n;start++){
+            int k=start;//类似于一个指针，用于内层循环
+            while(k-start<j){
+                if(temp_1.count(s.substr(k,len))<=0||temp_2[s.substr(k,len)]>=temp_1[s.substr(k,len)])break;
+                temp_2[s.substr(k,len)]++;
+                k+=len;
+            }
+            if(temp_1==temp_2) ans.emplace_back(start);
+            temp_2.clear();
+        }
+        return ans;
+    }
+};
+```
+

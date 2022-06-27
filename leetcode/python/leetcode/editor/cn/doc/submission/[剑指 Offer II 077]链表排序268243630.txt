@@ -1,0 +1,85 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    # def sortList(self, head: ListNode) -> ListNode:
+    #     """
+    #     方法1：内置排序算法。
+    #     把链表节点放入list，排序后再按顺序连接在一起
+    #     :param head:
+    #     :return:
+    #     """
+    #     node_list = []
+    #     while head:
+    #         node_list.append(head)
+    #         head = head.next
+    # 
+    #     node_list.sort(key=lambda node: node.val)
+    # 
+    #     dummy = ListNode()
+    #     new_node = dummy
+    #     for node in node_list:
+    #         node.next = None
+    #         new_node.next = node
+    # 
+    #         new_node = new_node.next
+    #     return dummy.next
+    
+    def sortList(self, head: ListNode) -> ListNode:
+        """
+        方法2：归并排序。
+        可拆解为3个小问题：1）找链表中间节点   2）合并两个有序链表   3）归并排序
+        :param head: 
+        :return: 
+        """
+        if not head or not head.next:
+            return head
+        head1 = head
+        head2 = self.find_middle(head)
+
+        head1 = self.sortList(head1)
+        head2 = self.sortList(head2)
+        
+        return self.merge_list(head1, head2)
+    
+    def find_middle(self, head: ListNode) -> ListNode:
+        """
+        找链表的中间节点（快慢指针）
+        :param head: 
+        :return: 
+        """
+        slow, fast = head, head
+        while fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+        # 把链表打断，返回第二个链表的头
+        head2 = slow.next
+        slow.next = None
+        return head2
+    
+    def merge_list(self, head1: ListNode, head2: ListNode) -> ListNode:
+        """
+        合并两个有序链表
+        :param head1: 
+        :param head2: 
+        :return: 
+        """
+        dummy = ListNode()
+        cur = dummy
+        while head1 and head2:
+            if head1.val < head2.val:
+                cur.next = head1
+                head1 = head1.next
+            else:
+                cur.next = head2
+                head2 = head2.next
+            cur = cur.next
+        cur.next = head1 if head1 else head2
+        return dummy.next
+
+
+
+# runtime:324 ms
+# memory:30.4 MB

@@ -1,0 +1,198 @@
+### 解题思路
+
+对黑名单进行排序，然后建立可用的区间列表，例如`N = 10`，`blcaklist = [3,8,6,4]`，则可用区间是`[0,2],[5,5],[7,7],[9,9]`，然后计算每个可用区间内的元素个数和，并做累加个数和，即前缀和，存入前缀和数组`cnts`。
+`pick`时，定义`left, right`，然后随机取出一个前缀和索引`dst`，开始进行二分查找，最终找到的`dst`一定位于`[left,right]`，然后取出`left`对应的可用区间左端点，与`dst`相加再减去前一个区间的前缀和，即可得到最终位置。
+
+![Screen Shot 2022-06-26 at 20.16.47.png](https://pic.leetcode-cn.com/1656246554-ougXsf-Screen%20Shot%202022-06-26%20at%2020.16.47.png)
+
+![Screen Shot 2022-06-26 at 19.48.50.png](https://pic.leetcode-cn.com/1656246560-SzSnze-Screen%20Shot%202022-06-26%20at%2019.48.50.png)
+
+![Screen Shot 2022-06-26 at 19.26.19.png](https://pic.leetcode-cn.com/1656246565-BuUJqj-Screen%20Shot%202022-06-26%20at%2019.26.19.png)
+
+### 代码
+
+* []
+
+```Rust
+use rand::{Rng, thread_rng};
+
+struct Interval {
+    l: i32,
+    r: i32,
+}
+
+impl Interval {
+    fn new(l: i32, r: i32) -> Interval {
+        Interval { l, r }
+    }
+}
+
+struct Solution {
+    size: usize,
+    total: i32,
+    intervals: Vec<Box<Interval>>,
+    cnts: Vec<i32>,
+}
+
+
+/**
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
+impl Solution {
+    fn new(n: i32, mut blacklist: Vec<i32>) -> Self {
+        blacklist.sort();
+        let (mut intervals, mut cnts) = (Vec::new(), Vec::new());
+        let mut prev = 0;
+        for b in blacklist {
+            if prev != b { intervals.push(Box::new(Interval::new(prev, b - 1))); }
+            prev = b + 1;
+        }
+        intervals.push(Box::new(Interval::new(prev, n - 1)));
+
+        let mut total = 0;
+        for interval in &intervals {
+            total += interval.r - interval.l + 1;
+            cnts.push(total);
+        }
+        Solution { size: cnts.len(), total, intervals, cnts }
+    }
+
+    fn pick(&self) -> i32 {
+        let (mut left, mut right, dst) = (0, self.size - 1, thread_rng().gen_range(0, self.total));
+        while left < right {
+            let mid = left + ((right - left) >> 1);
+            if dst >= self.cnts[mid] { left = mid + 1; } else { right = mid; }
+        }
+        self.intervals[left].l + dst - if left == 0 { 0 } else { self.cnts[left - 1] }
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * let obj = Solution::new(n, blacklist);
+ * let ret_1: i32 = obj.pick();
+ */
+```
+
+* []
+
+```Go
+type Interval struct {
+	l int
+	r int
+}
+
+type Solution struct {
+	intervals []*Interval
+	cnts      []int
+	size      int
+	total     int
+}
+
+func Constructor(n int, blacklist []int) Solution {
+	sort.Ints(blacklist)
+	prev, intervals := 0, make([]*Interval, 0)
+	for _, b := range blacklist {
+		if prev != b {
+			intervals = append(intervals, &Interval{l: prev, r: b - 1})
+		}
+		prev = b + 1
+	}
+	intervals = append(intervals, &Interval{l: prev, r: n - 1})
+	total, cnts := 0, make([]int, 0)
+	for _, interval := range intervals {
+		total += interval.r - interval.l + 1
+		cnts = append(cnts, total)
+	}
+	return Solution{
+		intervals: intervals, cnts: cnts, size: len(cnts), total: total}
+}
+
+func (this *Solution) Pick() int {
+	left, right, dst := 0, this.size-1, rand.Intn(this.total)
+	for left < right {
+		mid := left + ((right - left) >> 1)
+		if dst >= this.cnts[mid] {
+			left = mid + 1
+		} else {
+			right = mid
+		}
+	}
+	base, interval := 0, this.intervals[left]
+	if left > 0 {
+		base = this.cnts[left-1]
+	}
+	return interval.l + dst - base
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * obj := Constructor(n, blacklist);
+ * param_1 := obj.Pick();
+ */
+```
+
+* []
+
+```Java
+class Solution {
+    private List<Interval> intervals;
+    private List<Integer> cnts;
+    private int size, total;
+    private Random random;
+
+    class Interval {
+        private int l;
+        private int r;
+        public Interval(int l, int r) {
+            this.l = l;
+            this.r = r;
+        }
+    }
+
+    public Solution(int n, int[] blacklist) {
+        this.intervals = new ArrayList<>();
+        this.cnts = new ArrayList<>();
+        this.random = new Random();
+        Arrays.sort(blacklist);
+
+        int prev = 0;
+        for (int b : blacklist) {
+            if (prev != b) {
+                intervals.add(new Interval(prev, b - 1));
+            }
+            prev = b + 1;
+        }
+        intervals.add(new Interval(prev, n - 1));
+
+        for (Interval interval : intervals) {
+            total += interval.r - interval.l + 1;
+            cnts.add(total);
+        }
+        this.size = cnts.size();
+    }
+    
+    public int pick() {
+        int left = 0, right = size - 1, dst = random.nextInt(total);
+        while (left < right) {
+            int mid = left + ((right - left) >> 1);
+            if (dst >= cnts.get(mid)) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        Interval interval = intervals.get(left);
+        int base = left == 0 ? 0 : cnts.get(left - 1);
+        return interval.l + dst - base;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(n, blacklist);
+ * int param_1 = obj.pick();
+ */
+```
+

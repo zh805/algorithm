@@ -1,0 +1,40 @@
+### 解题思路
+
+此处撰写解题思路
+
+### 代码
+
+* java
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    TreeNode ans;
+    boolean isp;
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        dfs(root,p);
+        return ans;
+    }
+    private void dfs(TreeNode root, TreeNode p){
+        if(root == null) return;
+        dfs(root.left,p);
+        if(isp && ans == null) {
+            ans = root;
+            return;
+        }
+        if(p.val == root.val){
+            isp = true;
+        }
+        dfs(root.right,p);
+    }
+}
+```
+

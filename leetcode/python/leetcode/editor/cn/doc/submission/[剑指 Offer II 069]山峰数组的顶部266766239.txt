@@ -1,0 +1,47 @@
+
+from typing import List
+
+
+class Solution:
+    # def peakIndexInMountainArray(self, arr: List[int]) -> int:
+    #     """
+    #     方法1：暴力遍历，找到数字n,其大于左右两侧数字(其实只要找到大于右侧的即可)。时间服务度O（n）
+    #     :param arr:
+    #     :return:
+    #     """
+    #     # arr_length = len(arr)
+    #     # for num in range(0, arr_length - 2):
+    #     #     if arr[num] < arr[num + 1] > arr[num + 2]:
+    #     #         return num + 1
+    #
+    #     for num in range(1, len(arr) -1):
+    #         if arr[num] > arr[num + 1]:
+    #             return num
+
+    def peakIndexInMountainArray(self, arr: List[int]) -> int:
+        """
+        方法2：二分法
+        :param arr:
+        :return:
+        """
+        left, right = 0, len(arr)
+        while left < right:
+            mid = left + (right - left) // 2
+            if arr[mid-1] < arr[mid] > arr[mid+1]:
+                return mid
+            elif arr[mid-1] > arr[mid] > arr[mid+1]:
+                right = mid
+            else:
+                left = mid
+
+    # def peakIndexInMountainArray(self, arr: List[int]) -> int:
+    #     """
+    #     方法3：骚操作，取最大值的索引
+    #     :param arr:
+    #     :return:
+    #     """
+    #     return arr.index(max(arr))
+
+
+# runtime:32 ms
+# memory:16 MB

@@ -1,0 +1,159 @@
+## DFS + 队列解法
+
+由于所有的元素都是在初始化时提供的，因此一个朴素的做法是在初始化的时候进行处理。
+
+由于存在嵌套，比较简单的做法是通过 DFS 进行处理，将元素都放至队列。
+
+代码（感谢 [@宫水三叶的小迷妹](/u/san_ye_fen/) 同学和 [@🍭可乐可乐吗QAQ](/u/littletime_cc/) 同学 提供的 python & cpp 版本）：
+
+* []
+
+```java
+public class NestedIterator implements Iterator<Integer> {
+
+    Deque<Integer> queue = new ArrayDeque<>();
+
+    public NestedIterator(List<NestedInteger> nestedList) {
+        dfs(nestedList);
+    }
+
+    @Override
+    public Integer next() {
+        return hasNext() ? queue.pollFirst() : -1;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return !queue.isEmpty();
+    }
+
+    void dfs(List<NestedInteger> list) {
+        for (NestedInteger item : list) {
+            if (item.isInteger()) {
+                queue.addLast(item.getInteger());
+            } else {
+                dfs(item.getList());
+            }
+        }
+    }
+}
+```
+
+* []
+
+```python
+class NestedIterator:
+    def __init__(self, nestedList: [NestedInteger]):
+        self.queue = []
+        def dfs(nestedList):
+            for item in nestedList:
+                if item.isInteger() == True:
+                    self.queue.append(item.getInteger())
+                else:
+                    dfs(item.getList())
+        dfs(nestedList)
+    
+    def next(self) -> int:
+        if self.hasNext() == True:
+            return self.queue.pop(0)
+        else:
+            return -1
+    
+    def hasNext(self) -> bool:
+        if not self.queue:
+            return False
+        else:
+            return True
+```
+
+* []
+
+```cpp
+class NestedIterator {
+public:
+    deque<int> q;
+    NestedIterator(vector<NestedInteger> &nestedList) {
+        std::function<void(vector<NestedInteger>)> dfs = [&](vector<NestedInteger> nestedList){
+            for(const auto& x : nestedList){
+                if(x.isInteger()) q.push_back(x.getInteger());
+                else dfs(x.getList());
+            }
+        };
+        dfs(nestedList);
+    }
+    int next() {
+        int ret = q.front(); q.pop_front();
+        return ret;
+    }
+    
+    bool hasNext() {
+        return q.size();
+    }
+};
+```
+
+* 时间复杂度：构建迭代器的复杂度为 $O(n)$，调用 $next()$ 与 $hasNext()$ 的复杂度为 $O(1)$
+* 空间复杂度：$O(n)$
+
+***
+
+## 递归 + 栈 解法
+
+另外一个做法是，我们不对所有的元素进行预处理。
+
+而是先将所有的 `NestedInteger` 逆序放到栈中，当需要展开的时候才进行展开。
+
+代码：
+
+* java
+
+```java
+public class NestedIterator implements Iterator<Integer> {
+
+    Deque<NestedInteger> stack = new ArrayDeque<>();
+
+    public NestedIterator(List<NestedInteger> list) {
+        for (int i = list.size() - 1; i >= 0; i--) {
+            NestedInteger item = list.get(i);
+            stack.addLast(item);
+        }
+    }
+
+    @Override
+    public Integer next() {
+        return hasNext() ? stack.pollLast().getInteger() : -1;
+    }
+
+    @Override
+    public boolean hasNext() {
+        if (stack.isEmpty()) {
+            return false;
+        } else {
+            NestedInteger item = stack.peekLast();
+            if (item.isInteger()) {
+                return true;
+            } else {
+                item = stack.pollLast();
+                List<NestedInteger> list = item.getList();
+                for (int i = list.size() - 1; i >= 0; i--) {
+                    stack.addLast(list.get(i));
+                }
+                return hasNext();
+            }
+        }
+    }
+}
+```
+
+* 时间复杂度：构建迭代器的复杂度为 $O(n)$，$hasNext()$ 的复杂度为均摊 $O(1)$，$next()$ 严格按照迭代器的访问顺序（ 先 $hasNext()$ 再 $next()$ ）的话为 $O(1)$，防御性编程生效的情况下为均摊 $O(1)$
+* 空间复杂度：$O(n)$
+
+***
+
+## 最后
+
+**如果有帮助到你，请给题解点个赞和收藏，让更多的人看到 ~ ("▔□▔)/**
+
+**如有不理解的地方，欢迎你在评论区给我留言，我都会逐一回复 ~**
+
+也欢迎你 [关注我](https://oscimg.oschina.net/oscnet/up-19688dc1af05cf8bdea43b2a863038ab9e5.png) 和 加入我们的[「组队打卡」](https://leetcode-cn.com/u/ac_oier/)小群 ，提供写「证明」&「思路」的高质量题解

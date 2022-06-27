@@ -1,0 +1,29 @@
+* java
+
+```java
+class Solution {
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        TreeNode pre = null, cur = root;
+        while (cur != null) {
+            if (cur == p)
+                break;
+            if (cur.val > p.val) {
+                pre = cur;
+                cur = cur.left;
+            } else {
+                cur = cur.right;
+            }
+        }
+        if (cur!=p)
+            return null;
+        if (cur.right==null)
+            return pre;
+        // 右子树最左
+        cur = cur.right;
+        while (cur.left!=null)
+            cur=cur.left;
+        return cur;
+    }
+}
+```
+

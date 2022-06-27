@@ -1,0 +1,40 @@
+### 解题思路
+
+![image.png](https://pic.leetcode-cn.com/1645541476-SlXCOd-image.png)
+
+### 代码
+
+* golang
+
+```golang
+func maximumSwap(num int) int {
+    var list []int
+    var stack []int
+    for num > 0 {
+        list = append(list, num%10)
+        stack = append(stack, num%10)
+        num /= 10
+    }
+    sort.Ints(stack) //栈存储有序数字
+    for i:=len(list)-1; i>=0; i-- {
+        if list[i] == stack[len(stack)-1] { //如果高位数字等于栈顶值，则出栈
+            stack = stack[:len(stack)-1] 
+            continue
+        }
+        index := 0
+        for j:=i-1; j>=0; j-- { //找到最低位的栈顶值的索引
+            if list[j] == stack[len(stack)-1] {
+                index = j
+            }
+        }
+        list[i], list[index] = list[index], list[i] //将最低位换到高位
+        break
+    }
+    ans := 0
+    for i:=0; i<len(list); i++ {
+        ans += list[i] * int(math.Pow(10, float64(i)))
+    }
+    return ans
+}
+```
+

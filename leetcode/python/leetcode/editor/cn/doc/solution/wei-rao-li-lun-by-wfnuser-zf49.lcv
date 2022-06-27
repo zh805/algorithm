@@ -1,0 +1,49 @@
+[![Foo](https://pic.leetcode-cn.com/1642401540-VfPxoS-file_1642401536561)](https://gitee.com/wfnuser/img/raw/master/perturbation.png) [![Foo](https://pic.leetcode-cn.com/1641890108-zTFrPQ-file_1641890104117)](https://github.com/wfnuser)
+大家好，我是微扰理论；目前正在连载国服每日一题题解；欢迎关注。 最近专栏终于写完了，值得撒花庆祝～
+
+### 解题思路
+
+1. **按位或的结果一定不小于参与计算的值** 因而，整个集合按位或最大的值一定等于全集按位或的结果
+2. 要统计满足条件的不同非空子集数目；主要需要做的就是遍历所有的子集并逐一判断。
+   一种常见的做法当然是基于DFS的搜索，一般来说需要传入一个set标记子集元素选取状态和当前枚举的是第几个子集元素；按照取或者不取进入下一层递归。在子集大小有限时，可以采用状态压缩提高效率。
+
+3. 状态压缩具体的做法就是用一个数字代表子集元素是否出现的情况；我们一般称为bitmap。
+   一个具体的例子如下：比如对于集合 [0,1,2,3,4,5] 中的子集 [4,3,1] 我们可以用数字 011010 来表示；**bitmap的第i位代表了集合下标为i的元素出现**。
+   如果采用了状态压缩，我们可以直接写成非递归的形式，因为bitmap最多有集合数量位1；我们可以直接从1开始遍历bitmap的所有取值范围并逐一校验。
+   校验的时候，需要采取状态压缩的反过程，逐位判断是否为1，也就是对应的集合元素是否被取。对符合条件的状态累计计数即可。
+
+这种遍历的方法写起来更加快捷；我第一次见到这种写法之后就很喜欢～
+
+### 代码
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    int countMaxOrSubsets(vector<int>& nums) {
+        int bits = 0;
+        for (auto n: nums) bits |= n;
+
+        int n = nums.size();
+        int ans = 0;
+
+        for (int s = 1; s < 1 << n; s++) {
+            int res = 0;
+            for (int i = 0; i < n; i++) {
+                if (s & (1 << i)) res |= nums[i];
+            }
+            if (res == bits) { ans++; }
+        }
+
+        return ans;
+    }
+};
+```
+
+### 关于我
+
+微扰酱18年毕业于上海交通大学，是一个在阿里、字节、腾讯都工作过的工程师，也是「悖论13」的老板。如果觉得题解对你有帮助，**可以点个赞支持一下我哦**！
+[![Foo](https://pic.leetcode-cn.com/1642401540-VfPxoS-file_1642401536561)](https://gitee.com/wfnuser/img/raw/master/perturbation.png)一起打卡刷题，冲。
+✅「微扰酱」正在整理常用 [算法模板](https://github.com/wfnuser/Algorithms)，欢迎来[follow](https://github.com/wfnuser)。
+✅「微扰酱」也发布了一个讲解工程中算法应用的专栏同样可以进[主页](/u/wfnuser)了解。

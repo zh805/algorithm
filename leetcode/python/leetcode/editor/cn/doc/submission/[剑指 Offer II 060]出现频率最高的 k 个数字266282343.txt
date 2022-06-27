@@ -1,0 +1,46 @@
+import heapq
+from typing import List
+
+
+class Solution:
+    # def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+    #     """
+    #     方法1: 统计频率后排序，输出最高的k个
+    #     :param nums:
+    #     :param k:
+    #     :return:
+    #     """
+    #     from collections import Counter
+    #     d = Counter(nums)
+    #     print(d)
+    #     d_s = sorted(d.items(), key=lambda item: item[1], reverse=True)
+    #     print(d_s)
+    #     res = [d_s[i][0] for i in range(k)]
+    #     return res
+
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        """
+        方法2：统计完频次后，建立一个小顶堆，大于堆顶数字出现次数的加入堆；最后输出堆中所有元素即可。
+        :param nums:
+        :param k:
+        :return:
+        """
+        from collections import Counter
+        d = Counter(nums)
+
+        # 维护一个K个节点的小顶堆
+        h = []
+        for num, times in d.items():
+            if len(h) == k:
+                if h[0][0] < times:
+                    heapq.heappop(h)
+                    heapq.heappush(h, (times, num))
+            else:
+                heapq.heappush(h, (times, num))
+        print(h)
+        return [item[1] for item in h]
+
+
+
+# runtime:44 ms
+# memory:17.7 MB

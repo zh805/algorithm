@@ -1,0 +1,31 @@
+### 解题思路
+
+此处撰写解题思路
+
+### 代码
+
+* golang
+
+```golang
+func allPathsSourceTarget(graph [][]int) [][]int {
+    ans:=[][]int{}
+    path:=[]int{0}
+    n:=len(graph)
+    var dfs func (idx int)
+    dfs = func(idx int){
+        if idx==n-1{
+            ans =append(ans, append([]int(nil), path...))
+            return
+        }
+
+        for _,v:=range graph[idx]{
+            path = append(path, v)
+            dfs(v)
+            path =path[:len(path)-1]
+        }
+    }
+    dfs(0)
+    return ans
+}
+```
+

@@ -1,0 +1,42 @@
+单调栈
+
+* 
+
+```
+var dailyTemperatures = function(temperatures) {
+    let q = [-1];                               
+    let res = new Array(temperatures.length).fill(0)
+    temperatures.push(0);                           //尾部插入数据，确保遍历结束后栈为空（不包括额外插入的最大值和最小值）
+    
+    for(let i = 0;i <= temperatures.length;i ++){
+        while(temperatures[i] > temperatures[q[q.length - 1]]){
+            let tmp = q.pop();
+            res[tmp] = i - tmp;
+        }
+        q.push(i)
+    }
+    return res;}
+```
+
+类似于kmp算法，从末尾开始遍历，利用已获得的值进行跳转，降低时间复杂度
+
+* 
+
+```
+var dailyTemperatures = function(temperatures) {
+    let res = new Array(temperatures.length).fill(0)
+    for(let i = temperatures.length - 2;i >= 0;i --){
+            let index = i + 1;
+            while(temperatures[i] >= temperatures[index]){  
+                if(res[index] == 0){    //表明没有大值，res[i]置0；
+                    index = i;      
+                    break;
+                }
+                index += res[index]         //通过之前记录的值跳转到下的比当前比较值大的值继续比较；
+            }
+            res[i] = index - i  
+    }
+    return res;
+};
+```
+

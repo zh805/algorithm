@@ -1,0 +1,42 @@
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val=None, next=None):
+        self.val = val
+        self.next = next
+"""
+
+
+class Solution:
+    def insert(self, head: 'Node', insertVal: int) -> 'Node':
+        """
+        方法1：两种情况
+        1）在链表内部找到插入点 cur.val <= insertVal <= cur.next.val
+        2) 插入点在跳跃点，插入值比最大的大：cur.next.val < cur.val <= insertVal ，插入值比最小的值小: insertVal <= cur.next.val < cur.val
+        :param head:
+        :param insertVal:
+        :return:
+        """
+        if not head:
+            node = Node(insertVal)
+            node.next = node
+            return node
+
+        cur = head
+        # 遍历一遍，终止条件为下一个节点为head。
+        while cur.next != head:
+            if cur.val <= insertVal <= cur.next.val:
+                break
+            if (cur.val > cur.next.val) and ((insertVal <= cur.next.val) or (cur.val <= insertVal)):
+                break
+            cur = cur.next
+        
+        # 遍历完后未发现插入点，说明链表中值都相等，随便插入即可
+        # 发现插入点，也插入cur之后即可。
+        cur.next = Node(insertVal, cur.next)
+
+        return head
+
+
+# runtime:36 ms
+# memory:15.6 MB

@@ -1,0 +1,57 @@
+![image.png](https://pic.leetcode-cn.com/1644854487-sHhzDD-image.png)
+
+# BFS
+
+* 
+
+```
+    public List<List<Integer>> subsets(int[] nums) {
+        //bfs,遍历数组，将之前出现的所有可能序列，加上当前数字组成新序列
+        List<List<Integer>> ans = new ArrayList<>();
+
+        ans.add(new ArrayList<>());
+
+        for(int i = 0;i < nums.length; ++i){
+            int size = ans.size();
+            for(int j = 0;j < size; ++j){
+                List newList = new ArrayList<>(ans.get(j));
+                newList.add(nums[i]);
+                ans.add(newList);
+            }
+        }
+
+        return ans;
+    }
+```
+
+# DFS
+
+* 
+
+```
+class Solution {
+    List<List<Integer>> ans = new ArrayList<>();
+    public List<List<Integer>> subsets(int[] nums) {
+        dfs(nums, 0, new ArrayList<>());
+        return ans;
+    }
+
+    //遍历每个数字，每个数字有可能放入，也可能不放入
+    private void dfs(int[] nums, int idx, List<Integer> temp){
+
+        if(idx == nums.length){
+            ans.add(new ArrayList<>(temp));
+            return;
+        }
+
+        //不放
+        dfs(nums,idx+1,temp);
+
+        //放入
+        temp.add(nums[idx]);
+        dfs(nums,idx+1,temp);
+        temp.remove(temp.size()-1);
+    }
+}
+```
+

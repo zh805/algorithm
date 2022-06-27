@@ -1,0 +1,95 @@
+思路和心得：
+1.二叉树的题目，DFS一般就能通过，写起来还简洁
+2.按照需求，一步一步分析，写出满足小需求的子函数,俄罗斯套娃般dfs，功能模块化真是一环又一环
+3.判断BST的模板，可以背一下
+is_BST(root, INT_MIN, INT_MAX) 这一下真是N皮。以前都没注意到
+`
+
+* []
+
+```python3
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def is_BST(self, rt: TreeNode, min_val: int, max_val: int) -> bool:     #判断是否为BST
+        if rt == None:
+            return True
+        return min_val < rt.val < max_val and self.is_BST(rt.left, min_val, rt.val)==True and self.is_BST(rt.right, rt.val, max_val)==True 
+
+    def tree_sum(self, rt: TreeNode) -> int:            #当前以rt为root的这棵树的和
+        if rt == None:  
+            return 0
+        cur_tree_sum = rt.val + self.tree_sum(rt.left) + self.tree_sum(rt.right)
+        self.res = max(self.res, cur_tree_sum)          #优化res
+        return cur_tree_sum
+
+    def find_max_sum_BST(self, rt: TreeNode) -> None:   #dfs  查找
+        if self.is_BST(rt, -0x3f3f3f3f, 0x3f3f3f3f) == True:    #先判断是一棵BST    初始化是NB之处!!!!!!!!!!!!!!!!
+            self.tree_sum(rt)                           #计算这棵树的和，并优化res
+            return
+        self.find_max_sum_BST(rt.left)                  #dfs左子
+        self.find_max_sum_BST(rt.right)                 #dfs右子
+
+    def maxSumBST(self, root: TreeNode) -> int:     #dfs套dfs 没想到没TLE
+        self.res = 0
+        self.find_max_sum_BST(root)
+        return self.res
+```
+
+* []
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int res;
+
+    bool is_BST(TreeNode* rt, int min_val, int max_val) //判断是否是BST  初始值很巧妙{
+        if (rt == NULL)
+            return true;
+        return (min_val < rt->val && rt->val < max_val && is_BST(rt->left, min_val, rt->val)==true && is_BST(rt->right, rt->val, max_val)==true);
+    }
+
+    int tree_sum(TreeNode * node)           //以node为root的树的和  与res比较、优化
+{
+        if (node == NULL)
+            return 0;
+        int cur_tree_sum = node->val + tree_sum(node->left) + tree_sum(node->right);    //当前这棵树的和
+        res = std::max(res, cur_tree_sum);              //优化res
+        return cur_tree_sum;
+    }
+
+    void find_max_sum_BST(TreeNode * node)      //从root开始 dfs
+    {
+        if (is_BST(node, INT_MIN, INT_MAX) == true) //先判读是不是BST   初始值很巧妙！！！！！！！！！！！！！！！！！！！
+        {
+            tree_sum(node);                     //求和，与res比较
+            return ;
+        }
+        find_max_sum_BST(node->left);           //dfs左子
+        find_max_sum_BST(node->right);          //dfs右子
+    }
+
+    int maxSumBST(TreeNode* root) 
+    {
+        res = 0;
+        find_max_sum_BST(root);
+        return res;
+    }
+};
+```
+

@@ -1,0 +1,23 @@
+## 方便快速学习算法与理解~
+
+🌇 点赞 👍 收藏 ⭐留言 📝 一键三连 ~关注Jam，从你我做起！
+推荐 python 算法的书籍，体系化学习算法与数据结构，用正确的方式成为offer收割机：
+[leetcode](https://github.com/ls1248659692/leetcode) —— 系统化快速学习各种 python 算法与书籍
+![image.png](https://pic.leetcode-cn.com/1645013529-SdWvxm-image.png)
+
+有正确数组和错误数组，求和做差很快能找到两者的差异
+
+### 代码
+
+* python3
+
+```python3
+class Solution:
+    def findErrorNums(self, nums: List[int]) -> List[int]:
+        total = sum(range(1,len(nums)+1))
+        num = total - sum(set(nums))
+        diff = total - sum(nums)
+        return [num-diff,num]
+
+```
+

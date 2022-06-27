@@ -1,0 +1,100 @@
+# 先上结果：
+
+* 
+
+```
+Accepted
+16/16 cases passed (24 ms)
+Your runtime beats 97.68 % of cpp submissions
+Your memory usage beats 76.52 % of cpp submissions (14.2 MB)
+```
+
+# 基本思路：
+
+依次计算每一行中的前两个最小选择并保存其值以及下标，那么最终最后一行的最小选择值就是答案。
+- 保存下标用来判断是否在同一列；
+- 保存次小值是因为当当前行所求目标值和上一行最小选择值在同一列时，选择次小值来保证每次都是最优选择。
+
+* 
+
+```
+class Solution
+{
+public:
+    int minFallingPathSum(vector<vector<int>> &grid)
+    {
+        int row = grid.size();
+        int col = grid[0].size();
+        
+        // 保存上一行的前两个最小选择值以及对应的下标
+        pair<int, int> lastfirstmin(INT_MAX, 0);
+        pair<int, int> lastsecondmin(INT_MAX, 0);
+
+        /**
+         * 1. 初始化第一行数据，即Base
+         */
+        for (int k = 0; k < col; k++)
+        {
+            if (grid[0][k] <= lastfirstmin.first)
+            {
+                lastsecondmin = lastfirstmin;
+                lastfirstmin = make_pair(grid[0][k], k);
+                continue;
+            }
+
+            if (grid[0][k] < lastsecondmin.first)
+            {
+                lastsecondmin = make_pair(grid[0][k], k);
+            }
+        }
+
+        /**
+         * 2. 以上面已知第一行的数据为基础，以此遍历计算第[1, 2, ..., row - 1]行的前两个最小选择
+         *    ps: 计算下一行的前两个最小选择只需要上一行保存的两个最小选择结果就可以了
+         */
+        for (int i = 1; i < row; i++)
+        {
+            pair<int, int> curfirstmin(INT_MAX, 0);
+            pair<int, int> cursecondmin(INT_MAX, 0);
+
+            for (int j = 0; j < col; j++)
+            {
+                // 当前最优选择值
+                int curvalue = 0;
+
+                // 如果和上一行最小值在同一列，选上一行的次小值
+                if (lastfirstmin.second == j)
+                {
+                    curvalue = lastsecondmin.first + grid[i][j];
+                }
+                // 如果和上一行的最小值不在同一列，选上一行的最小值
+                else
+                {
+                    curvalue = lastfirstmin.first + grid[i][j];
+                }
+
+                // 更新当前行的前两个最小选择值
+                if (curvalue <= curfirstmin.first)
+                {
+                    cursecondmin = curfirstmin;
+                    curfirstmin = make_pair(curvalue, j);
+                    continue;
+                }
+
+                if (curvalue < cursecondmin.first)
+                {
+                    cursecondmin = make_pair(curvalue, j);
+                }
+            }
+
+            // 更新状态，并以此为基础计算第i+1行
+            lastfirstmin = curfirstmin;
+            lastsecondmin = cursecondmin;
+        }
+
+        // 所有行都计算完毕，返回最后一行的最小选择值，便是答案
+        return lastfirstmin.first;
+    }
+};
+```
+

@@ -1,0 +1,54 @@
+import itertools
+
+
+class Solution:
+    # def addBinary(self, a: str, b: str) -> str:
+    #     """
+    #     方法1：python内置而二进制函数
+    #     :param a:
+    #     :param b:
+    #     :return:
+    #     """
+    #     return bin(int(a, 2) + int(b, 2))[2:]
+
+    def addBinary(self, a: str, b: str) -> str:
+        """
+        方法2：遍历
+        :param a:
+        :param b:
+        :return:
+        """
+        a_r, b_r = reversed(a), reversed(b)
+        res = []
+        flag = 0
+        for i, j in itertools.zip_longest(a_r, b_r, fillvalue='0'):
+            print(i, j)
+            s = int(i) + int(j) + flag
+            if s == 0:
+                flag = 0
+            elif s == 1:
+                flag = 0
+            if s == 2:
+                flag = 1
+                s = 0
+            if s == 3:
+                flag = 1
+                s = 1
+            res.append(str(s))
+        if flag == 1:
+            res.append('1')
+        print(res)
+        ret = ''.join(res[::-1])
+        return ret
+
+
+if __name__ == '__main__':
+    a = "1010"
+    b = "1011"
+    res = Solution().addBinary(a, b)
+    print(res)
+
+
+
+# runtime:32 ms
+# memory:15 MB

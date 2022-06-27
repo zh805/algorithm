@@ -1,0 +1,43 @@
+
+import re
+
+
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        """
+        方法1：双指针，自研
+        :param s:
+        :return:
+        """
+        left, right = 0, len(s) - 1
+
+        s = s.lower()
+        pattern = re.compile('[a-z0-9]')
+
+        while left <= right:
+            if not re.match(pattern, s[left]):
+                left += 1
+                continue
+            if not re.match(pattern, s[right]):
+                right -= 1
+                continue
+            if s[left] != s[right]:
+                return False
+            else:
+                left += 1
+                right -= 1
+        return True
+
+    # def isPalindrome(self, s: str) -> bool:
+    #     """
+    #     方法2：正则表达式。 替换非字母和数字的字符，转小写，逆序后比较。
+    #     :param s:
+    #     :return:
+    #     """
+    #     s = re.sub('[^A-Za-z0-9]', '', s).lower()
+    #     return s == s[::-1]
+
+
+
+# runtime:172 ms
+# memory:15.1 MB

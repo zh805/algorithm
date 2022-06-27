@@ -1,0 +1,212 @@
+## 基本分析
+
+整理题意，需要我们统计能够同时流向两片海域的格子。
+
+从源点（格子）流向汇点（海域）是按照高度从高到低（非严格）的规则，那么反过来从海域到格子则是按照从低到高（非严格）规则进行，同时本身处于边缘的格子与海域联通。
+
+因此我们可以使用两遍 `DFS/BFS`  进行求解：分别从与当前海域直接相连的边缘格子出发，统计能够流向当前海域的格子集合，两片海域求得的集合交集即是答案。
+
+---
+
+### BFS（多源 BFS）
+
+使用 `BFS`  进行求解：目的是构造出两个答案矩阵 $res_1$ 和 $res_2$，$res_k[i][j] = true$ 代表格子 $(i, j)$ 能够流向海域，起始将所有与海域相连的格子放入队列，然后跑一遍 `BFS` ，所有能够进入队列的格子均能够与海域联通。
+
+最后统计所有满足 $res_1[i][j] = res_2[i][j] = true$ 的格子即是答案。
+
+代码：
+
+* []
+
+```Java
+class Solution {
+    int n, m;
+    int[][] g;
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        g = heights;
+        m = g.length; n = g[0].length;
+        Deque<int[]> d1 = new ArrayDeque<>(), d2 = new ArrayDeque<>();
+        boolean[][] res1 = new boolean[m][n], res2 = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 || j == 0) {
+                    res1[i][j] = true;
+                    d1.addLast(new int[]{i, j});
+                }
+                if (i == m - 1 || j == n - 1) {
+                    res2[i][j] = true;
+                    d2.addLast(new int[]{i, j});
+                }
+            }
+        }
+        bfs(d1, res1); bfs(d2, res2);
+        List<List<Integer>> ans = new ArrayList<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (res1[i][j] && res2[i][j]) {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(i); list.add(j);
+                    ans.add(list);
+                }
+            }
+        }
+        return ans;
+    }
+    int[][] dirs = new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+    void bfs(Deque<int[]> d, boolean[][] res) {
+        while (!d.isEmpty()) {
+            int[] info = d.pollFirst();
+            int x = info[0], y = info[1], t = g[x][y];
+            for (int[] di : dirs) {
+                int nx = x + di[0], ny = y + di[1];
+                if (nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
+                if (res[nx][ny] || g[nx][ny] < t) continue;
+                d.addLast(new int[]{nx, ny});
+                res[nx][ny] = true;
+            }
+        }
+    }
+}
+```
+
+* 时间复杂度：`BFS`  和统计答案的复杂度均为 $O(m  * n)$。整体复杂度为 $O(m * n)$
+* 空间复杂度：$O(m * n)$
+
+---
+
+## DFS
+
+同理，使用 `DFS`  进行求解。
+
+代码：
+
+* []
+
+```Java
+class Solution {
+    int n, m;
+    int[][] g;
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        g = heights;
+        m = g.length; n = g[0].length;
+        boolean[][] res1 = new boolean[m][n], res2 = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 || j == 0) {
+                    if (!res1[i][j]) dfs(i, j, res1);
+                }
+                if (i == m - 1 || j == n - 1) {
+                    if (!res2[i][j]) dfs(i, j, res2);
+                }
+            }
+        }
+        List<List<Integer>> ans = new ArrayList<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (res1[i][j] && res2[i][j]) {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(i); list.add(j);
+                    ans.add(list);
+                }
+            }
+        }
+        return ans;
+    }
+    int[][] dirs = new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+    void dfs(int x, int y, boolean[][] res) {
+        res[x][y] = true;
+        for (int[] di : dirs) {
+            int nx = x + di[0], ny = y + di[1];
+            if (nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
+            if (res[nx][ny] || g[nx][ny] < g[x][y]) continue;
+            dfs(nx, ny, res);
+        }
+    }
+}
+```
+
+* 时间复杂度：`DFS`  和统计答案的复杂度均为 $O(m  * n)$。整体复杂度为 $O(m * n)$
+* 空间复杂度：$O(m * n)$
+
+---
+
+## 并查集
+
+其中维护连通性部分可以使用「并查集」来做：起始将与海域 A 联通的边缘格子与 `S` 联通，将与海域 B 联通的边缘格子与 `T` 联通，然后跑一遍 `DFS/BFS`，最后将既和 `S` 联通又和 `T` 联通的格子加入答案。
+
+代码：
+
+* []
+
+```Java
+class Solution {
+    int N = 200 * 200 + 10;
+    int[] p1 = new int[N], p2 = new int[N];
+    int n, m, tot, S, T;
+    int[][] g;
+    void union(int[] p, int a, int b) {
+        p[find(p, a)] = p[find(p, b)];
+    }
+    int find(int[] p, int x) {
+        if (p[x] != x) p[x] = find(p, p[x]);
+        return p[x];
+    }
+    boolean query(int[] p, int a, int b) {
+        return find(p, a) == find(p, b);
+    }
+    int getIdx(int x, int y) {
+        return x * n + y;
+    }
+    public List<List<Integer>> pacificAtlantic(int[][] _g) {
+        g = _g;
+        m = g.length; n = g[0].length; tot = m * n; S = tot + 1; T = tot + 2;
+        for (int i = 0; i <= T; i++) p1[i] = p2[i] = i;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int idx = getIdx(i, j);
+                if (i == 0 || j == 0) {
+                    if (!query(p1, S, idx)) dfs(p1, S, i, j);
+                }
+                if (i == m - 1 || j == n - 1) {
+                    if (!query(p2, T, idx)) dfs(p2, T, i, j);
+                }
+            }
+        }
+        List<List<Integer>> ans = new ArrayList<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int idx = getIdx(i, j);
+                if (query(p1, S, idx) && query(p2, T, idx)) {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(i); list.add(j);
+                    ans.add(list);
+                }
+            }
+        }
+        return ans;
+    }
+    int[][] dirs = new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+    void dfs(int[] p, int ori, int x, int y) {
+        union(p, ori, getIdx(x, y));
+        for (int[] di : dirs) {
+            int nx = x + di[0], ny = y + di[1];
+            if (nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
+            if (query(p, ori, getIdx(nx, ny)) || g[nx][ny] < g[x][y]) continue;
+            dfs(p, ori, nx, ny);
+        }
+    }
+}
+```
+
+* 时间复杂度：$O(n * m)$
+* 空间复杂度：$O(n * m)$
+
+---
+
+## 最后
+
+**如果有帮助到你，请给题解点个赞和收藏，让更多的人看到 ~ ("▔□▔)/**
+
+也欢迎你 [关注我](https://oscimg.oschina.net/oscnet/up-19688dc1af05cf8bdea43b2a863038ab9e5.png) 和 加入我们的[「组队打卡」](https://leetcode-cn.com/u/ac_oier/)小群 ，提供写「证明」&「思路」的高质量题解。
+
+所有题解已经加入 [刷题指南](https://github.com/SharingSource/LogicStack-LeetCode/wiki)，欢迎 star 哦 ~

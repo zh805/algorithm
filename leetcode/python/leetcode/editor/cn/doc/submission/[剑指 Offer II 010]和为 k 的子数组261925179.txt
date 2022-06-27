@@ -1,0 +1,44 @@
+
+from typing import List
+
+
+class Solution:
+    # def subarraySum(self, nums: List[int], k: int) -> int:
+    #     """
+    #     方法1：遍历(能解，但会超时)
+    #     :param nums:
+    #     :param k:
+    #     :return:
+    #     """
+    #     ret = 0
+    #     r_total = 0
+    #     length = len(nums)
+    #     for right in range(length):
+    #         r_total += nums[right]
+    #         l_total = r_total
+    #         for left in range(right + 1):
+    #             if l_total == k:
+    #                 ret += 1
+    #             l_total -= nums[left]
+    #     return ret
+
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        """
+        方法2：前缀和
+        :param nums:
+        :param k:
+        :return:
+        """
+        result = 0
+        total = 0
+        # 前缀和字典，key为sum(nums[0:i]), value为前缀和出现的次数；
+        pre_sum_dict = {0: 1}
+        for idx, num in enumerate(nums):
+            total += num
+            result += pre_sum_dict.get(total - k, 0)
+            pre_sum_dict[total] = pre_sum_dict.get(total, 0) + 1
+        return result
+
+
+# runtime:76 ms
+# memory:17 MB

@@ -1,0 +1,35 @@
+### 方便快速学习算法与理解~
+
+🌇 点赞 👍 收藏 ⭐留言 📝 一键三连 ~关注Jam，从你我做起！
+
+**兄弟会背叛你，女人会离开你，金钱会诱惑你，生活会刁难你，只有数学不会，不会就是不会**
+
+推荐 python 算法的书籍，体系化学习算法与数据结构，用正确的方式成为offer收割机
+[leetcode](https://github.com/ls1248659692/leetcode) ——  系统化快速学习各种 python 算法与书籍
+[python_guide](https://github.com/ls1248659692/python_guide) —— python 系统化的后端开发学习
+![image.png](https://pic.leetcode-cn.com/1647304617-pTxECa-image.png)
+
+---
+
+### 求解思路
+
+二刷，暴力解优化性能到100
+第一次刷题见 [暴力解](https://leetcode-cn.com/problems/count-number-of-maximum-bitwise-or-subsets/solution/by-jam007-pgod/)
+
+优化思路：
+关键点:  0 | num 保持不变
+
+### 代码
+
+* python3
+
+```python3
+class Solution:
+    def countMaxOrSubsets(self, nums: List[int]) -> int:
+        dp = collections.Counter([0])
+        for num in nums:
+            for k, v in dp.copy().items():
+                dp[k | num] += v
+        return dp[max(dp)]
+```
+

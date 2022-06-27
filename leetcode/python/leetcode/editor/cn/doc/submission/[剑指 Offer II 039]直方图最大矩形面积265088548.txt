@@ -1,0 +1,32 @@
+
+from typing import List
+
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        """
+        方法1：单调栈
+        :param heights:
+        :return:
+        """
+        stack = [-1]
+        ret = 0
+        for i, h in enumerate(heights):
+            # 栈中高度是递增的
+            # 
+            while stack[-1] != -1 and heights[stack[-1]] >= h:
+                height = heights[stack.pop()]
+                width = i - stack[-1] - 1
+                ret = max(width * height, ret)
+            # 当前高度的索引入栈
+            stack.append(i)
+
+        while stack[-1] != -1:
+            height = heights[stack.pop()]
+            width = len(heights) - stack[-1] - 1
+            ret = max(width * height, ret)
+
+        return ret
+
+
+# runtime:244 ms
+# memory:25.1 MB

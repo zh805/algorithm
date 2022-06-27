@@ -1,0 +1,75 @@
+单调栈，即在普通的栈的基础上，要求栈中的元素是单调的。
+
+题目要求：**要想观测到更高的气温，至少需要等待的天数**，因此我们在栈中仅保留比当天温度更低的日子，这样可以保证，在找到一个高于栈顶的高温时，可以将略低于该高温的日子全部找出来。
+
+使用以下势力进行模拟，由于题目要求的是天数，故 `stack` 中保留的是日期而不是温度。
+
+下文距离进行了说明：
+
+`temperatures = [73(0),74(1),75(2),71(3),69(4),72(5),76(6),73(7)]`
+
+- i = 0, stack = [], 将 0 放入栈中；
+- i = 1, stack = [0], temperatures[1] 高于 temperatures[0]，将 0 从 stack 中取出，result[0] = 1 - 0 = 1，将 1 放入栈中；
+- i = 2, stack = [1], temperatures[2] 高于 temperatures[1]，将 1 从 stack 中取出，result[2] = 2 - 1 = 1，将 2 放入栈中；
+- i = 3, stack = [2], temperatures[3] 低于 temperatures[2]，将 3 放入栈中；
+- i = 4，stack = [2,3]，temperatures[4] 低于 temperatures[3]，将 4 放入栈中；
+- i = 5，stack = [2,3,4]，temperatures[5] 高于 temperatures[4]，将 4 从 stack 中取出，result[4] = 5 - 4 = 1，temperatures[5] 高于 temperatures[3]，将 3 从 stack 中取出，result[3] = 5 - 3 = 2，将 5 放入栈中；
+- i = 6，stack = [2,5]，temperatures[6] 高于 temperatures[5]，将 5 从 stack 中取出，result[5] = 6 - 5 = 1，，将 6 放入栈中；
+- i = 7，stack = [2,6]，temperatures[7] 低于 temperatures[6]，将 7 放入栈中；
+
+---
+
+* [-stack]
+
+```java
+public class Offer038 {
+    public int[] dailyTemperatures(int[] temperatures) {
+        int[] result = new int[temperatures.length];
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0, days = result.length; i < days; i++) {
+            while (!stack.isEmpty() && temperatures[stack.peek()] < temperatures[i]) {
+                int day = stack.pop();
+                result[day] = i - day;
+            }
+            stack.push(i);
+        }
+        return result;
+    }
+}
+```
+
+* [-模拟stack]
+
+```java
+// 该方法更快哦(oﾟ▽ﾟ)o  
+public class Offer038 {
+    public int[] dailyTemperatures(int[] temperatures) {
+        int[] result = new int[temperatures.length];
+        Deque<Integer> stack = new ArrayDeque<>();
+        for (int i = 0, days = result.length; i < days; i++) {
+            while (!stack.isEmpty() && temperatures[stack.peekLast()] < temperatures[i]) {
+                int day = stack.pollLast();
+                result[day] = i - day;
+            }
+            stack.addLast(i);
+        }
+        return result;
+    }
+}
+```
+
+* [-测试]
+
+```java
+@Test
+public void testOffer038() {
+    Offer038 test = new Offer038();
+    assertArrayEquals(new int[]{1, 1, 4, 2, 1, 1, 0, 0}, test.dailyTemperatures(new int[]{73, 74, 75, 71, 69, 72, 76, 73}));
+    assertArrayEquals(new int[]{1, 1, 1, 0}, test.dailyTemperatures(new int[]{30, 40, 50, 60}));
+    assertArrayEquals(new int[]{1, 1, 0}, test.dailyTemperatures(new int[]{30, 60, 90}));
+}
+```
+
+---
+
+![2054199.jpg](https://pic.leetcode-cn.com/1644848102-RfQKZH-2054199.jpg)

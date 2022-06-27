@@ -1,0 +1,57 @@
+* 题目概述：求所有分割的组合，相比较得到最大长度
+* 题目考点：回溯，set in/add/discard
+* 解决方案：
+* 方法及方法分析：
+* time complexity order: O(2**(N-1))
+* space complexity order: O(n * 2**(N-1))
+* 如何考
+* 易错点：取j的范围，从i开始，到n-1结束；新i从j+ 1开始
+
+* Method
+  backtracking find all possible combination
+  dfs(i, path)
+  if i == length of s, len(path) add to res
+  scan j from i + 1 to n -1
+  if s[i:j] in set, return
+  else dfs(i, path.add s[i:j])
+  dfs(-1, path), path is set
+  return max res
+
+corner case:
+s length == 1, return 1
+
+* Time complexity: O(2\*\*(N-1)),即N个字母有N-1个缝隙可以被分开，每个缝隙都有用和不用两个选项，故是2**(N-1)
+* Space complexity: O(n * 2**(N-1))
+
+optimize code by using the set to save the path
+
+* 
+
+```
+class Solution:
+    def maxUniqueSplit(self, s: str) -> int:
+        # corner case
+        if len(s) == 1:
+            return 1
+
+        # dfs
+        def dfs(i, path):
+            if i == n:
+                if len(path) > self.res:
+                    self.res = len(path)
+                return
+
+            for j in range(i, n):
+                if s[i:j + 1] not in path:
+                    path.add(s[i:j + 1])
+                    dfs(j + 1, path)
+                    path.discard(s[i:j + 1])
+            return
+
+        self.res = float('-inf')
+        n = len(s)
+        dfs(0, set())  # 从0开始，到j-1为止
+
+        return self.res
+```
+

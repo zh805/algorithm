@@ -1,0 +1,32 @@
+class Solution {
+public:
+    
+    vector<string> letterCombinations(string digits) {
+        
+        vector<string> res;
+        string charmap[10] = {"0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        if(digits.empty())
+            return vector<string>();
+        
+        res.push_back("");
+        for(int i=0;i<digits.size();i++){
+            vector<string> tmp;
+            int num = digits[i] - '0';
+            if(num<0 || num>9)
+                break;
+            string chars = charmap[num];
+            for(int c=0;c<chars.size();c++)
+                for(int j=0;j<res.size();j++)
+                    tmp.push_back(res[j]+chars[c]);
+            res.swap(tmp);
+        }
+        
+        return res;
+
+    }
+    
+    
+
+};
+//runtime:4 ms
+//memory:8.3 MB

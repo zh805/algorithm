@@ -1,0 +1,40 @@
+### 解题思路
+
+在类似Python/JS等支持生成函数的语言中，可以直接用语言自带的生成函数来实现本题要求的功能。以Python为例，使用`yield from`即可很方便地处理嵌套的情形。
+
+因为Python的生成器并不能很方便地确定是否还有下一个元素，所以这里进行了缓存。在判断`hasNext()`的时候，如果当前没有缓存，会先尝试取下一个元素到缓存中。
+
+### 代码
+
+* python3
+
+```python3
+def gen(nestedList):
+    for ele in nestedList:
+        if ele.isInteger():
+            yield ele.getInteger()
+        else:
+            yield from gen(ele.getList())
+
+class NestedIterator:
+    def __init__(self, nestedList: [NestedInteger]):
+        self.gen = gen(nestedList)
+        self.stored = (False, 0)
+
+    def next(self) -> int:
+        if not self.hasNext():
+            return -1
+        result = self.stored[1]
+        self.stored = (False, 0)
+        return result
+
+    def hasNext(self) -> bool:
+        if self.stored[0]:
+            return True
+        try:
+            self.stored = (True, next(self.gen))
+            return True
+        except:
+            return False
+```
+

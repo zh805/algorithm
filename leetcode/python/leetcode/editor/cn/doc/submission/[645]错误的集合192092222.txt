@@ -1,0 +1,40 @@
+class Solution:
+    # def findErrorNums(self, nums):
+    #     """
+    #     使用集合排重
+    #     :param nums:
+    #     :return:
+    #     """
+    #     only_set = set()
+    #     res = []
+    #     for num in nums:
+    #         if num not in only_set:
+    #             only_set.add(num)
+    #         else:
+    #             res.append(num)
+    #     nums_len = len(nums)
+    #     lost_num = set(range(1, nums_len+1)) - set(nums)
+    #     res.append(lost_num.pop())
+    #     return res
+
+    def findErrorNums(self, nums):
+        """
+        list记录每个数字出现的次数
+        :param nums:
+        :return:
+        """
+        num_times = [0] * len(nums)
+        for num in nums:
+            num_times[num-1] += 1
+        res = [0, 0]
+        for idx, time in enumerate(num_times):
+            if time == 2:
+                res[0] = idx + 1
+            if time == 0:
+                res[1] = idx + 1
+        return res
+
+
+
+# runtime:64 ms
+# memory:15.7 MB

@@ -1,0 +1,25 @@
+
+from collections import deque
+
+
+class RecentCounter:
+    """
+    使用双端队列deque，队列尾每加入一个元素，队头弹出时间差大于三千的元素。
+    """
+    def __init__(self):
+        self.q = deque()
+
+    def ping(self, t: int) -> int:
+        self.q.append(t)
+        begin = t - 3000
+        while self.q and self.q[0] < begin:
+            self.q.popleft()
+        return len(self.q)
+
+
+# Your RecentCounter object will be instantiated and called as such:
+# obj = RecentCounter()
+# param_1 = obj.ping(t)
+
+# runtime:212 ms
+# memory:19.9 MB

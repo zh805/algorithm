@@ -1,0 +1,215 @@
+# **分析————双向链表 + 哈希表**
+
+哈希表实现 get 和 put 操作的时间复杂度都为 O(1)，但是普通哈希表无法找到最近最少使用的键。因此，需要在哈希表的基础上进行修改。
+
+因为需要知道缓存内最近最少使用的元素，因此可以把存入的元素按访问的先后顺序存入双向链表。每次访问一个元素，无论是 put 还是 get 操作，都把该元素移动到链表的尾部。这样就可以保证链表的头部就是最近最少使用的元素。在实现了最近最少使用的功能后，在加入哈希表就可以实现 get 和 put 操作时间复杂度为 O(1)。具体来讲就是，哈希表内存在 key → 对应链表节点的指针，得到对应的指针便可以操作节点内的 key 和 value 值。
+
+# **定义链表**
+
+因为使用了双向链表，所以需要定义一个链表结构体，代码如下：
+
+* 
+
+```
+struct ListNode {
+    int key = 0;
+    int val = 0;
+    ListNode* prev = nullptr;
+    ListNode* next = nullptr;
+    ListNode(){}
+    ListNode(int x, int y) : key(x), val(y) {}
+};
+```
+
+# **辅助变量**
+
+整个过程需要几个辅助变量：
+
+* 
+
+```
+int totalNum;               // 记录缓存的最大容量
+int curNum;                 // 记录缓存的当前容量
+ListNode* dummy;            // 链表的哨兵节点，为了简化一些链表操作
+ListNode* tail;             // 链表的尾节点，链表为空时，初始化为哨兵节点
+unordered_map<int, ListNode*> numToLocation;   // 哈希表
+```
+
+# **初始化**
+
+根据输入做必要的初始化。
+
+* 
+
+```
+LRUCache(int capacity) {
+    totalNum = capacity;
+    curNum = 0;
+    dummy = new ListNode();
+    tail = dummy;
+}
+```
+
+# **操作函数说明**
+
+* 
+
+```
+int get(int key) {
+    if (!numToLocation.count(key)) {
+        return -1;          // 不存在，返回 -1
+    }
+    moveToTail(key);                // 将当前节点移动到链表尾部，并更新其为新尾节点
+    return numToLocation[key]->val; // 返回结果
+}
+    
+void put(int key, int value) {
+    if (numToLocation.count(key)) {
+        // 存在，则更新内容，并移动到尾部，更新其为新尾节点
+        numToLocation[key]->val = value;
+        numToLocation[key]->key = key;
+        moveToTail(key);
+    }
+    else if (curNum < totalNum) {
+        // 不存在且缓存未满，添加并设置其为尾节点
+        addTotail(key, value);
+        curNum++;
+    }
+    else {
+        // 删除头节点，并将待插入值接入链表尾部，更新其为新尾节点
+        deleteHead(key, value);
+    }
+}
+```
+
+# **关键辅助函数说明**
+
+* 
+
+```
+void moveToTail(int key) {
+    ListNode* node = numToLocation[key];
+    // 本身就是尾节点无需操作
+    if (node == tail) {
+        return;               
+    }
+    // 将 node 节点的前后节点进行互连，并将 node 节点移动到尾部成为新尾节点
+    // 肯定存在前后节点吗？
+    // 肯定。因为存在哨兵节点保证前面肯定有节点，另外 node 节点为尾节点的情况已特殊判断，
+    // 所以保证后面也肯定有节点
+    node->prev->next = node->next;
+    node->next->prev = node->prev;
+    node->next = nullptr;
+    tail->next = node;
+    node->prev = tail;
+    tail = node;
+}
+
+void addTotail(int key, int value) {
+    // 将新节点连接到尾部，并将其更新为新尾节点。
+    // 新节点连接时肯定存在尾节点吗？
+    // 肯定。尾节点的初始值为哨兵节点。
+    ListNode* node = new ListNode(key, value);
+    tail->next = node;
+    node->prev = tail;
+    tail = node;
+    numToLocation[key] = node;
+}
+
+void deleteHead(int key, int value) {
+    // 删除头节点的 key → 节点指针 的映射，但不删除该节点内存，直接将该节点内容改成新值，
+    // 最后更新哈希表和尾节点
+    // 肯定存在头节点吗？
+    // 肯定。因为输入的容量大于 0，缓存满的时候，肯定存在头节点了。
+    numToLocation.erase(dummy->next->key);
+    dummy->next->key = key;
+    dummy->next->val = value;
+    numToLocation[key] = dummy->next;
+    moveToTail(key);
+}
+```
+
+# **完整代码**
+
+* 
+
+```
+class LRUCache {
+public:
+    LRUCache(int capacity) {
+        totalNum = capacity;
+        curNum = 0;
+        dummy = new ListNode();
+        tail = dummy;
+    }
+    
+    int get(int key) {
+        if (!numToLocation.count(key)) {
+            return -1;
+        }
+        moveToTail(key);
+        return numToLocation[key]->val;
+    }
+    
+    void put(int key, int value) {
+        if (numToLocation.count(key)) {
+            numToLocation[key]->val = value;
+            numToLocation[key]->key = key;
+            moveToTail(key);
+        }
+        else if (curNum < totalNum) {
+            addTotail(key, value);
+            curNum++;
+        }
+        else {
+            deleteHead(key, value);
+        }
+    }
+
+private:
+    struct ListNode {
+        int key = 0;
+        int val = 0;
+        ListNode* prev = nullptr;
+        ListNode* next = nullptr;
+        ListNode(){}
+        ListNode(int x, int y) : key(x), val(y) {}
+    };
+
+    int totalNum;
+    int curNum;
+    ListNode* dummy;
+    ListNode* tail;
+    unordered_map<int, ListNode*> numToLocation;
+
+    void moveToTail(int key) {
+        ListNode* node = numToLocation[key];
+        if (node == tail) {
+            return;
+        }
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+        node->next = nullptr;
+        tail->next = node;
+        node->prev = tail;
+        tail = node;
+    }
+
+    void addTotail(int key, int value) {
+        ListNode* node = new ListNode(key, value);
+        tail->next = node;
+        node->prev = tail;
+        tail = node;
+        numToLocation[key] = node;
+    }
+
+    void deleteHead(int key, int value) {
+        numToLocation.erase(dummy->next->key);
+        dummy->next->key = key;
+        dummy->next->val = value;
+        numToLocation[key] = dummy->next;
+        moveToTail(key);
+    }
+};
+```
+

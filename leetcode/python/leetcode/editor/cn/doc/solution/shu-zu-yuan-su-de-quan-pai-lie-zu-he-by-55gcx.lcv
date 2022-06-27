@@ -1,0 +1,34 @@
+[剑指 Offer II 083. 没有重复元素集合的全排列](/problems/VvJkup/)
+回溯法，数组np记录的是已经用于排列的数字。效率还行，嗷！！
+
+* 
+
+```
+class Solution {
+    List<List<Integer>> list;
+    int np[];
+    public List<List<Integer>> permute(int[] nums) {
+        list = new LinkedList<>();
+        np=new int[nums.length];
+        dfs(nums,new ArrayList<Integer>());
+        return list;
+    }
+    
+    void dfs(int[] nums,ArrayList<Integer> list2){
+        if(list2.size()==nums.length){
+            list.add(new ArrayList(list2));
+            return ;
+        }
+        for(int j=0;j<nums.length;j++){
+            if(np[j]==0){
+                np[j]=1;
+                list2.add(nums[j]);
+                dfs(nums,list2);
+                np[j]=0;
+                list2.remove(list2.size()-1);
+            }
+        }
+    }
+}
+```
+

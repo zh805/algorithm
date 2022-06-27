@@ -1,0 +1,30 @@
+辗转相除法。
+
+首先容易知道：如果开始或者结束，数对的两个数相同，那么只有一种可能：整个数对没有经过转换，否则会出现 $0$，而题目中否定了这种情况的出现。
+
+其次，通过观察发现一个重要的结论：如果一个对是 $(a, b)$，那么它之前必然是 $(a, b - a)$ 或者 $(a- b, b)$。且由于整个过程没有出现负数，所以必然是 $a, b$ 中较大者减去较小者，这表明之前两种情况只有一种是正确的。我们可以一直沿着这两种情况中的一种走，直到新的 $a, b$ 的不等关系交换。
+
+而只有当新的 $a'$ 变成 $a\bmod b$（或者新的 $b'$ 变成 $b\bmod a$）这种不等关系才会交换，我们可以利用这一点加速程序。剩下的就是简单的边界条件的判断。
+
+时间复杂度：$O(\log \max\lbrace tx, ty \rbrace)$。
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    bool reachingPoints(int sx, int sy, int tx, int ty) {
+        if (tx < sx || ty < sy) return false;
+        if (tx > ty) {
+            if (sy == ty)    
+                return sx >= (tx % ty) && (tx - sx) % sy == 0;
+            return reachingPoints(sx, sy, tx % ty, ty);
+        }else if (tx < ty){
+            if (sx == tx)    
+                return sy >= (ty % tx) && (ty - sy) % sx == 0;
+            return reachingPoints(sx, sy, tx, ty % tx);
+        }else return tx == sx && ty == sy;
+    }
+};
+```
+

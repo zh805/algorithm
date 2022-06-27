@@ -1,0 +1,26 @@
+class Solution:
+    # def isUnique(self, astr: str) -> bool:
+    #     astr_set = set()
+    #     for c in astr:
+    #         if c not in astr_set:
+    #             astr_set.add(c)
+    #         else:
+    #             return False
+    #     return True
+
+    # def isUnique(self, astr: str) -> bool:
+    #     return True if len(astr) == len(set(astr)) else False
+
+    def isUnique(self, astr: str) -> bool:
+        mark = 0
+        for c in astr:
+            distance = ord(c) - ord('a')
+            c_mark = 1 << distance
+            if c_mark & mark != 0:
+                return False
+            mark = mark | c_mark
+        return True
+
+
+# runtime:44 ms
+# memory:14.9 MB

@@ -1,0 +1,49 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def detectCycle(self, head: ListNode) -> ListNode:
+        """
+        方法1：快慢指针。
+        公式计算：头结点距离环入口为a, 相遇点距离头结点距离为b，剩余半圆距离为c, （b+c）为环长度
+        则 a + n(b + c) = 2(a + b) => a = (n-1)(b+c) + c，可得从头结点和相遇点同时出发，最终可在环入口相遇。
+        :param head:
+        :return:
+        """
+        slow, fast = head, head
+        # 先找到环中的相遇点
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            # 此时slow为相遇点
+            if slow == fast:
+                cur = head
+                while cur != slow:
+                    cur = cur.next
+                    slow = slow.next
+                return cur
+        return None
+
+    # def detectCycle(self, head: ListNode) -> ListNode:
+    #     """
+    #     方法2: 哈希表。记录每次遍历过的节点。
+    #     :param head:
+    #     :return:
+    #     """
+    #     cur = head
+    #     node_set = set()
+    #     while cur:
+    #         if cur not in node_set:
+    #             node_set.add(cur)
+    #             cur = cur.next
+    #         else:
+    #             return cur
+    #     return None
+
+
+
+# runtime:56 ms
+# memory:18.7 MB

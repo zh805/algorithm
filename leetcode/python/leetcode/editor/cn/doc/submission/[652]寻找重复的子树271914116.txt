@@ -1,0 +1,32 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def findDuplicateSubtrees(self, root: Optional[TreeNode]) -> List[Optional[TreeNode]]:
+        res = []
+        memo = dict()
+
+        def traverse(root):
+            if not root:
+                return "#"
+            
+            left_path = traverse(root.left)
+            right_path = traverse(root.right)
+
+            path = left_path + ',' + right_path + ',' + str(root.val)
+
+            freq = memo.get(path, 0)
+            if freq == 1:
+                res.append(root)
+
+            memo[path] = freq + 1
+            return path
+
+        traverse(root)
+        return res
+
+# runtime:60 ms
+# memory:24.4 MB

@@ -1,0 +1,25 @@
+* 
+
+```
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        res = []
+        path = []
+        def backtrace(idx: int) -> None:
+         
+            if len(path) == k:
+                res.append(path[:])
+                return
+            if idx == n + 1:return 
+                
+            backtrace(idx + 1) #path is not change
+
+            path.append(idx)
+            backtrace(idx + 1)
+            path.pop()
+
+        backtrace(1)
+        return res
+#作者：Hanxin_Hanxin   不用传递列表，牛
+```
+

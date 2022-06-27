@@ -1,0 +1,31 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def largestValues(self, root: Optional[TreeNode]) -> List[int]:
+        """
+        方法1：层序遍历
+        :param root:
+        :return:
+        """
+        res = []
+        if not root:
+            return res
+        from collections import deque
+        q = deque([root])
+        while q:
+            res.append(max([node.val for node in q]))
+            for _ in range(len(q)):
+                node = q.popleft()
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+        return res
+
+
+# runtime:72 ms
+# memory:17.7 MB

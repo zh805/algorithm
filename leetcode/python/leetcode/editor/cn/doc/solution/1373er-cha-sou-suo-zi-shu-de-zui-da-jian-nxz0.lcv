@@ -1,0 +1,88 @@
+## 解题思路
+
+要求一棵以root为根的二叉搜索树的最大键值和，需要以下几点步骤
+- 左右子树均为二叉搜索树
+- 求左右子树的最大最小值
+- 左右子树与root合并后仍然为二叉搜索树
+- 不断更新维护最大值
+  于是有以下伪代码
+
+* 
+
+```
+int answer = 0;
+public int maxSumBST(TreeNode root) {
+    //左右子树是否是BST
+    isBST(root.left) && isBST(root.right) -> false:goto next
+    //获取左右子树的最大最小值
+    int maxOfLeft = getMax(root.left);
+    int minOfRight = getMin(root.right);
+    //判断左右子树加上根节点是否是BST
+    root.val <= maxOfLeft || root.val >= minOfRight -> true:goto next
+    //计算左右子树加上根节点的和
+    int sum = minOfRight + maxOfLeft + root.val;
+    //维护最大值
+    answer = Math.max(answer,sum);
+    
+    //继续遍历其左右子树
+    next:
+    maxSumBST(root.left);
+    maxSumBST(root.right);
+    return answer;
+}
+```
+
+在上述代码中我们需要求一棵树是否为BST(isBST)、需要求最大最小值(getMin/getMax)、还需要判断左右子树与root合并后是否为BST
+所有的子操作都是要通过递归自底向上地操作左右子结点。
+因此会造成前序遍历中嵌套了多个后序遍历，因而产生递归嵌套递归的情况，这种情况下的时间复杂度是极高的。
+那既然这些子操作都是要通过后序遍历完成的，那不妨把这些操作都放在后序遍历中完成。
+因此我也发现：**某些场景下要利用好后序遍历**，可以减少时间复杂度。
+
+## 完整代码
+
+* 
+
+```
+class Solution {
+    //全局最大值
+    int answer = 0;
+    public int maxSumBST(TreeNode root) {
+        traverse(root);
+        return answer;
+    }
+    /**
+        返回值:int[] status
+        status[0]-> isBST:以root为根的树是否为BST 0-false 1-true
+        status[1]-> min:以root为根的树的最小值
+        status[2]-> max:以root为根的树的最大值
+        status[3]-> sum:以root为根的树所有结点总和
+     */
+    int[] traverse(TreeNode root) {
+        if(root == null) {
+            //叶子节点也属于一棵BST
+            return new int[] {
+                1,Integer.MAX_VALUE,Integer.MIN_VALUE,0
+            };
+        }
+        //获取root左子树的状态数组
+        int[] left = traverse(root.left);
+        //获取root右子树的状态数组
+        int[] right = traverse(root.right);
+        /******后序遍历*****/
+        int[] status = new int[4];
+        if(left[0] == 1 && right[0] == 1 && root.val > left[2] && root.val < right[1]) {
+            //标记root的树为BST
+            status[0] = 1;
+            status[1] = Math.min(root.val,left[1]);
+            status[2] = Math.max(root.val,right[2]);
+            status[3] = root.val + left[3] + right[3];
+            answer = Math.max(answer,status[3]);
+        }else {
+            status[0] = 0;
+        }
+        /*******************/
+        return status;
+    }
+}
+```
+

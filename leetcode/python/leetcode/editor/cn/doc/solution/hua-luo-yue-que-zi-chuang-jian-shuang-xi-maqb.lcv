@@ -1,0 +1,129 @@
+LRU：最近最少使用缓存机制：
+- 如果我们想保留使用顺序，需要使用线性表这是母庸质疑的！
+- 但是线性表有两种，数组和链表，在本题中我们选择链表，因为链表可以用O(1)的时间去删除一个节点，增加一个节点，或者是改变一个节点的位置。
+- 当然，在链表中找到指定的节点，也是需要时间的，这个时间，可以使用一个map进行弥补即：
+  - 定义map，<key,value> -> <val, node>
+  - 通过 key，可以找到其在链表中的node，获取该node即可进行所有我们需要的操作
+
+---
+
+* [-题解]
+
+```java
+public class LRUCache {
+    private final int capacity;
+    private final LinkedList list;
+    private final Map<Integer, LinkedListNode> map;
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        list = new LinkedList();
+        map = new HashMap<>(capacity);
+    }
+
+    public int get(int key) {
+        // 在 map 中根据 key 获取在链表中的 node
+        LinkedListNode node = map.getOrDefault(key, null);
+        if (node == null) {
+            return -1;
+        }
+        // 将 node 从链表中删除
+        list.deleteNode(node);
+        // 将 node 放在链表的最前端
+        list.addNode(node);
+        return node.value;
+    }
+
+    public void put(int key, int value) {
+        // 从 map 中根据 key 获取在链表中的 node
+        LinkedListNode node = map.getOrDefault(key, null);
+        // 该 node 在链表中存在，修正 node 中 value 的值，同时修正其在链表中的位置
+        if (node != null) {
+            node.value = value;
+            list.deleteNode(node);
+            list.addNode(node);
+            return;
+        }
+        // 当前链表已经达到了容量要求，将链表中的最后一个节点删除
+        if (map.size() == capacity) {
+            int deleteKey = list.deleteTail();
+            map.remove(deleteKey);
+        }
+        // 在链表中创建新的节点，并将其保存在 map 和 list 中
+        node = list.addNode(key, value);
+        map.put(key, node);
+    }
+
+    private static class LinkedListNode {
+        public int key;
+        public int value;
+        public LinkedListNode pre;
+        public LinkedListNode next;
+
+        public LinkedListNode(int key, int value, LinkedListNode pre, LinkedListNode next) {
+            this.key = key;
+            this.value = value;
+            this.pre = pre;
+            this.next = next;
+        }
+    }
+
+    private static class LinkedList {
+        LinkedListNode virtualHead;
+        LinkedListNode virtualTail;
+
+        public LinkedList() {
+            virtualHead = new LinkedListNode(-1, -1, null, null);
+            virtualTail = new LinkedListNode(-1, -1, null, null);
+            virtualHead.next = virtualTail;
+            virtualTail.pre = virtualHead;
+        }
+
+        public LinkedListNode addNode(int key, int value) {
+            LinkedListNode node = new LinkedListNode(key, value, virtualHead, virtualHead.next);
+            addNode(node);
+            return node;
+        }
+
+        public void addNode(LinkedListNode node) {
+            node.pre = virtualHead;
+            node.next = virtualHead.next;
+            virtualHead.next.pre = node;
+            virtualHead.next = node;
+        }
+
+        public int deleteTail() {
+            int result = virtualTail.pre.key;
+            deleteNode(virtualTail.pre);
+            return result;
+        }
+
+        public void deleteNode(LinkedListNode node) {
+            node.pre.next = node.next;
+            node.next.pre = node.pre;
+        }
+    }
+}
+```
+
+* [-测试]
+
+```java
+@Test
+public void testLRUCache() {
+    LRUCache test = new LRUCache(2);
+    test.put(1, 1);
+    test.put(2, 2);
+    assertEquals(1, test.get(1));
+    test.put(3, 3);
+    assertEquals(-1, test.get(2));
+    test.put(4, 4);
+    assertEquals(-1, test.get(1));
+    assertEquals(3, test.get(3));
+    assertEquals(4, test.get(4));
+}
+```
+
+---
+
+![2054199.jpg](https://pic.leetcode-cn.com/1644746405-PZTQwD-2054199.jpg)

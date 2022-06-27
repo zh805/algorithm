@@ -1,0 +1,64 @@
+### 解题思路
+
+位运算 & 模拟
+
+### 代码
+
+* java
+
+```java
+class Solution {
+
+	static final int max = 1 << 8;
+
+	static final int TWO = 0b11000000;
+	static final int THR = 0b11100000;
+	static final int FOU = 0b11110000;
+
+	static final int ONEM = 0b10000000;
+	static final int TWOM = 0b11100000;
+	static final int THRM = 0b11110000;
+	static final int FOUM = 0b11111000;
+
+	static final int RES = 0b10000000;
+
+	public boolean validUtf8(int[] data) {
+		int p = 0, len = data.length;
+		while (p < len) {
+			int cur = data[p];
+			if (cur >= max) {
+				return false;
+			}
+			if ((cur & ONEM) == 0) {
+				p++;
+			} else {
+				int size = 4;
+				if ((cur & TWOM) == TWO) {
+					size = 1;
+				} else if ((cur & THRM) == THR) {
+					size = 2;
+				} else if ((cur & FOUM) == FOU) {
+					size = 3;
+				}
+				if (size == 4) {
+					return false;
+				} else {
+					while (size > 0 && ++p < len) {
+						int next = data[p];
+						if ((next & TWO) != RES) {
+							return false;
+						}
+						size--;
+					}
+					if (size != 0) {
+						return false;
+					}
+					p++;
+				}
+			}
+		}
+		return true;
+	}
+}
+```
+

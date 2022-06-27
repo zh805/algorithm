@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="LeetcodeEditor">
+    <option name="projectConfig">
+      <map>
+        <entry key="$PROJECT_DIR$/1022从根到叶的二进制数之和.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/1022从根到叶的二进制数之和.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1022" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/1022从根到叶的二进制数之和.go" />
+              <option name="titleSlug" value="sum-of-root-to-leaf-binary-numbers" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/102二叉树的层序遍历.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/102二叉树的层序遍历.md" />
+              <option name="frontendQuestionId" value="leetcode.cn102" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/102二叉树的层序遍历.go" />
+              <option name="titleSlug" value="binary-tree-level-order-traversal" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/1051高度检查器.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/1051高度检查器.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1051" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/1051高度检查器.go" />
+              <option name="titleSlug" value="height-checker" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/1089复写零.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/1089复写零.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1089" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/1089复写零.go" />
+              <option name="titleSlug" value="duplicate-zeros" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/1108IP 地址无效化.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/1108IP 地址无效化.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1108" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/1108IP 地址无效化.go" />
+              <option name="titleSlug" value="defanging-an-ip-address" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/146LRU 缓存.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/146LRU 缓存.md" />
+              <option name="frontendQuestionId" value="leetcode.cn146" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/146LRU 缓存.go" />
+              <option name="titleSlug" value="lru-cache" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/1603设计停车系统.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/1603设计停车系统.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1603" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/1603设计停车系统.go" />
+              <option name="titleSlug" value="design-parking-system" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/1两数之和.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/1两数之和.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/1两数之和.go" />
+              <option name="titleSlug" value="two-sum" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/30串联所有单词的子串.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/30串联所有单词的子串.md" />
+              <option name="frontendQuestionId" value="leetcode.cn30" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/30串联所有单词的子串.go" />
+              <option name="titleSlug" value="substring-with-concatenation-of-all-words" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/436寻找右区间.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/436寻找右区间.md" />
+              <option name="frontendQuestionId" value="leetcode.cn436" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/436寻找右区间.go" />
+              <option name="titleSlug" value="find-right-interval" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/442数组中重复的数据.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/442数组中重复的数据.md" />
+              <option name="frontendQuestionId" value="leetcode.cn442" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/442数组中重复的数据.go" />
+              <option name="titleSlug" value="find-all-duplicates-in-an-array" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/467环绕字符串中唯一的子字符串.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/467环绕字符串中唯一的子字符串.md" />
+              <option name="frontendQuestionId" value="leetcode.cn467" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/467环绕字符串中唯一的子字符串.go" />
+              <option name="titleSlug" value="unique-substrings-in-wraparound-string" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/473火柴拼正方形.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/473火柴拼正方形.md" />
+              <option name="frontendQuestionId" value="leetcode.cn473" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/473火柴拼正方形.go" />
+              <option name="titleSlug" value="matchsticks-to-square" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/478在圆内随机生成点.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/478在圆内随机生成点.md" />
+              <option name="frontendQuestionId" value="leetcode.cn478" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/478在圆内随机生成点.go" />
+              <option name="titleSlug" value="generate-random-point-in-a-circle" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/498对角线遍历.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/498对角线遍历.md" />
+              <option name="frontendQuestionId" value="leetcode.cn498" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/498对角线遍历.go" />
+              <option name="titleSlug" value="diagonal-traverse" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/508出现次数最多的子树元素和.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/508出现次数最多的子树元素和.md" />
+              <option name="frontendQuestionId" value="leetcode.cn508" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/508出现次数最多的子树元素和.go" />
+              <option name="titleSlug" value="most-frequent-subtree-sum" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/513找树左下角的值.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/513找树左下角的值.md" />
+              <option name="frontendQuestionId" value="leetcode.cn513" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/513找树左下角的值.go" />
+              <option name="titleSlug" value="find-bottom-left-tree-value" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/515在每个树行中找最大值.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/515在每个树行中找最大值.md" />
+              <option name="frontendQuestionId" value="leetcode.cn515" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/515在每个树行中找最大值.go" />
+              <option name="titleSlug" value="find-largest-value-in-each-tree-row" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/532数组中的 k-diff 数对.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/532数组中的 k-diff 数对.md" />
+              <option name="frontendQuestionId" value="leetcode.cn532" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/532数组中的 k-diff 数对.go" />
+              <option name="titleSlug" value="k-diff-pairs-in-an-array" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/682棒球比赛.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/682棒球比赛.md" />
+              <option name="frontendQuestionId" value="leetcode.cn682" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/682棒球比赛.go" />
+              <option name="titleSlug" value="baseball-game" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/693交替位二进制数.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/693交替位二进制数.md" />
+              <option name="frontendQuestionId" value="leetcode.cn693" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/693交替位二进制数.go" />
+              <option name="titleSlug" value="binary-number-with-alternating-bits" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/699掉落的方块.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/699掉落的方块.md" />
+              <option name="frontendQuestionId" value="leetcode.cn699" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/699掉落的方块.go" />
+              <option name="titleSlug" value="falling-squares" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/710黑名单中的随机数.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/710黑名单中的随机数.md" />
+              <option name="frontendQuestionId" value="leetcode.cn710" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/710黑名单中的随机数.go" />
+              <option name="titleSlug" value="random-pick-with-blacklist" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/715Range 模块.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/715Range 模块.md" />
+              <option name="frontendQuestionId" value="leetcode.cn715" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/715Range 模块.go" />
+              <option name="titleSlug" value="range-module" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/719找出第 K 小的数对距离.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/719找出第 K 小的数对距离.md" />
+              <option name="frontendQuestionId" value="leetcode.cn719" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/719找出第 K 小的数对距离.go" />
+              <option name="titleSlug" value="find-k-th-smallest-pair-distance" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/797所有可能的路径.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/797所有可能的路径.md" />
+              <option name="frontendQuestionId" value="leetcode.cn797" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/797所有可能的路径.go" />
+              <option name="titleSlug" value="all-paths-from-source-to-target" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/890查找和替换模式.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/890查找和替换模式.md" />
+              <option name="frontendQuestionId" value="leetcode.cn890" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/890查找和替换模式.go" />
+              <option name="titleSlug" value="find-and-replace-pattern" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/908最小差值 I.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/908最小差值 I.md" />
+              <option name="frontendQuestionId" value="leetcode.cn908" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/908最小差值 I.go" />
+              <option name="titleSlug" value="smallest-range-i" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/929独特的电子邮件地址.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/929独特的电子邮件地址.md" />
+              <option name="frontendQuestionId" value="leetcode.cn929" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/929独特的电子邮件地址.go" />
+              <option name="titleSlug" value="unique-email-addresses" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/933最近的请求次数.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/933最近的请求次数.md" />
+              <option name="frontendQuestionId" value="leetcode.cn933" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/933最近的请求次数.go" />
+              <option name="titleSlug" value="number-of-recent-calls" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/942增减字符串匹配.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/942增减字符串匹配.md" />
+              <option name="frontendQuestionId" value="leetcode.cn942" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/942增减字符串匹配.go" />
+              <option name="titleSlug" value="di-string-match" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/965单值二叉树.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/965单值二叉树.md" />
+              <option name="frontendQuestionId" value="leetcode.cn965" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/965单值二叉树.go" />
+              <option name="titleSlug" value="univalued-binary-tree" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/[1]两数之和.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/1两数之和.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/1两数之和.go" />
+              <option name="titleSlug" value="two-sum" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/[2]两数相加.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/[2]两数相加.md" />
+              <option name="frontendQuestionId" value="leetcode.cn2" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/[2]两数相加.go" />
+              <option name="titleSlug" value="add-two-numbers" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/[682]棒球比赛.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/682棒球比赛.md" />
+              <option name="frontendQuestionId" value="leetcode.cn682" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/682棒球比赛.go" />
+              <option name="titleSlug" value="baseball-game" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/两数之和.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/1两数之和.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/1两数之和.go" />
+              <option name="titleSlug" value="two-sum" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/剑指 Offer II 029排序的循环链表.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/剑指 Offer II 029排序的循环链表.md" />
+              <option name="frontendQuestionId" value="leetcode.cn剑指 Offer II 029" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/剑指 Offer II 029排序的循环链表.go" />
+              <option name="titleSlug" value="4ueAj6" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/剑指 Offer II 040矩阵中最大的矩形.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/剑指 Offer II 040矩阵中最大的矩形.md" />
+              <option name="frontendQuestionId" value="leetcode.cn剑指 Offer II 040" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/剑指 Offer II 040矩阵中最大的矩形.go" />
+              <option name="titleSlug" value="PLYXKQ" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/剑指 Offer II 091粉刷房子.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/剑指 Offer II 091粉刷房子.md" />
+              <option name="frontendQuestionId" value="leetcode.cn剑指 Offer II 091" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/剑指 Offer II 091粉刷房子.go" />
+              <option name="titleSlug" value="JEj789" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/剑指 Offer II 114外星文字典.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/剑指 Offer II 114外星文字典.md" />
+              <option name="frontendQuestionId" value="leetcode.cn剑指 Offer II 114" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/剑指 Offer II 114外星文字典.go" />
+              <option name="titleSlug" value="Jf1JuT" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/面试题 17.11单词距离.go">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/面试题 17.11单词距离.md" />
+              <option name="frontendQuestionId" value="leetcode.cn面试题 17.11" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/面试题 17.11单词距离.go" />
+              <option name="titleSlug" value="find-closest-lcci" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

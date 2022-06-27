@@ -1,0 +1,73 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    # def sumNumbers(self, root: TreeNode) -> int:
+    #     """
+    #     方法1：深度优先+分支思想
+    #     :param root:
+    #     :return:
+    #     """
+    #     path = 0
+    #     if not root:
+    #         return path
+    #     return self.dfs(root, path)
+    #
+    # def dfs(self, node: TreeNode, path: int) -> int:
+    #     # 遍历到了叶结点的子几点，直接返回
+    #     if not node:
+    #         return 0
+    #     # 节点存在，加上当前节点值
+    #     path = path * 10 + node.val
+    #     # 节点为叶子节点，返回值
+    #     if not node.left and not node.right:
+    #         return path
+    #     # 分治思想，左右子节点值相加
+    #     return self.dfs(node.left, path) + self.dfs(node.right, path)
+
+    # def sumNumbers(self, root: TreeNode) -> int:
+    #     path = 0
+    #
+    #     def dfs(node, path):
+    #         if not node:
+    #             return 0
+    #         path = path * 10 + node.val
+    #         if not node.left and not node.right:
+    #             return path
+    #         return dfs(node.left, path) + dfs(node.right, path)
+    #     return dfs(root, path)
+
+    def sumNumbers(self, root: TreeNode) -> int:
+        """
+        方法2：广度优先，层序遍历
+        :param root:
+        :return:
+        """
+        from collections import deque
+        # 两个队列，一个存遍历到的节点，一个存当前的和
+        node_q = deque([root])
+        sum_q = deque([root.val])
+
+        res = 0
+        while node_q:
+            node = node_q.popleft()
+            num = sum_q.popleft()
+            left, right = node.left, node.right
+            if not left and not right:
+                # 到了叶子节点
+                res += num
+            else:
+                if left:
+                    node_q.append(left)
+                    sum_q.append(num * 10 + left.val)
+                if node.right:
+                    node_q.append(right)
+                    sum_q.append(num * 10 + right.val)
+        return res
+
+
+# runtime:28 ms
+# memory:14.9 MB

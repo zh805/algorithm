@@ -1,0 +1,49 @@
+### 解题思路
+
+- 在用回溯算法的时候，脑海里面有一颗决策树
+  ![image.png](https://pic.leetcode-cn.com/1636188072-gAVADc-image.png)
+
+- 在递归前做选择，在递归结束后撤销选择
+
+### 代码
+
+* javascript
+
+```javascript
+/**
+ * @param {number} n
+ * @param {number} k
+ * @return {number[][]}
+ */
+var combine = function (n, k) {
+  let res = [];
+  if (k <= 0 || n <= 0) return res;
+  let track = [];
+  /**
+   *
+   * @param {*} start 是枚举选择的起点
+   * @param {*} track 是当前构建的路径（组合）
+   */
+  const backtrack = (start, track) => {
+    // 到达树的底部
+    if (k == track.length) {
+      // 拷贝一份track，推入res 结束当前递归
+      return res.push([...track]);
+    }
+    // 注意 i 从 start 开始递增  枚举出所有选择
+    for (let i = start; i <= n; i++) {
+      // 做选择
+      track.push(i);
+      // 向下继续选择
+      backtrack(i + 1, track);
+      // 撤销选择
+      track.pop();
+    }
+  };
+  backtrack(1, track);
+  return res;
+};
+
+
+```
+

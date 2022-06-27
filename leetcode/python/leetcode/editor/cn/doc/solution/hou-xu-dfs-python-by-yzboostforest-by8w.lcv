@@ -1,0 +1,38 @@
+### 解题思路
+
+此处撰写解题思路
+
+### 代码
+
+* python3
+
+```python3
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def trimBST(self, root: TreeNode, low: int, high: int) -> TreeNode:
+
+        def recur(root, low, high):
+            if not root:
+                return
+
+            root.left = recur(root.left, low, high)
+            root.right= recur(root.right, low, high)
+
+            if root.val<low:
+                return root.right
+            elif root.val>high:
+                return root.left
+
+            return root
+
+        return recur(root, low, high)
+
+
+
+```
+

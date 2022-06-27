@@ -1,0 +1,34 @@
+### 解题思路
+
+- 直接从上往下搜索 $O(N\cdot M)$
+
+### 代码
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    int m,n;
+
+    int dfs(vector<vector<int>>& grid,int x,int y){
+        int ans=-1;
+        if(y<0||y>=n)return-1;
+        if(x>=m)return y;
+        if(grid[x][y]==1 && (y+1<n && grid[x][y+1]==1))
+            ans=dfs(grid,x+1,y+1);
+        if(grid[x][y]==-1 && (y-1>=0 && grid[x][y-1]==-1))
+            ans=dfs(grid,x+1,y-1);
+        return ans;
+    }
+
+    vector<int> findBall(vector<vector<int>>& grid) {
+        vector<int>ans;
+        m=grid.size(),n=grid[0].size();
+        for(int y=0;y<n;y++)
+            ans.push_back(dfs(grid,0,y));
+        return ans;
+    }
+};
+```
+

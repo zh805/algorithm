@@ -1,0 +1,26 @@
+* python
+
+```python
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        res = []
+        n = len(candidates)
+        def helper(idx, path, t):
+            
+            if t == 0:
+                res.append(path[:])
+                return
+            
+            if t < 0:
+                return
+            
+            for i in range(idx, n):
+                path.append(candidates[i])
+                helper(i, path, t-candidates[i])
+                path.pop()
+        
+        helper(0, [], target)
+        return res
+```
+

@@ -1,0 +1,77 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    
+    # def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+    #     """
+    #     转两圈
+    #     :param headA: 
+    #     :param headB: 
+    #     :return: 
+    #     """
+    #     if not headA or not headB:
+    #         return None
+    #     curA = headA
+    #     curB = headB
+    #     while curA or curB:
+    #         if curA == curB:
+    #             return curA
+    #         if curA:
+    #             curA = curA.next
+    #         else:
+    #             curA = headB
+    #         if curB:
+    #             curB = curB.next
+    #         else:
+    #             curB = headA
+        
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        """
+        1.链表尾不一样，则肯定无交点
+        2.计算链表长度，快慢指针
+        :param headA: 
+        :param headB: 
+        :return: 
+        """
+        if not headA or not headB:
+            return None
+        
+        lenA = 1
+        lenB = 1
+        curA = headA
+        curB = headB
+        while curA.next:
+            curA = curA.next
+            lenA += 1
+            
+        while curB.next:
+            curB = curB.next
+            lenB += 1
+        
+        if curA.val != curB.val:
+            return None
+        
+        dis = lenA - lenB if lenA >= lenB else lenB-lenA
+        
+        if lenA >= lenB:
+            for _ in range(lenA - lenB):
+                headA = headA.next
+        else:
+            for _ in range(lenB - lenA):
+                headB = headB.next
+        
+        while headA != headB:
+            headA = headA.next
+            headB = headB.next
+        return headA
+            
+        
+        
+
+
+# runtime:172 ms
+# memory:29.8 MB

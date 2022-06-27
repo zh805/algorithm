@@ -1,0 +1,33 @@
+class Solution:
+    def countSubstrings(self, s: str) -> int:
+        """
+        方法1：中心拓展法。从每个字符向两边拓展，找出所有的回文字符串。
+        :param s:
+        :return:
+        """
+        len_s = len(s)
+        result = 0
+
+        def calc_nums(left, right):
+            nums = 0
+            while left >= 0 and right < len_s:
+                if s[left] == s[right]:
+                    nums += 1
+                    left -= 1
+                    right += 1
+                else:
+                    break
+            return nums
+
+        for idx, c in enumerate(s):
+            # 需要考虑回文字符串字符个数是奇数还是偶数
+            # 奇数时
+            result += calc_nums(idx, idx)
+            # 偶数时
+            result += calc_nums(idx, idx+1)
+
+        return result
+
+
+# runtime:100 ms
+# memory:14.9 MB

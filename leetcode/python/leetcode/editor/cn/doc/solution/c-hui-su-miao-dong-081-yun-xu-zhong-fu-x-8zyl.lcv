@@ -1,0 +1,32 @@
+* 
+
+```
+class Solution {
+private:
+    vector<vector<int>> res;
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<int> temp;
+        helper(candidates, target, 0, temp);
+        reverse(res.begin(), res.end());
+        return res;
+    }
+
+    void helper(vector<int>& candidates, int target, int index, vector<int> &temp){
+        if(target == 0){
+            res.push_back(temp);
+        }else if(target>0 && index < candidates.size()){
+//第一次是target不变，index往后一位。表示不选择这个数字，相当于这一步什么都不干。往后推一位
+            helper(candidates, target, index+1, temp);
+
+//这时表示选择当前的数字，并且下一步还可能选。
+            temp.emplace_back(candidates[index]);
+            helper(candidates, target-candidates[index], index, temp);
+
+//回溯步骤。在回溯到父节点之前，应该清除已经对子集 temp 状态进行的修改。
+            temp.pop_back();
+        }
+    }
+};
+```
+

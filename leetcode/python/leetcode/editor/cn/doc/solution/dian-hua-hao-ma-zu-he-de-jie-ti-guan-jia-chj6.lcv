@@ -1,0 +1,62 @@
+**算法：回溯+哈希**
+关键点：
+**1.注意处理好号码和字母之间的映射，采用哈希解决
+2.回溯注意是不同集合之间的组合问题：重点体现代码这里：**
+
+* 
+
+```
+for(int i = 0; i < letters.size(); i++) {
+            path.push_back(letters[i]);
+            backtracking(digits, index + 1);//重点注意这里 就是区别
+            path.pop_back();
+        }
+```
+
+本题代码：
+
+* 
+
+```
+class Solution {   
+public:
+    string letterMap[10]={
+        "",//0
+        "",//1
+        "abc",//2
+        "def",//3
+        "ghi",//4
+        "jkl",//5
+        "mno",//6
+        "pqrs",//7
+        "tuv",//8
+        "wxyz",//9
+    };
+    vector<string> ans;
+    string path;
+    void backtracking(string& digits,int index){
+        //每一个数字代表的是不同的集合，不同集合之间的组合的问题
+        //而77 216都是同一个集合的组合的问题 注意对比
+        if(index == digits.size()) {
+            ans.push_back(path);
+            return;
+        }
+        int num = digits[index] - '0';
+        string letters = letterMap[num];
+        for(int i = 0; i < letters.size(); i++) {
+            path.push_back(letters[i]);
+            backtracking(digits, index + 1);//重点注意这里 就是区别
+            path.pop_back();
+        }
+
+    }
+    vector<string> letterCombinations(string digits) {
+        ans.clear();
+        path.clear();
+        if(digits.size()==0)return ans;//对应示例2
+        backtracking(digits,0);
+        return ans;
+    }
+};
+```
+

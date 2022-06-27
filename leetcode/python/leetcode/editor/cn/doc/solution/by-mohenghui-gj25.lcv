@@ -1,0 +1,19 @@
+* python
+
+```python
+class Solution:
+    def allPathsSourceTarget(self, graph: List[List[int]]) -> List[List[int]]:
+        temp=[0]
+        ans=[]
+        def dfs(idx):
+            if idx==len(graph)-1:
+                ans.append(temp[:])
+                return
+            for i in graph[idx]:
+                temp.append(i)
+                dfs(i)
+                temp.pop()
+        dfs(0)
+        return ans
+```
+

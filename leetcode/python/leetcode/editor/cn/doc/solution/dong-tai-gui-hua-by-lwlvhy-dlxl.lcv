@@ -1,0 +1,32 @@
+### 解题思路
+
+一道简单的动态规划
+
+### 代码
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    int minFallingPathSum(vector<vector<int>>& grid) {
+        int N=grid.size();
+        vector<vector<int>>dp(N+1,vector<int>(N+1,INT_MAX/2));
+        for(int i=1;i<=N;i++){
+            for(int j=1;j<=N;j++){
+                if(i==1){
+                    dp[i][j]=grid[i-1][j-1];
+                }
+                for(int k=1;k<=N;k++){
+                    if(k==j){
+                        continue;
+                    }
+                    dp[i][j]=min(dp[i][j],dp[i-1][k]+grid[i-1][j-1]);
+                }
+            }
+        }
+        return *min_element(dp[N].begin(),dp[N].end());
+    }
+};
+```
+

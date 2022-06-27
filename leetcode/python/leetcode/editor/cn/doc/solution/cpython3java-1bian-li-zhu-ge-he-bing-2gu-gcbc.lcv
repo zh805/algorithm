@@ -1,0 +1,707 @@
+思路和心得：
+
+# （一）遍历逐个合并
+
+* []
+
+```python3
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        x = None
+        for y in lists:
+            x = self.merge(x, y)
+        return x
+
+    
+    def merge(self, a: ListNode, b: ListNode) -> ListNode:
+        dummy = ListNode(-1)
+        x = dummy
+        while a and b:
+            if a.val < b.val:
+                x.next = a
+                a = a.next
+            else:
+                x.next = b
+                b = b.next
+            x = x.next
+        if a:
+            x.next = a
+        if b:
+            x.next = b
+        return dummy.next
+```
+
+* []
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+
+class Solution 
+{
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) 
+    {
+        ListNode * x = NULL;
+        for (ListNode * y : lists)
+            x = merge(x, y);
+        return x;
+    }
+
+
+    ListNode * merge(ListNode * a, ListNode * b)
+    {
+        ListNode * dummy = new ListNode(-1);
+        ListNode * x = dummy;
+        while (a && b)
+        {
+            if (a->val < b->val)
+            {
+                x->next = a;
+                a = a->next;
+            }
+            else
+            {
+                x->next = b;
+                b = b->next;
+            }
+            x = x->next;
+        }
+        if (a)
+            x->next = a;
+        if (b)
+            x->next = b;
+        return dummy->next;
+    }
+
+};
+```
+
+* []
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution 
+{
+    public ListNode mergeKLists(ListNode[] lists) 
+    {
+        ListNode x = null;
+        for (ListNode y : lists)
+            x = merge(x, y);
+        return x;
+    }
+
+    public ListNode merge(ListNode a, ListNode b)
+    {
+        ListNode dummy = new ListNode(-1);
+        ListNode x = dummy;
+        while (a != null && b != null)
+        {
+            if (a.val < b.val)
+            {
+                x.next = a;
+                a = a.next;
+            }
+            else
+            {
+                x.next = b;
+                b = b.next;
+            }
+            x = x.next;
+        }
+        if (a != null)
+            x.next = a;
+        if (b != null)
+            x.next = b;
+        return dummy.next;
+    }
+}
+```
+
+# （二）归并排序
+
+* []
+
+```python3
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        if not lists:
+            return None
+        n = len(lists)
+        return self.merge_sort(lists, 0, n - 1)
+    
+
+    def merge_sort(self, lists: List[ListNode], l: int, r: int) -> ListNode:
+        if l == r:
+            return lists[l]
+        mid = (l + r) // 2
+        L = self.merge_sort(lists, l, mid)
+        R = self.merge_sort(lists, mid + 1, r)
+        return self.merge(L, R)
+    
+    def merge(self, a: ListNode, b: ListNode) -> ListNode:
+        dummy = ListNode(-1)
+        x = dummy
+        while a and b:
+            if a.val < b.val:
+                x.next = a
+                a = a.next
+            else:
+                x.next = b
+                b = b.next
+            x = x.next
+        if a:
+            x.next = a
+        if b:
+            x.next = b
+        return dummy.next
+```
+
+* []
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution 
+{
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) 
+    {
+        int n = lists.size();
+        if (n == 0)
+            return NULL;
+        return merge_sort(lists, 0, n - 1);
+    }
+
+    ListNode * merge_sort(vector<ListNode*> & lists, int l, int r)
+    {
+        if (l == r)
+            return lists[l];
+        int mid = (l + r) / 2;
+        ListNode * L = merge_sort(lists, l, mid);
+        ListNode * R = merge_sort(lists, mid + 1, r);
+        return merge(L, R);
+    }
+
+    ListNode * merge(ListNode * a, ListNode * b)
+    {
+        ListNode * dummy = new ListNode(-1);
+        ListNode * x = dummy;
+        while (a && b)
+        {
+            if (a->val < b->val)
+            {
+                x->next = a;
+                a = a->next;
+            }
+            else
+            {
+                x->next = b;
+                b = b->next;
+            }
+            x = x->next;
+        }
+        if (a)
+            x->next = a;
+        if (b)
+            x->next = b;
+        return dummy->next;
+    }
+};
+```
+
+* []
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution 
+{
+    public ListNode mergeKLists(ListNode[] lists) 
+    {
+        int n = lists.length;
+        if (n == 0)
+            return null;
+        return merge_sort(lists, 0, n - 1);
+    }
+
+
+    public ListNode merge_sort(ListNode [] lists, int l, int r)
+    {
+        if (l == r)
+            return lists[l];
+        int mid = (l + r) / 2;
+        ListNode L = merge_sort(lists, l, mid);
+        ListNode R = merge_sort(lists, mid + 1, r);
+        return merge(L, R);
+    }
+
+    public ListNode merge(ListNode a, ListNode b)
+    {
+        ListNode dummy = new ListNode(-1);
+        ListNode x = dummy;
+        while (a != null && b != null)
+        {
+            if (a.val < b.val)
+            {
+                x.next = a;
+                a = a.next;
+            }
+            else
+            {
+                x.next = b;
+                b = b.next;
+            }
+            x = x.next;
+        }
+        if (a != null)
+            x.next = a;
+        if (b != null)
+            x.next = b;
+        return dummy.next;
+    }
+}
+```
+
+# （三）小根堆，全扔进去
+
+* []
+
+```python3
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        if not lists:
+            return None
+
+        minHeap = []
+        for x in lists:
+            while x:
+                heapq.heappush(minHeap, x.val)
+                x = x.next
+        
+        dummy = ListNode(-1)
+        x = dummy
+        while minHeap:
+            x.next = ListNode(heapq.heappop(minHeap))
+            x = x.next
+        return dummy.next
+```
+
+* []
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution 
+{
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) 
+    {
+        if (lists.size() == 0)
+            return NULL;
+
+        priority_queue<int, vector<int>, greater<int>> minHeap;
+        for (ListNode * x : lists)
+        {
+            while (x)
+            {
+                minHeap.push(x->val);
+                x = x->next;
+            }
+        }
+
+        ListNode * dummy = new ListNode(-1);
+        ListNode * x = dummy;
+        while (!minHeap.empty())
+        {
+            int y = minHeap.top();    minHeap.pop();
+            x->next = new ListNode(y);
+            x = x->next;
+        }
+        return dummy->next;
+    }
+};
+```
+
+* []
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution 
+{
+    public ListNode mergeKLists(ListNode[] lists) 
+    {
+        if (lists.length == 0)
+            return null;
+
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>(new Comparator<>()
+        {
+            public int compare(Integer a, Integer b)
+            {
+                return a - b;
+            }
+        });
+
+        for (ListNode x : lists)
+        {
+            while (x != null)
+            {
+                minHeap.offer(x.val);
+                x = x.next;
+            }
+        }
+
+        ListNode dummy = new ListNode(-1);
+        ListNode x = dummy;
+        while (!minHeap.isEmpty())
+        {
+            int y = minHeap.poll();
+            x.next = new ListNode(y);
+            x = x.next;
+        }
+        return dummy.next;
+    }
+}
+```
+
+# （四）小根堆容量为k--重新定义类结点，重载运算符
+
+* []
+
+```python3
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        def __lt__(a: ListNode, b: ListNode):
+            return a.val < b.val
+        ListNode.__lt__ = __lt__
+
+        if not lists:
+            return None
+
+        minHeap = []
+        for x in lists:
+            if x:
+                heapq.heappush(minHeap, (x.val, x))
+                
+        dummy = ListNode(-1)
+        x = dummy
+        while minHeap:
+            _, y = heapq.heappop(minHeap)
+            x.next = y
+            if y.next:
+                heapq.heappush(minHeap, (y.next.val, y.next))
+            x = x.next
+        return dummy.next
+```
+
+* []
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Node
+{
+public:
+    int val;
+    ListNode * p;
+
+    const bool operator < (const Node & rhs) const
+    {
+        return val > rhs.val;
+    }
+};
+
+class Solution 
+{
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) 
+    {
+        if (lists.size() == 0)
+            return NULL;
+        
+        priority_queue<Node> minHeap;
+        for (ListNode * x : lists)
+        {
+            if (x)
+                minHeap.push({x->val, x});
+        }
+
+        ListNode * dummy = new ListNode(-1);
+        ListNode * x = dummy;
+        while (!minHeap.empty())
+        {
+            auto [_, y] = minHeap.top();    minHeap.pop();
+            x->next = y;
+            x = x->next;
+            if (y->next)
+            {
+                minHeap.push({y->next->val, y->next});
+            }
+        }
+        return dummy->next;
+
+    }
+};
+```
+
+* []
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+class Node implements Comparable<Node>
+{
+    int val;
+    ListNode p;
+
+    Node(int val_, ListNode p_)
+    {
+        val = val_;
+        p = p_;
+    }
+
+    public int compareTo(Node rhs)
+    {
+        return val - rhs.val;
+    }
+}
+
+
+class Solution 
+{
+    public ListNode mergeKLists(ListNode[] lists) 
+    {
+        if (lists.length == 0)
+            return null;
+
+        PriorityQueue<Node> minHeap = new PriorityQueue<Node>();
+
+        for (ListNode x : lists)
+        {
+            if (x != null)
+            {
+                minHeap.offer(new Node(x.val, x));
+            }
+        }
+
+        ListNode dummy = new ListNode(-1);
+        ListNode x = dummy;
+        while (!minHeap.isEmpty())
+        {
+            Node t = minHeap.poll();
+            x.next = new ListNode(t.val);
+            x = x.next;
+            if (t.p.next != null)
+            {
+                minHeap.offer(new Node(t.p.next.val, t.p.next));
+            }
+        }
+        return dummy.next;
+    }
+}
+```
+
+# （五）小根堆容量为k--自定义比较函数
+
+* []
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class cmp1
+{
+public:
+    bool operator() (ListNode * a, ListNode * b)
+    {
+        return a->val > b->val;
+    }
+
+};
+
+
+class Solution 
+{
+public:
+
+    ListNode* mergeKLists(vector<ListNode*>& lists) 
+    {
+        if (lists.size() == 0)
+            return NULL;
+        
+        priority_queue<ListNode *, vector<ListNode*>, cmp1> minHeap;
+        for (ListNode * x : lists)
+        {
+            if (x)
+                minHeap.push(x);
+        }
+
+        ListNode * dummy = new ListNode(-1);
+        ListNode * x = dummy;
+        while (!minHeap.empty())
+        {
+            ListNode * y = minHeap.top();    minHeap.pop();
+            x->next = y;
+            x = x->next;
+            if (y->next)
+            {
+                minHeap.push(y->next);
+            }
+        }
+        return dummy->next;
+
+    }
+};
+```
+
+* []
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+
+class Solution 
+{
+    public ListNode mergeKLists(ListNode[] lists) 
+    {
+        if (lists.length == 0)
+            return null;
+
+        PriorityQueue<ListNode> minHeap = new PriorityQueue<>(new Comparator<>()
+        {
+            public int compare(ListNode a, ListNode b)
+            {
+                return a.val - b.val;
+            }
+        });
+
+        for (ListNode x : lists)
+        {
+            if (x != null)
+            {
+                minHeap.offer(x);
+            }
+        }
+
+        ListNode dummy = new ListNode(-1);
+        ListNode x = dummy;
+        while (!minHeap.isEmpty())
+        {
+            ListNode y = minHeap.poll();
+            x.next = y;
+            x = x.next;
+            if (y.next != null)
+            {
+                minHeap.offer(y.next);
+            }
+        }
+        return dummy.next;
+    }
+}
+```
+

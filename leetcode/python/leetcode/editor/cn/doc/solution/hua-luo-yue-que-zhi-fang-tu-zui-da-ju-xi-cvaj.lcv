@@ -1,0 +1,63 @@
+- 首先，你需要会做 [剑指 Offer II 039. 直方图最大矩形面积](https://leetcode-cn.com/problems/0ynMMM/)，如果需要参考，请考虑题解 [Offer II 039. 题解](https://leetcode-cn.com/problems/0ynMMM/solution/hua-luo-yue-que-wo-zhen-de-zhen-de-nu-li-ohjt/)。(ﾟ▽ﾟ*)
+- 之后，请参考下面的 PPT 进行题解。(*´・ｖ・)
+
+<![前 n 个数字二进制中 1 的个数_01.png](https://pic.leetcode-cn.com/1645278319-ykwKOF-%E5%89%8D%20n%20%E4%B8%AA%E6%95%B0%E5%AD%97%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%AD%201%20%E7%9A%84%E4%B8%AA%E6%95%B0_01.png),![前 n 个数字二进制中 1 的个数_02.png](https://pic.leetcode-cn.com/1645278322-qexJGN-%E5%89%8D%20n%20%E4%B8%AA%E6%95%B0%E5%AD%97%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%AD%201%20%E7%9A%84%E4%B8%AA%E6%95%B0_02.png),![前 n 个数字二进制中 1 的个数_03.png](https://pic.leetcode-cn.com/1645278325-dMyrYG-%E5%89%8D%20n%20%E4%B8%AA%E6%95%B0%E5%AD%97%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%AD%201%20%E7%9A%84%E4%B8%AA%E6%95%B0_03.png),![前 n 个数字二进制中 1 的个数_04.png](https://pic.leetcode-cn.com/1645278328-UYdhMl-%E5%89%8D%20n%20%E4%B8%AA%E6%95%B0%E5%AD%97%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%AD%201%20%E7%9A%84%E4%B8%AA%E6%95%B0_04.png),![前 n 个数字二进制中 1 的个数_05.png](https://pic.leetcode-cn.com/1645278330-PYcmkS-%E5%89%8D%20n%20%E4%B8%AA%E6%95%B0%E5%AD%97%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%AD%201%20%E7%9A%84%E4%B8%AA%E6%95%B0_05.png)>
+
+---
+
+* [-题解]
+
+```java
+public class Offer040 {
+    public int maximalRectangle(String[] matrix) {
+        if (matrix.length == 0) {
+            return 0;
+        }
+        int area = 0;
+        int[] heights = new int[matrix[0].length()];
+        for (String row : matrix) {
+            for (int i = 0, length = heights.length; i < length; i++) {
+                heights[i] = row.charAt(i) == '0' ? 0 : heights[i] + 1;
+            }
+            area = Math.max(area, maximalRectangle(heights));
+        }
+        return area;
+    }
+
+    private int maximalRectangle(int[] heights) {
+        int length = heights.length;
+        // 因为 length 的范围 [0,200]，采用数组模拟栈即可
+        int[] stack = new int[length + 1];
+        stack[0] = -1;
+        int index = 1;
+        int area = 0;
+        for (int i = 0; i < length; i++) {
+            while (index > 0 && heights[stack[index]] >= heights[i]) {
+                area = Math.max(area, heights[stack[index--]] * (i - stack[index] - 1));
+            }
+            stack[++index] = i;
+        }
+        while (index > 0) {
+            area = Math.max(area, heights[stack[index--]] * (length - stack[index] - 1));
+        }
+        return area;
+    }
+}
+```
+
+* [-测试]
+
+```java
+@Test
+public void testOffer040() {
+    Offer040 test = new Offer040();
+    assertEquals(6, test.maximalRectangle(new String[]{"10100", "10111", "11111", "10010"}));
+    assertEquals(0, test.maximalRectangle(new String[]{}));
+    assertEquals(1, test.maximalRectangle(new String[]{"1"}));
+    assertEquals(1, test.maximalRectangle(new String[]{"01"}));
+}
+```
+
+---
+
+![2054199.jpg](https://pic.leetcode-cn.com/1645277409-tVBuSx-2054199.jpg)

@@ -1,0 +1,36 @@
+
+from typing import List
+
+
+class Solution:
+    def findMinDifference(self, timePoints: List[str]) -> int:
+        """
+        方法1：排序
+        :param timePoints:
+        :return:
+        """
+        min_diff = 24 * 60
+        one_day = 24 * 60
+        
+        if len(timePoints) > one_day:
+            # 说明有重复的时间点，直接返回0
+            return 0
+            
+        timePoints.sort()
+
+        def t_m(t):
+            return 60 * int(t[:2]) + int(t[-2:])
+
+        for i in range(len(timePoints) - 1):
+            t1, t2 = timePoints[i], timePoints[i + 1]
+            t_diff = t_m(t2) - t_m(t1)
+            min_diff = min(t_diff, min_diff)
+
+        # 细节：需要把第一个时间加上one_day，减去最后一个时间，计算时间差
+        first_last_diff = t_m(timePoints[0]) + one_day - t_m(timePoints[-1])
+        return min(min_diff, first_last_diff)
+
+
+
+# runtime:52 ms
+# memory:16.5 MB

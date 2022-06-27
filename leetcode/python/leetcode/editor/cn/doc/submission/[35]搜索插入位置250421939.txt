@@ -1,0 +1,23 @@
+class Solution:
+    def searchInsert(self, nums: List[int], target: int) -> int:
+        # 返回第1个大于等于target的元素的索引
+        left, right = 0, len(nums) -1
+        if target <= nums[0]:
+            return 0
+        if target > nums[-1]:
+            return len(nums)
+
+        while left < right:
+            mid = left + (right - left) // 2
+            if nums[mid] == target:
+                return mid
+            if nums[mid] < target:
+                # target在[mid + 1, right]区间
+                left = mid + 1
+            else:
+                # target在[left, mid]区间
+                right = mid
+        return left
+
+# runtime:28 ms
+# memory:15.4 MB

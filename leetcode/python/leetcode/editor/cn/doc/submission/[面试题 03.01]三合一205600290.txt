@@ -1,0 +1,29 @@
+class TripleInOne:
+
+    def __init__(self, stackSize: int):
+        self.stackSize = stackSize
+        self.nums_stack = [[] for i in range(3)]
+    
+    def push(self, stackNum: int, value: int) -> None:
+        if len(self.nums_stack[stackNum]) < self.stackSize:
+            self.nums_stack[stackNum].append(value)
+
+    def pop(self, stackNum: int) -> int:
+        return self.nums_stack[stackNum].pop() if self.nums_stack[stackNum] else -1
+
+    def peek(self, stackNum: int) -> int:
+        return self.nums_stack[stackNum][-1] if self.nums_stack[stackNum] else -1
+
+    def isEmpty(self, stackNum: int) -> bool:
+        return len(self.nums_stack[stackNum]) == 0
+
+
+# Your TripleInOne object will be instantiated and called as such:
+# obj = TripleInOne(stackSize)
+# obj.push(stackNum,value)
+# param_2 = obj.pop(stackNum)
+# param_3 = obj.peek(stackNum)
+# param_4 = obj.isEmpty(stackNum)
+
+# runtime:104 ms
+# memory:22.1 MB

@@ -1,0 +1,60 @@
+## 模拟
+
+根据题意进行模拟即可。
+
+为了方便，令 `mat` 为 `g`，记 `g` 的行和宽分别为 $n$ 和 $m$。当前所在位置为 $(x, y)$，遍历方向使用 $dir$ 代指（当 $dir = 1$ 代表往右上方进行遍历，当 $dir = -1$ 代表往左下方进行遍历），使用 $idx$ 记录当前处理到的答案下标。
+
+每次除了将当前格子放入答案（`ans[idx++]=g[x][y]`）以外，还需要结合 $dir$ 找到当前位置的右上方格子 $(x - 1, y + 1)$ 或是左下方格子 $(x + 1, y - 1)$，若下一目标位置「越界」并且还没搜索完整个矩阵，我们需要根据优先级来找「下一个发起点」的位置，并且翻转遍历方向。
+
+具体的找「下一个发起点」的优先级为：
+
+* 若当前遍历方向为往右上角，即 $dir = 1$，优先找 $(x, y + 1)$ 作为下一发起点，若越界，则找 $(x + 1, y)$ 作为下一发起点；
+* 若当前遍历方向为往左下角，即 $dir = -1$，优先找 $(x + 1, y)$ 作为下一发起点，若越界，则找 $(x, y + 1)$ 作为下一发起点。
+
+代码：
+
+* []
+
+```Java
+class Solution {
+    public int[] findDiagonalOrder(int[][] g) {
+        int n = g.length, m = g[0].length, cnt = n * m;
+        int[] ans = new int[cnt];
+        int x = 0, y = 0, dir = 1, idx = 0;
+        while (idx != cnt) {
+            ans[idx++] = g[x][y];
+            int nx = x, ny = y;
+            if (dir == 1) {
+                nx = x - 1; ny = y + 1;
+            } else {
+                nx = x + 1; ny = y - 1;
+            }
+            if (idx < cnt && (nx < 0 || nx >= n || ny < 0 || ny >= m)) {
+                if (dir == 1) {
+                    nx = y + 1 < m ? x : x + 1;
+                    ny = y + 1 < m ? y + 1 : y;
+                } else {
+                    nx = x + 1 < n ? x + 1 : x;
+                    ny = x + 1 < n ? y : y + 1;
+                }
+                dir *= -1;
+            }
+            x = nx; y = ny;
+        }
+        return ans;
+    }
+}
+```
+
+* 时间复杂度：$O(n \times m)$
+* 空间复杂度：$O(1)$
+
+---
+
+## 最后
+
+**如果有帮助到你，请给题解点个赞和收藏，让更多的人看到 ~ ("▔□▔)/**
+
+也欢迎你 [关注我](https://oscimg.oschina.net/oscnet/up-19688dc1af05cf8bdea43b2a863038ab9e5.png) 和 加入我们的[「组队打卡」](https://leetcode-cn.com/u/ac_oier/)小群 ，提供写「证明」&「思路」的高质量题解。
+
+所有题解已经加入 [刷题指南](https://github.com/SharingSource/LogicStack-LeetCode/wiki)，欢迎 star 哦 ~

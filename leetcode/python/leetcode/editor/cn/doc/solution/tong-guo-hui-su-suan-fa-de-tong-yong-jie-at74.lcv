@@ -1,0 +1,42 @@
+### 解题思路
+
+- 题目意思说明candidates中的元素可以复用多次
+- 可以重复使用元素在递归回溯的时候start不用递增即可
+
+### 代码
+
+* javascript
+
+```javascript
+/**
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+var combinationSum = function (candidates, target) {
+  let res = [];
+  // 记录回溯的路径
+  let track = [];
+  // 回溯算法主函数
+  const backtrack = (start, sum) => {
+    // 找到目标和
+    if (sum == target) return res.push(track.slice());
+    // 超过目标和，直接结束
+    if (sum > target) return;
+    for (let i = start; i < candidates.length; i++) {
+      // 选择 candidates[i]
+      track.push(candidates[i]);
+      sum += candidates[i];
+      // 递归遍历下一层回溯树
+      backtrack(i, sum);
+      // 撤销选择 candidates[i]
+      track.pop();
+      sum -= candidates[i];
+    }
+  };
+  backtrack(0, 0);
+  return res;
+};
+
+```
+

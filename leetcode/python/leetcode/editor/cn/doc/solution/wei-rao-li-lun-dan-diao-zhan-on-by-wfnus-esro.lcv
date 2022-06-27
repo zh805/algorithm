@@ -1,0 +1,101 @@
+[![Foo](https://pic.leetcode-cn.com/1642401540-VfPxoS-file_1642401536561)](https://gitee.com/wfnuser/img/raw/master/perturbation.png) [![Foo](https://pic.leetcode-cn.com/1641890108-zTFrPQ-file_1641890104117)](https://github.com/wfnuser)
+大家好，我是微扰理论；目前正在连载国服每日一题题解。 微扰酱最近因为工作上的一些原因，不是很愉快，业余时间也变得没有那么充裕。因而这两天有漏更迟更题解，还请大家多多包涵，应该本周之后就会恢复。
+希望世界和平！
+
+### 解题思路
+
+这道题目看到O(n)的时间复杂度要求，和最大元素和最小元素相关的题干，其实很容易往单调栈的方向想。
+我们通过单调栈，非常容易维护一个每一个入栈元素左侧比他大或者小的第一个元素。
+
+结合这道题来考虑。由于我们要求的是所有子数组最大元素和最小元素的差值；有一种想法是，我们考虑每个元素成为了多少个区间的最大值，还有多少个区间的最小值。前者的数量就是该元素在累计求和中被加的次数，后者则是被减的次数。
+这样我们只需要一种遍历一遍的方式获得每个元素是多少个区间的最大最小值即可在O(n)的时间里求出结果。
+
+考虑一个具体的例子
+[2, 3, 5, 4, 10, 2]
+我们考虑中间的某个数字4，它是多少区间的最大值呢？首先，左侧的5，就决定了，4为最大值的区间左边不可能比5靠左；右侧的10也做出了同样的限制。所以4只能是自己这个区间的最大值。
+那他又是多少区间的最小值呢，我们往左看，第一个小于4的值是3，所以5开始的位置可以做左边界；右边第一个小于4的值是2，所以10往左的位置可以做右边界。
+假设当前值下标为i；左侧第一个小于该元素的下标为l，右侧为r。则以i为最小值的区间数量，通过组合计数原理，可以得到，为 `(i-l)*(r-i)`
+
+而最小值怎么维护呢？我们用一个单调增栈即可，从左往右遍历，如果栈顶元素大于当前值，我们就出栈；直到栈顶元素小于当前值，这样我们就知道了小于当前值最近的左侧元素是在哪了。
+右侧和最大值的计算过程类似。
+还有一个小细节，就是数组中会有重复的元素；为了避免重复区间的计算，从左往右和从右往左的统计，我们需要分别用开区间和闭区间来表示。
+
+整个题目翻译成代码如下：
+
+### 代码
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    long long subArrayRanges(vector<int>& nums) {
+        int n = nums.size();
+
+        vector<int> lsmall(n, 0);
+        vector<int> rsmall(n, 0);
+        vector<int> llarge(n, 0);
+        vector<int> rlarge(n, 0);
+
+        stack<int> s;
+
+        // 从左往右单调增栈 不能出栈的时候栈顶就是当前元素左侧最近的小于当前元素的节点
+        s.push(-1);
+        for (int i = 0; i < n; i++) {
+            while (s.top() != -1 && nums[s.top()] >= nums[i]) {
+                s.pop();
+            }
+            lsmall[i] = s.top();
+            s.push(i);
+        }
+
+        // 从右往左单调增栈 不能出栈的时候栈顶就是当前元素右侧最近的小于当前元素的节点
+        s = stack<int>();
+        s.push(n);
+        for (int i = n-1; i >= 0; i--) {
+            while (s.top() != n && nums[s.top()] > nums[i]) {
+                s.pop();
+            }
+            rsmall[i] = s.top();
+            s.push(i);
+        }
+
+        // 从左往右单调减栈 不能出栈的时候栈顶就是当前元素左侧最近的大于当前元素的节点
+        s = stack<int>();
+        s.push(-1);
+        for (int i = 0; i < n; i++) {
+            while (s.top() != -1 && nums[s.top()] <= nums[i]) {
+                s.pop();
+            }
+            llarge[i] = s.top();
+            s.push(i);
+        }
+
+        // 从右往左单调增栈 不能出栈的时候栈顶就是当前元素右侧最近的大于当前元素的节点
+        s = stack<int>();
+        s.push(n);
+        for (int i = n-1; i >= 0; i--) {
+            while (s.top() != n && nums[s.top()] < nums[i]) {
+                s.pop();
+            }
+            rlarge[i] = s.top();
+            s.push(i);
+        }
+
+        long long ans = 0;
+        for (int i = 0; i < n; i++) {
+            ans += nums[i] * 1L * (i - llarge[i]) * (rlarge[i] - i);
+            ans -= nums[i] * 1L * (i - lsmall[i]) * (rsmall[i] - i);
+        }
+
+        return ans;
+    }
+};
+```
+
+### 关于我
+
+微扰酱18年毕业于上海交通大学，是一个在阿里、字节、腾讯都工作过的工程师，也是「悖论13」的老板。如果觉得题解对你有帮助，**可以点个赞支持一下我哦**！
+[![Foo](https://pic.leetcode-cn.com/1642401540-VfPxoS-file_1642401536561)](https://gitee.com/wfnuser/img/raw/master/perturbation.png)一起打卡刷题，冲。
+✅「微扰酱」正在整理常用 [算法模板](https://github.com/wfnuser/Algorithms)，欢迎来[follow](https://github.com/wfnuser)。
+✅「微扰酱」也发布了一个讲解工程中算法应用的专栏同样可以进[主页](/u/wfnuser)了解。

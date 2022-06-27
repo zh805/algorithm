@@ -1,0 +1,57 @@
+### 解题思路
+
+使用一个自定义的前缀树实现此功能。
+前缀树的插入函数有改动，当插入过程中发现此位置已经有更短的前缀，停止插入即可。
+前缀树的搜索函数稍有改动，当发现一个.is_word == True时，直接返回这个前缀。
+
+### 代码
+
+* python3
+
+```python3
+class TrieNode:
+    def __init__(self):
+        self.child = [None] * 26
+        self.is_word = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word: str) -> None:
+        cur_node, n = self.root, len(word)
+        for i in range(n):
+            if not cur_node.child[ord(word[i]) - ord('a')]:
+                new_node = TrieNode()
+                cur_node.child[ord(word[i]) - ord('a')] = new_node
+                cur_node = new_node
+            else:
+                cur_node = cur_node.child[ord(word[i]) - ord('a')]
+                if cur_node.is_word == True: # 插入过程中遇到了更短的前缀，直接跳出
+                    return            
+            if i == n - 1: 
+                cur_node.is_word = True
+
+    def searchPrefix(self, prefix):
+        cur_node = self.root
+        ansStr = ''
+        for char in prefix:
+            if cur_node.child[ord(char) - ord('a')]:
+                cur_node = cur_node.child[ord(char) - ord('a')]
+                ansStr += char
+                if cur_node.is_word == True:
+                    return ansStr
+            else:
+                return prefix
+        return prefix
+
+class Solution:
+    def replaceWords(self, dictionary: List[str], sentence: str) -> str:
+        T, ans = Trie(), []
+        for prefix in dictionary:
+            T.insert(prefix)
+        for word in sentence.split():
+            ans.append(T.searchPrefix(word))
+        return ' '.join(ans)
+```
+

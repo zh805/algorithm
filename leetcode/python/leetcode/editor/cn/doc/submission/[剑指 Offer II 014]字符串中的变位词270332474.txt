@@ -1,0 +1,15 @@
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+
+# runtime:N/A
+# memory:N/A
+# total_testcases:106
+# total_correct:0
+# input_formatted:"ab"
+"eidbaooo"
+# expected_output:true
+# code_output:
+# runtime_error:IndentationError: expected an indented block after function definition on line 52
+    import sys
+Line 4  (Solution.py)
+# last_testcase:"ab" "eidbaooo"

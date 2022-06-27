@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="LeetcodeEditor">
+    <option name="projectConfig">
+      <map>
+        <entry key="$PROJECT_DIR$/[2055]蜡烛之间的盘子.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/[2055]蜡烛之间的盘子.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com2055" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/[2055]蜡烛之间的盘子.java" />
+              <option name="titleSlug" value="plates-between-candles" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/[LCP 28]采购方案.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/doc/content/[LCP 28]采购方案.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.comLCP 28" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/[LCP 28]采购方案.java" />
+              <option name="titleSlug" value="4xy4Wx" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

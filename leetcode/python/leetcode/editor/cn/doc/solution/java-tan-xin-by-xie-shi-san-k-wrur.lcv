@@ -1,0 +1,31 @@
+### 解题思路
+
+怎么说呢 有时候不得不相信科学以及直觉
+分析题意，希望能够得到一顿除之后的最大结果，那么肯定是希望**除的数越小越好**，最好的情况是啥，不就是第二个数（在有的情况下）在后面疯狂除，最后返回了一个非常小的数给第一个数做为除数。（比如`a/b/c/d/e`，`b`在后面一顿除`(b/c/d/e)`，这个除等于啥，就等于`(b/(c*d*e))`，那因为每个数都是大于1的，除数肯定是越来越大的也即`b`只要一直除那肯定是越除越小，所以肯定是**一直除**才能返回一个最小的除数给第一个数了)。
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public String optimalDivision(int[] nums) {
+        StringBuilder sb = new StringBuilder();
+        int n = nums.length;
+        sb.append(nums[0]);
+        // 为了避免冗余括号做的处理
+        if(n == 1) return sb.toString();
+        sb.append('/');
+        // 长度为2时也不需要括号
+        if(n == 2) return sb.append(nums[1]).toString();
+        // 后面只要在第一个数的后面用一个括号将所有的数括起来就行
+        sb.append('(');
+        for(int i = 1; i < n - 1; i++){
+            sb.append(nums[i]).append('/');
+        }
+        sb.append(nums[n - 1]).append(')');
+        return sb.toString();
+    }
+}
+```
+

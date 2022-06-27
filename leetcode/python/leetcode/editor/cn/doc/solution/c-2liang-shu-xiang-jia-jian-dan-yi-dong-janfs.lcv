@@ -1,0 +1,61 @@
+### 解题思路
+
+完整思考过程：
+(一）首先观察实例1，会发现本题的目的就是链表第一位加第一位，若产生进位，则累加到下一位，以此类推，那么脑子里就应该得出每一位的结果=a+b+进位；
+（二）下一步顺理成章想到得出这个每一步结果后应该有两个动作：①将结果的个位放到最终要返回的链表里；②得出的这位结果可能产生进位，应放到下一位里。
+（三）到此整个思路就是完整的，那么还有一些细节需要注意（这往往需要在特殊用例中发现，例如实例3）当链表不一样长时，应该在短的链表后面补零，再进行相加（见代码注释）；
+（四）最后容易忽略的一点是，当链表所有位计算完成时，可能最后两数相加产生了进位，则该进位也应放到结果链表里。
+业精于勤而荒于嬉，行成于思而毁于随。共勉！继续加油！
+
+### 代码
+
+* cpp
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* result=nullptr;
+        ListNode* p=nullptr;//移动指针
+        int b=0;
+       while(l1||l2){
+           	int n1 = l1 ? l1->val: 0;//等号后面看成一个整体，判l1若不为空，则等于其值，若为空，则等于0
+            int n2 = l2 ? l2->val: 0;//原理同l1
+           int a=n1+n2+b;
+           b=a/10;//进位
+           a=a%10;//该位的值
+           //下9行将每位相加结果放到链表里
+            if(!result)//之所以要判result是否为空，是因为最后要返回结果链表头节点，故只能移动指针p，然而对第一位的处理是需要让result链到头结点处，而后续的处理是只需对p指针进行，故应分开；（这里卡了，看了很多题解。。理解了一下，应该是这样，欢迎指正）
+           {
+            result=p=new ListNode(a);//创建新节点，新节点的val是a
+           }
+           else
+           {
+            p->next=new ListNode(a);
+            p=p->next;
+           }
+           if(l1){
+           l1=l1->next;//后移
+           }
+           if(l2){
+           l2=l2->next;
+           } 
+       }
+       if(b>0){//容易忽略，最后的进位处理
+           p->next=new ListNode(b); 
+       }
+     return result;//最后要返回链表
+    }
+};
+```
+

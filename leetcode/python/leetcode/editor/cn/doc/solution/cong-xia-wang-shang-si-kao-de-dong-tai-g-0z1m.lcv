@@ -1,0 +1,44 @@
+### 解题思路
+
+思考：什么样的题可以用动态规划的思维考虑呢？
+当每一次更新的值都只与前面计算的某些值相关而不是新的参数时， 我们就可以考虑动态规划。
+举例： 如果给出杨辉三角的某一项是1331， 需要求出下一项， 那么一定可以只利用这一点就知道下一项是14641。
+同理， 如果想要求出到i行j列这个点的最小值， 我只要知道它前面的三个值, 也就是到它左上（i-1, j-1）， 正上(i-1, j)， 右上(i-1, j+1)的最小值即可(如果有的话)。
+![微信图片_20210823144806.png](https://pic.leetcode-cn.com/1629701353-VduFLT-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20210823144806.png)
+那么综上， 状态转移方程为：
+dp[i][j] = min(dp[i-1][j], dp[i-1][j-1], dp[i-1][j+1])（上面三个中的最小值） + matrix[i][j]（当前值）
+
+以下是源码：
+
+### 代码
+
+* python3
+
+```python3
+class Solution:
+    def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+
+        dp = [[999999] * len(matrix) for _ in range(len(matrix))]
+        #设置一个大值防干扰
+        for i in range(len(matrix)):
+            dp[0][i] = matrix[0][i]
+        ## 第一行不涉及到前面的参数， 所以直接更新出来
+        ## 对于每一个i, j来说 只有它上面的三个值对它有影响
+        for i in range(1, len(matrix)):
+            #从第二行开始dp
+            for j in range(len(matrix)):
+                if j==0:
+                #等于零是在最左边， 此时只有正上和右上有值可取
+                    dp[i][j] = min(dp[i-1][j], dp[i-1][j+1]) + matrix[i][j]
+                elif j == len(matrix)-1:
+                #等于len是在最右边， 此时只有正上和左上有值可取
+                    dp[i][j] = min(dp[i-1][j], dp[i-1][j-1]) + matrix[i][j]
+                else:
+                    dp[i][j] = min(dp[i-1][j], dp[i-1][j-1], dp[i-1][j+1]) + matrix[i][j]
+
+        return min(dp[len(matrix)-1])
+
+
+```
+
+时间，空间复杂度均为O（n^2）, 在设置中间值存储追踪的情况下， 空间复杂度可以优化为O(n)。

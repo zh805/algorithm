@@ -1,0 +1,29 @@
+
+from typing import List
+
+
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        """
+        方法1：排序
+        :param intervals:
+        :return:
+        """
+        intervals.sort(key=lambda item: item[0])
+        
+        # 默认的也是按照第一位排序
+        # intervals.sort()
+
+        res = []
+        for interval in intervals:
+            # res为空或者新interval与res无交集，则加入res
+            if not res or res[-1][1] < interval[0]:
+                res.append([interval[0], interval[1]])
+            else:
+                # 否则更新res最后一个interval的右边界为二者最大值
+                res[-1][1] = max(res[-1][1], interval[1])
+        return res
+
+
+# runtime:44 ms
+# memory:16.1 MB

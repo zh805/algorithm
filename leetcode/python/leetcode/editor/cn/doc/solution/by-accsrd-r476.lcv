@@ -1,0 +1,36 @@
+### 解题思路
+
+使用类似“最长递增子序列”的思路。
+区别在于递增子序列只需要一维DP，即以arr[i]为结尾的序列。而此时需要二维DP,即以arr[i],arr[j]为结尾的序列。
+其余方法类似，在往前找差值目标的时候，我们有两种方法：
+1. 使用二分搜索去找差值
+2. 使用字典提前记录每个值的下标
+
+可以自己选择空间和时间的trade-off，这里我选择的是使用字典。
+
+### 代码
+
+* python3
+
+```python3
+class Solution:
+    def lenLongestFibSubseq(self, arr: List[int]) -> int:
+
+        n, ans = len(arr), 2
+        if n <= 2: return 0
+
+        idx_map = dict() # 空间换时间，也可以用二分搜索做，因为序列是递增的
+        for i, num in enumerate(arr):
+            idx_map[num] = i
+
+        dp = [[0 for _ in range(n)] for __ in range(n)] # dp[i][j] -> 以arr[i], arr[j]为结尾的最长序列长度
+        for i in range(n):
+            for j in range(i + 1, n):
+                dp[i][j], tar = 2, arr[j] - arr[i] # 长度至少是2
+                if tar in idx_map: # 前一个数在arr中
+                    dp[i][j] = max(dp[i][j], dp[idx_map[tar]][i] + 1)
+                    ans = max(ans, dp[i][j])
+
+        return ans if ans > 2 else 0
+```
+

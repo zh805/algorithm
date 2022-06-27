@@ -1,0 +1,85 @@
+### 解题思路
+
+前两种方法思路一样，都是先拼接成字符串然后对比字符串
+第一种方法最简单直接调用 api join 拼接
+第二种方法，通过循环数组拼接到两个字符串变量然后对比
+不过这两种严格意义上不应该算是算法，于是我又采用了第三种方法，虽然性能比直接调用api要慢，不过起码也算是算法的范畴了
+第三种，通过四个指针，两个用来推进数组，两个推进数组中的每一项字符串，然后逐位字符对比
+循环中如果对比到异常直接返回 false
+循环到最后一轮，如果两个同时为undefined就证明两个一致
+如果还有一个还有剩余的项，证明不一致，这不需要具体判断到每一个字符，如果有一个字符先为空就会取值到undefined，跟另一个对比还是 false
+
+### 代码
+
+**第一种**
+![1.jpg](https://pic.leetcode-cn.com/1646031654-NclCgl-1.jpg)
+
+* javascript
+
+```javascript
+/**
+ * @param {string[]} word1
+ * @param {string[]} word2
+ * @return {boolean}
+ */
+var arrayStringsAreEqual = function (word1, word2) {
+  return word1.join() === word2.join();
+};
+
+```
+
+**第二种**
+![2.jpg](https://pic.leetcode-cn.com/1646031654-vqjjiJ-2.jpg)
+
+* javascript
+
+```javascript
+var arrayStringsAreEqual = function (word1, word2) {
+  let str1 = ''
+  let str2 = ''
+  for (let i = 0; i < word1.length; i++) {
+    str1 += word1[i]
+  }
+  for (let i = 0; i < word2.length; i++) {
+    str2 += word2[i]
+  }
+  return str1 === str2
+};
+```
+
+**第三种**
+![image.png](https://pic.leetcode-cn.com/1646032087-egvfic-image.png)
+
+* javascript
+
+```javascript
+var arrayStringsAreEqual = function (word1, word2) {
+  let i1 = 0
+  let i2 = 0
+  let idx1 = 0
+  let idx2 = 0
+  while (i1 <= word1.length || i2 <= word2.length) {
+    if (!word1[i1] && !word2[i2]) {
+      return true
+    } else if (!word1[i1] || !word2[i2]) {
+      return false
+    }
+    if (word1[i1][idx1] === word2[i2][idx2]) {
+      idx1++;
+      idx2++;
+      if (idx1 === word1[i1].length) {
+        i1++
+        idx1 = 0
+      }
+      if (idx2 === word2[i2].length) {
+        i2++
+        idx2 = 0
+      }
+    } else {
+      return false
+    }
+  }
+  return true
+};
+```
+

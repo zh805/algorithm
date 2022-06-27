@@ -1,0 +1,33 @@
+### 解题思路
+
+二分 + 数组
+
+### 代码
+
+* cpp
+
+```cpp
+class MyCalendar {
+	using PII = pair<int, int>;
+	vector<PII> clt;
+public:
+    MyCalendar() {
+
+    }
+    
+    bool book(int start, int end) {
+    	int l = 0, r = clt.size();
+    	while (l < r) {
+    		int mid = (l + r) >> 1;
+    		if (clt[mid].second <= start) l = mid + 1;
+    		else r = mid;
+    	}
+    	if (l < clt.size() && clt[l].first < end) {
+    		return false;
+    	}
+    	clt.insert(clt.begin() + l, {start, end});
+    	return true;
+    }
+};
+```
+

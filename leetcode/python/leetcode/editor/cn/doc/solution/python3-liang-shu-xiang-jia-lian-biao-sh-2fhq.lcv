@@ -1,0 +1,52 @@
+### 知识点
+
+1. 单向链表
+2. 模拟加法进位操作
+
+### 代码
+
+无注释，除去题目模版，自己写用了9行：
+
+* python
+
+```python
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        newPoint = ListNode(l1.val + l2.val)
+        rt, tp = newPoint, newPoint
+        while (l1 and (l1.next != None)) or (l2 and (l2.next != None)) or (tp.val > 9):
+            l1, l2 = l1.next if l1 else l1, l2.next if l2 else l2
+            tmpsum = (l1.val if l1 else 0) + (l2.val if l2 else 0)
+            tp.next = ListNode(tp.val//10 + tmpsum)
+            tp.val %= 10
+            tp = tp.next
+        return rt
+```
+
+加注释版：
+
+* python
+
+```python
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+
+        # 初始化个位节点，先不做进位
+        newPoint = ListNode(l1.val + l2.val)
+
+        # rt用来作为最后return的节点，tp用来遍历节点
+        rt, tp = newPoint, newPoint
+
+        # l1,l2只要后面还有节点，就继续往后遍历；或者新链表还需要继续往后进位
+        while (l1 and (l1.next != None)) or (l2 and (l2.next != None)) or (tp.val > 9):
+            l1, l2 = l1.next if l1 else l1, l2.next if l2 else l2
+            tmpsum = (l1.val if l1 else 0) + (l2.val if l2 else 0)
+            # 计算新链表下个节点的值（当前节点的进位+当前l1 l2的值之和），先不做进位
+            tp.next = ListNode(tp.val//10 + tmpsum)
+            # 新链表当前节点的值取个位
+            tp.val %= 10
+            # 新链表往后便利一个节点
+            tp = tp.next
+        return rt
+```
+

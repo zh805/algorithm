@@ -1,0 +1,29 @@
+
+from typing import List
+
+
+class Solution:
+    def pivotIndex(self, nums: List[int]) -> int:
+        """
+        方法1: 前缀和。
+        :param nums:
+        :return:
+        """
+        result = -1
+        pre_sum = 0
+        # 先计算所有值的和
+        total_sum = sum(nums)
+        for idx, num in enumerate(nums):
+            # 去掉当前值，除以二得到前后子数组的和。
+            pre = (total_sum - num) / 2
+            if pre_sum == pre:
+                # 左子数组的和满足，则找到了中心下标。
+                return idx
+            else:
+                # 尚未找到，把前缀和存入字典
+                pre_sum += num
+        return result
+
+
+# runtime:44 ms
+# memory:15.9 MB

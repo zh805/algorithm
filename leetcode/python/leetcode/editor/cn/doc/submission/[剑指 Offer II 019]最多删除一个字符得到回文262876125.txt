@@ -1,0 +1,35 @@
+class Solution:
+    def validPalindrome(self, s: str) -> bool:
+        """
+        方法1：双指针。
+        :param s:
+        :return:
+        """
+        left, right = 0, len(s) - 1
+        while left <= right:
+            if s[left] == s[right]:
+                left += 1
+                right -= 1
+            else:
+                # 只能移动一次。分别判断左指针移动一次和右指针移动一次后，剩余的字符是否为回文字符串。
+                return self.is_palindrome(s, left+1, right) or self.is_palindrome(s, left, right-1)
+        return True
+
+    def is_palindrome(self, s, left, right):
+        """
+        判断字符串s[left: right]是否回文
+        :param s:
+        :param left:
+        :param right:
+        :return:
+        """
+        while left <= right:
+            if s[left] != s[right]:
+                return False
+            left += 1
+            right -= 1
+        return True
+
+
+# runtime:168 ms
+# memory:15.3 MB

@@ -1,0 +1,31 @@
+### 解题思路
+
+此处撰写解题思路
+
+### 代码
+
+* golang
+
+```golang
+func combine(n int, k int) [][]int {
+	var res [][]int
+	var tmp []int
+	var dfs func(idx int)
+	dfs = func(idx int) {
+		if len(tmp) == k {
+			res = append(res, append([]int{}, tmp...))
+			return
+		}
+		if idx > n {
+			return
+		}
+		dfs(idx + 1)
+		tmp = append(tmp, idx)
+		dfs(idx + 1)
+		tmp = tmp[:len(tmp)-1]
+	}
+	dfs(1)
+	return res
+}
+```
+

@@ -1,0 +1,59 @@
+### 全行注解，方便理解
+
+### 2021/12/14
+
+### 方法一：动态规划（传统dp）
+
+[120. 三角形最小路径和](/problems/triangle/)同样思路，有兴趣的先参考[120题解ByNick](https://leetcode-cn.com/problems/triangle/solution/nickxue-xi-ji-hua-xi-lie-suan-fa-dong-ta-bv7k/)
+**核心思路：定义一个二维数组dp[i][j] 表示到达坐标（i,j）的最小路径和**
+**状态转移方程：**
+1. 首先第一行，最小路劲和就等于自己本身
+2. 其他行坐标，只需要分三种情况讨论即可
+3. 首先，每行第一个坐标（i,0），路径来源只有两处（i-1,0）和（i-1,1）选择较小的来源
+4. 其次，每行最后一个坐标（i,col - 1），路径来源也只有两处（i-1,col - 1）和(i - 1, col -2)选择较小的来源
+5. 其余情况每个坐标(i,j)路劲来源都有三处(i-1,j-1),(i-1,j),(i - 1,j + 1)选择较小的来源
+   **答案即各种情况的总和，最后遍历最后一行 得到最小值**
+
+### 执行效率图
+
+![image.png](https://pic.leetcode-cn.com/1639448051-mazKyC-image.png)
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public int minFallingPathSum(int[][] matrix) {
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int [][] dp = new int[row][col];
+        for(int i = 0;i < row;i++){
+            for (int j = 0;j < col;j++){
+                if(i == 0){
+                    //首先第一行，最小路劲和就等于自己本身
+                    dp[i][j] = matrix[i][j];
+                }else if(j == 0){
+                    //每行第一个坐标（i,0），路径来源只有两处（i-1,0）和（i-1,1）选择较小的来源
+                    dp[i][j] = Math.min(dp[i - 1][j], dp[i - 1][j + 1]) + matrix[i][j];
+                }else if(j == col - 1){
+                    //行最后一个坐标（i,col - 1），路径来源也只有两处（i-1,col - 1）和(i - 1, col -2)选择较小的来源
+                    dp[i][j] = Math.min(dp[i -1][j - 1],dp[i - 1][j]) + matrix[i][j];
+                }else {
+                    //其余情况每个坐标(i,j)路劲来源都有三处(i-1,j-1),(i-1,j),(i - 1,j + 1)选择较小的来源
+                    dp[i][j] = Math.min(Math.min(dp[i - 1][j - 1],dp[i - 1][j]), dp[i - 1][j + 1]) + matrix[i][j];
+                }
+            }
+        }
+        /**
+         * 最后遍历最后一行 得到最小值
+         */
+        int ans = Integer.MAX_VALUE;
+        for (int i = 0;i < col;i++){
+            ans = Math.min(ans, dp[row - 1][i]);
+        }
+        return ans;
+    }
+}
+```
+

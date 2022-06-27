@@ -1,0 +1,44 @@
+
+from typing import List
+
+
+class Solution:
+    # def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+    #     """
+    #     方法1：暴力遍历; 能解，但会超时；
+    #     :param temperatures:
+    #     :return:
+    #     """
+    #     res = []
+    #     for i, t in enumerate(temperatures):
+    #         for j in range(i, len(temperatures)):
+    #             if temperatures[j] > t:
+    #                 res.append(j - i)
+    #                 break
+    #             elif j == len(temperatures) - 1:
+    #                 res.append(0)
+    #                 break
+    #     return res
+
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        """
+        方法2：单调栈。此题实际上是找每个数右边第一个比它大的数，即单调栈问题。
+        :param temperatures:
+        :return:
+        """
+        ret = [0 for _ in range(len(temperatures))]
+        # 栈中存放数组下标，栈中下标表示的温度按照降序排列。当温度大于栈顶温度时，即出栈。
+        stack = []
+        for idx, t in enumerate(temperatures):
+            # 栈为空或者栈顶温度小于当前温度时，计算栈顶与当前日期的时间差，把栈顶弹出；
+            while stack and temperatures[stack[-1]] < t:
+                ret[stack[-1]] = idx - stack[-1]
+                stack.pop()
+            # 把当前温度的日期入栈。
+            stack.append(idx)
+        return ret
+
+
+
+# runtime:204 ms
+# memory:21.6 MB

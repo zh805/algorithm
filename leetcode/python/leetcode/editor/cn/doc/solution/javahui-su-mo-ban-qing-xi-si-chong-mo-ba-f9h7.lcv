@@ -1,0 +1,110 @@
+### 解题思路
+
+做加法
+做减法
+
+变量写在递归函数里面。
+变量写在递归函数外面。
+
+### 代码
+
+模板1. 做加法
+变量写在递归函数外面。
+
+* java
+
+```java
+
+class Solution {
+    List<List<Integer>> res = new ArrayList<>();
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<Integer> path = new ArrayList<>();
+        backtracking(candidates, target, 0, path, 0);
+        return res;
+    }
+    private void backtracking(int[] candidates, int target, int sum, List<Integer> path, int start){
+        if(sum > target){
+            return;
+        }
+        if(sum == target){
+            res.add(new ArrayList<>(path));
+            return; // 递归结束
+        }
+        for(int i = start; i < candidates.length; i++){
+            if(i > start && candidates[i] == candidates[i-1]){
+                continue;
+            }
+            path.add(candidates[i]);
+            sum += candidates[i];
+            backtracking(candidates, target, sum, path, i + 1); //  这里别写i++
+            sum -= candidates[i];
+            path.remove(path.size() - 1);
+        }
+    }
+}
+
+```
+
+模板2. 做减法,
+变量写在递归函数里面。
+
+* java
+
+```java
+class Solution {
+    List<List<Integer>> res = new ArrayList<>();
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+
+        Arrays.sort(candidates);
+        List<Integer> path = new ArrayList<>();
+        backtracking(candidates, target, path, 0);
+        return res;
+    }
+
+    private void backtracking(int[] candidates, int target, List<Integer> path, int start){
+        if(target < 0){
+            return;
+        }
+        if(target == 0){
+            res.add(new ArrayList<>(path));
+            return; // 递归结束
+        }
+        for(int i = start; i < candidates.length; i++){
+
+            if(i > start && candidates[i] == candidates[i-1]){
+                continue;
+            }
+            path.add(candidates[i]);
+            
+            backtracking(candidates, target - candidates[i], path, i + 1); //  这里别写i++
+            
+            path.remove(path.size() - 1);
+        }
+
+    }
+}
+```
+
+模板2. 做减法,
+变量写在递归函数外面。
+
+上面的代码改一下
+
+* java
+
+```java
+            path.add(candidates[i]);
+            target -= candidates[i];
+            backtracking(candidates, target, path, i + 1); //  这里别写i++
+            target += candidates[i];
+            path.remove(path.size() - 1);
+
+
+```
+
+至于变量写在函数里面外面，看个人习惯。
+
+做减法和做减法的区别：注意递归结束条件。
+
+1月打卡day2

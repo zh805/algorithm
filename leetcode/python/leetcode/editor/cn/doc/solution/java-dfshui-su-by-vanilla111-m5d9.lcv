@@ -1,0 +1,33 @@
+最基本的回溯题了，注意一下细节即可
+
+* java
+
+```java
+class Solution {
+    List<List<Integer>> ans;
+    
+    public List<List<Integer>> permute(int[] nums) {
+        ans = new ArrayList<>();
+        int n = nums.length;
+        dfs(nums, new boolean[n], new ArrayList<>(), 0, n);
+        return ans;
+    }
+    
+    public void dfs(int[] nums, boolean[] visit, List<Integer> res, int cnt, int n) {
+        if (cnt == n) {
+            ans.add(new ArrayList<>(res));
+            return ;
+        }
+        for (int i = 0; i < n; i++) {
+            if (!visit[i]) {
+                res.add(nums[i]);
+                visit[i] = true;
+                dfs(nums, visit, res, cnt + 1, n);
+                res.remove(res.size() - 1);
+                visit[i] = false;
+            }
+        }
+    }
+}
+```
+

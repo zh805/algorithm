@@ -1,0 +1,70 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+# class Solution:
+#     def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+#         """
+#         方法1：递归
+#         :param root:
+#         :return:
+#         """
+#         result = []
+#         self.preorder(root, result)
+#         return result
+#
+#     def preorder(self, node: Optional[TreeNode], res: List):
+#         if not node:
+#             return
+#         res.append(node.val)
+#         self.preorder(node.left, res)
+#         self.preorder(node.right, res)
+
+# class Solution:
+#     def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+#         """
+#         方法2：递归, 闭包
+#         :param root:
+#         :return:
+#         """
+#         result = []
+#
+#         def preorder(node: Optional[TreeNode]):
+#             if not node:
+#                 return
+#             result.append(node.val)
+#             preorder(node.left)
+#             preorder(node.right)
+#
+#         preorder(root)
+#         return result
+
+
+class Solution:
+    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        """
+        方法3：迭代；使用栈,沿着左子树遍历
+        :param root:
+        :return:
+        """
+        stack = []
+        res = []
+        if not root:
+            return res
+        stack.append(root)
+        while stack:
+            node = stack.pop()
+            # 先存父节点的值
+            res.append(node.val)
+            # 先压入右节点，再压入左节点; 弹出时则可以先弹左，再弹右。
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
+        return res
+
+
+# runtime:40 ms
+# memory:14.8 MB

@@ -1,0 +1,99 @@
+### 前缀和
+
+分别使用`prev`、`next`记录左右蜡烛的位置，`pre_sum`记录蜡烛数量的前缀和。
+
+1. 最终只需要通过遍历`queries`数组，确定左右蜡烛的位置(即在`prev`和`next`中记录的索引)，二者相减得出中间包含的元素。
+
+2. 再减去`pre_sum`对应的蜡烛数量，结果即为盘子数量，加入结果集，最终返回即可。
+
+![Screen Shot 2022-03-08 at 08.22.03.png](https://pic.leetcode-cn.com/1646699257-rXnhdO-Screen%20Shot%202022-03-08%20at%2008.22.03.png)
+
+![Screen Shot 2022-03-08 at 07.38.23.png](https://pic.leetcode-cn.com/1646699265-HaNbbi-Screen%20Shot%202022-03-08%20at%2007.38.23.png)
+
+![Screen Shot 2022-03-08 at 06.38.18.png](https://pic.leetcode-cn.com/1646699269-sPOfUD-Screen%20Shot%202022-03-08%20at%2006.38.18.png)
+
+### 代码
+
+* []
+
+```Rust
+impl Solution {
+    pub fn plates_between_candles(s: String, queries: Vec<Vec<i32>>) -> Vec<i32> {
+        let (m, n) = (s.len(), queries.len());
+        let s_chars = s.chars().collect::<Vec<_>>();
+        let arr = (0..m).fold((vec![0; m + 1], vec![i32::MAX; m + 1], vec![0; m + 1]), |(mut prev, mut next, mut pre_sum), i| {
+            pre_sum[i + 1] = if s_chars[i] == '|' { pre_sum[i] + 1 } else { pre_sum[i] };
+            prev[i + 1] = if s_chars[i] == '|' { i as i32 } else { prev[i] };
+            next[m - i - 1] = if s_chars[m - i - 1] == '|' { (m - i - 1) as i32 } else { next[m - i] };
+            (prev, next, pre_sum)
+        });
+
+        println!("{:?}-{:?}-{:?}", arr.0, arr.1, arr.2);
+        queries.iter().fold(Vec::new(), |mut ret, query| {
+            let (l, r) = (arr.1[query[0] as usize], arr.0[query[1] as usize + 1]);
+            ret.push(if l < r { r - l - (arr.2[r as usize] - arr.2[l as usize])} else { 0 });
+            ret
+        })
+    }
+}
+```
+
+* []
+
+```Go
+func platesBetweenCandles(s string, queries [][]int) (ret []int) {
+	n := len(s)
+	prev, next, preSum := make([]int, n+1), make([]int, n+1), make([]int, n+1)
+	for i := 0; i < n+1; i++ {
+		next[i] = math.MaxInt32
+	}
+
+	for i := 0; i < n; i++ {
+		if s[i] == '|' {
+			preSum[i+1], prev[i+1] = preSum[i]+1, i
+		} else {
+			preSum[i+1], prev[i+1] = preSum[i], prev[i]
+		}
+        if s[n - i - 1] == '|' {
+             next[n-i-1] = n-i-1
+        } else {
+            next[n-i-1] = next[n-i]
+        }
+	}
+	for _, query := range queries {
+		l, r := next[query[0]], prev[query[1]+1]
+		if l < r {
+			ret = append(ret, r-l-(preSum[r]-preSum[l]))
+		} else {
+            ret = append(ret, 0)
+        }
+	}
+	return
+}
+```
+
+* []
+
+```Java
+class Solution {
+    public int[] platesBetweenCandles(String s, int[][] queries) {
+        int n = s.length();
+        int[] prev = new int [n + 1], next = new int[n + 1], preSum = new int[n + 1];
+        Arrays.fill(next, Integer.MAX_VALUE);
+
+        for (int i = 0; i < n; i++) {
+            preSum[i + 1] = preSum[i] + (s.charAt(i) == '|' ? 1 : 0);
+            prev[i + 1] = s.charAt(i) == '|' ? i : prev[i];
+            next[n - i - 1] = s.charAt(n - i - 1) == '|' ? n - i - 1 : next[n - i];    
+        }
+
+        int[] ret = new int[queries.length];
+        for (int i = 0; i < queries.length; i++) {
+            int l = next[queries[i][0]], r = prev[queries[i][1] + 1];
+            ret[i] = l < r ? r - l - (preSum[r] - preSum[l]) : 0;
+        }
+        return ret;
+    }
+}
+```
+

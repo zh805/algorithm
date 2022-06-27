@@ -1,0 +1,27 @@
+
+from typing import List
+
+
+class Solution:
+    def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
+        """
+        方法1：滑动窗口
+        :param nums:
+        :param k:
+        :return:
+        """
+        left, product = 0, 1
+        ret = 0
+        for right, num in enumerate(nums):
+            product *= num
+            while product >= k and left <= right:
+                product /= nums[left]
+                left += 1
+            # 以右边界为界，当 ABCX乘积小于K时，ABCX, BCX, CX, X肯定小于K，个数为 right-left+1
+            ret += right - left + 1
+        return ret
+
+
+
+# runtime:180 ms
+# memory:16.8 MB

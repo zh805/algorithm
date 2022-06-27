@@ -1,0 +1,28 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverseList(self, head: ListNode) -> ListNode:
+        """
+        方法1：遍历。
+        :param head:
+        :return:
+        """
+        pre, after = head, None
+        while pre:
+            next = pre.next
+            pre.next = after
+
+            after = pre
+            pre = next
+        
+        # 最后pre会为None，after位于头节点。
+        return after
+
+
+
+
+# runtime:40 ms
+# memory:16.1 MB

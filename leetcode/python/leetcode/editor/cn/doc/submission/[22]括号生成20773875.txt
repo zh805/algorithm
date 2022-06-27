@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> res;
+        if(n<1)
+            return res;
+        generate(n,"",0,0,res);
+        return res;
+        
+    }
+    
+    void generate(int n,string s,int l,int r,vector<string>& res){
+        if(n == l){
+            res.push_back(s.append(n-r,')'));
+            return ;
+        }
+        generate(n,s+"(",l+1,r,res);
+        if(l>r)
+            generate(n,s+")",l,r+1,res);
+    }
+};
+//runtime:12 ms
+//memory:16.7 MB

@@ -1,0 +1,26 @@
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        # 方法1：dfs + 回溯。每个元素都有选和不选两种情况。
+        res = []
+        path = []
+        n = len(nums)
+
+        def dfs(idx):
+            if idx == n:
+                res.append(path[:])
+                return
+
+            # 选
+            path.append(nums[idx])
+            dfs(idx + 1)
+            path.pop()
+
+            # 不选
+            dfs(idx + 1)
+
+        dfs(0)
+        return res
+
+
+# runtime:36 ms
+# memory:15.1 MB

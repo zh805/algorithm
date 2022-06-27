@@ -1,0 +1,68 @@
+## 题解一：利用BST左小右大的特性
+
+**注意**：不能简单地判断当前节点与左右子节点的合法关系，因为局部的合法性并不代表全局的合法性。
+应该在每次递归验证过程中，带着下个递归节点的限制范围去校验。
+例如：
+- 根节点下的左子树中的任意结点都不能大于或等于根节点的值
+- 根节点下的右子树中的任意结点都不能小于或等于根节点的值
+
+* 
+
+```
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        return isValid(root,null,null);
+    }
+
+    public boolean isValid(TreeNode root,TreeNode min,TreeNode max) {
+        if(root == null) {
+            return true;
+        }
+        //验证左子树
+        if(max != null && root.val >= max.val) return false;
+        //验证右子树
+        if(min != null && root.val <= min.val) return false;
+
+        //验证该节点的左右子树是否合法
+        //左边子树的结点不得大于或等于根节点的值
+        //右边子树的结点不得小于或等于根节点的值
+        return isValid(root.left,min,root) && isValid(root.right,root,max);
+    }
+}
+```
+
+## 题解二：利用BST中序遍历得到结果集是升序的特性
+
+中序遍历并保存上一个节点的值，将当前遍历到的结点值和上一个节点值比较即可。
+
+* 
+
+```
+class Solution {
+    TreeNode last = null;
+    //利用中序遍历为升序的特性
+    public boolean isValidBST(TreeNode root) {
+        return isValid(root);        
+    }
+
+    public boolean isValid(TreeNode root) {
+        if(root == null) {
+            return true;
+        }
+        //验证左子树是否合法
+        boolean left = isValid(root.left);
+        //中序遍历位置
+        if(last != null) {
+            //如果上一个结点的值大于或等于当前结点的值 则该树不为二叉搜索树
+            if(last.val >= root.val){
+                return false;
+            }
+        }
+        last = root;
+        //验证右子树是否合法
+        boolean right = isValid(root.right);
+        return left && right;
+    }
+}
+```
+

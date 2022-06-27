@@ -1,0 +1,109 @@
+是一种完全背包问题
+
+## 基本思路
+
+令状态`f(i,j)`表示用前`i`种硬币，构成价值`j`的方法的数量。
+
+下面，每种硬币的面额表示为`w[i]`。
+
+更新`f(i,j)`的时候，根据利用第`i`种硬币的数量进行划分，不利用第i种硬币的方法数量是`f(i-1,j)`，
+只用一个第`i`种硬币的方法数量是`f(i-1,j-w[i])`，以此类推，`f(i,j)`等于所有这些值的和，即
+
+`f(i,j) = f(i-1,j) + f(i-1,j-w[i]) + f(i-1,j-2w[i]) + f(i-1,j-3w[i]) + ...`
+
+当然，要保证`j-kw[i]`大于等于零
+
+边界条件为`f(0,0)`为1，表示利用0种硬币组合成价值0的方法数量是1。
+
+可以写出如下代码
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    int change(int amount, vector<int>& coins) {
+        int m = coins.size();
+        int n = amount;
+        vector<vector<int>> f(m + 1, vector<int>(n + 1, 0));
+        f[0][0] = 1;
+        for (int i = 1; i <= m; ++i) {
+            for (int j = 0; j <= n; ++j) {
+                int t = 0;
+                for (int k = j; k >= 0; k -= coins[i - 1]) {
+                    t += f[i - 1][k];
+                }
+                f[i][j] = t;
+            }
+        }
+        return f[m][n];
+    }
+};
+```
+
+## 时间优化
+
+把上面的更新式子单独拿出来
+
+`f(i,j) = f(i-1,j) + f(i-1,j-w[i]) + f(i-1,j-2w[i]) + f(i-1,j-3w[i]) + ...`
+
+然后根据这个式子，可以写出
+
+`f(i,j-w[i]) = f(i-1,j-w[i]) + f(i-1,j-2w[i]) + f(i-1,j-3w[i]) + ...`
+
+与上面式子的右边相等，所以更新式子可以写成
+
+`f(i,j) = f(i-1,j) + f(i,j-w[i])`
+
+写出代码
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    int change(int amount, vector<int>& coins) {
+        int m = coins.size();
+        int n = amount;
+        vector<vector<int>> f(m + 1, vector<int>(n + 1, 0));
+        f[0][0] = 1;
+        for (int i = 1; i <= m; ++i) {
+            for (int j = 0; j <= n; ++j) {
+                f[i][j] = f[i - 1][j];
+                if (coins[i - 1] <= j) {
+                    f[i][j] += f[i][j - coins[i - 1]];
+                }
+            }
+        }
+        return f[m][n];
+    }
+};
+```
+
+## 空间优化
+
+从上面的迭代式子可以看出，求解`f(i,j)`时，只用到了上一行的状态，即`f(i-1,*)`，
+可以仅利用一行数组进行存储。
+
+得到代码
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    int change(int amount, vector<int>& coins) {
+        int m = coins.size();
+        int n = amount;
+        vector<int> f(n + 1, 0);
+        f[0] = 1;
+        for (int i = 1; i <= m; ++i) {
+            for (int j = coins[i - 1]; j <= n; ++j) {
+                f[j] += f[j - coins[i - 1]];
+            }
+        }
+        return f[n];
+    }
+};
+```
+

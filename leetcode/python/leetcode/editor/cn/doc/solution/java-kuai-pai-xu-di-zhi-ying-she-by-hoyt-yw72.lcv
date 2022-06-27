@@ -1,0 +1,44 @@
+### 解题思路
+
+此处撰写解题思路
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    int n;
+    public void wiggleSort(int[] nums) {
+        n = nums.length;
+        quicksort(nums, 0, n-1);
+    }
+    void quicksort(int[] nums, int left, int right){
+        if(left<right){
+            int pivot = nums[map(left)];
+            int idx = left;
+            for(int i=left+1;i<=right;i++){
+                if(nums[map(i)]<pivot){
+                    idx++;
+                    int tmp = nums[map(idx)];
+                    nums[map(idx)] = nums[map(i)];
+                    nums[map(i)] = tmp;
+                }
+            }
+            int tmp = nums[map(idx)];
+            nums[map(idx)] = nums[map(left)];
+            nums[map(left)] = tmp;
+            quicksort(nums, left, idx-1);
+            quicksort(nums, idx+1, right);
+        }
+    }
+    int map(int k){
+        if(k<=(n-1)/2){
+            return ((n-1)/2-k)*2;
+        }else{
+            return (n/2-k+(n-1)/2)*2+1;
+        }
+    }
+}
+```
+

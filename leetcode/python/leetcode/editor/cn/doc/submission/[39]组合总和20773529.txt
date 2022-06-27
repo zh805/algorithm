@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> res;
+        vector<int> c;
+        std::sort(candidates.begin(),candidates.end());
+        combinationSum(candidates,target,res,c,0);
+        return res;
+    }
+    
+private:
+    void combinationSum(vector<int>& candidates,int target,vector<vector<int>>& res,vector<int>& c,int begin){
+        if(!target){
+            res.push_back(c);
+            return;
+        }
+        for(int i=begin;i !=candidates.size() && target>=candidates[i];i++){
+            c.push_back(candidates[i]);
+            combinationSum(candidates,target-candidates[i],res,c,i);
+            c.pop_back();
+        }
+    }
+};
+//runtime:12 ms
+//memory:9 MB

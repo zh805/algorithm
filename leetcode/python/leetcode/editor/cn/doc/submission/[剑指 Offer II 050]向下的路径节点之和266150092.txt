@@ -1,0 +1,68 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    # def pathSum(self, root: TreeNode, targetSum: int) -> int:
+    #     """
+    #     方法1：暴力穷举法：遍历每个节点，计算从每个节点开始的路径和
+    #     :param root:
+    #     :param targetSum:
+    #     :return:
+    #     """
+    #     res = 0
+    #     if not root:
+    #         return res
+    #
+    #     def path(node, target):
+    #         # 路径和
+    #         if not node:
+    #             return 0
+    #
+    #         ret = 0
+    #         if node.val == target:
+    #             ret += 1
+    #         ret += path(node.left, target - node.val)
+    #         ret += path(node.right, target - node.val)
+    #         return ret
+    #
+    #     # 递归先序遍历
+    #     # 从当前节点开始计算
+    #     res += path(root, targetSum)
+    #     # 从左子节点开始计算
+    #     res += self.pathSum(root.left, targetSum)
+    #     # 从右子节点开始计算
+    #     res += self.pathSum(root.right, targetSum)
+    #
+    #     return res
+
+    def pathSum(self, root: TreeNode, targetSum: int) -> int:
+        """
+        方法2：前缀和，（有难度）
+        :param root:
+        :param targetSum:
+        :return:
+        """
+        from collections import defaultdict
+        prefix = defaultdict(int)
+        prefix[0] = 1
+
+        def dfs(root, curr):
+            if not root:
+                return 0
+            ret = 0
+            curr += root.val
+            ret += prefix[curr - targetSum]
+            prefix[curr] += 1
+            ret += dfs(root.left, curr)
+            ret += dfs(root.right, curr)
+            prefix[curr] -= 1  # 尚未理解
+            return ret
+
+        return dfs(root, 0)
+
+
+# runtime:56 ms
+# memory:16.3 MB

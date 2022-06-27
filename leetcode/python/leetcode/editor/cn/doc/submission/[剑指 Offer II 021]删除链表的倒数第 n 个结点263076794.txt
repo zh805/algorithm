@@ -1,0 +1,33 @@
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
+class Solution:
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+        """
+        方法1：快慢指针
+        :param head:
+        :param n:
+        :return:
+        """
+        fast = head
+        # 快指针先走n步
+        for i in range(n):
+            fast = fast.next
+        
+        # 哑指针，用于返回头结点
+        dummy = ListNode(val=0, next=head)
+        slow = dummy
+        while fast:
+            slow = slow.next
+            fast = fast.next
+
+        slow.next = slow.next.next
+        return dummy.next
+
+
+# runtime:36 ms
+# memory:14.9 MB

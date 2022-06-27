@@ -1,0 +1,87 @@
+# 方法一:栈
+
+我们通过一个栈来暂时存储元素，遇到0则放两个0来达到复制0的效果，栈内最多存放n个元素。
+**代码如下：**
+
+* 
+
+```
+public void duplicateZeros(int[] arr) {
+    //栈
+    Deque<Integer> queue = new ArrayDeque<>();
+    int i = 0;
+    while (queue.size() < arr.length) {
+        //是0则多添加一个0
+        if (arr[i] == 0) {
+            queue.offerLast(arr[i]);
+        }
+        queue.offerLast(arr[i]);
+        i++;
+    }
+    //有可能最后也是一个0，会多一个元素
+    if (queue.size() > arr.length) {
+        queue.pollLast();
+    }
+    //倒序放回原来数组
+    for (int j = arr.length - 1; j >= 0; j--) {
+        arr[j] = queue.pollLast();
+    }
+}
+```
+
+**复杂度分析**
+时间复杂度：O(n),整体遍历两次都是O(n)
+空间复杂度：O(n)，栈需要O(n)
+
+# 方法二:双指针
+
+由于方法一通过栈来暂存了数据，导致空间复杂度是O(n)，不是原地修改的原数组，我们可以通过维护两个指针来模拟栈。
+![20220616_233748.mp4](https://leetcode.cn/problems/duplicate-zeros/solution/by-jiang-hui-4-o2jb/04a46d03-7143-4382-b3a9-9599328bf263)
+**代码如下：**
+
+* 
+
+```
+    public void duplicateZeros3(int[] arr) {
+    int n = arr.length;
+    //两个指针
+    int top = 0;
+    int i = -1;
+    while (top < n) {
+        i++;
+        //遇到0则top多向右移动一步 模拟添加一个0
+        if (arr[i] == 0) {
+            top++;
+        }
+        top++;
+    }
+    //有可能最后的arr[i]是一个0 会多移动两步，再移动回来
+    if (top > n) {
+        top = top - 2;
+        arr[top] = 0;
+        top--;
+        i--;
+    } else {
+        //不是0则移动出去一步
+        top--;
+    }
+    while (top >= 0) {
+        //从右向左填充数据
+        arr[top] = arr[i];
+        top--;
+        //是0 则多向左移动一步 多添加一个0
+        if (arr[i] == 0) {
+            arr[top] = 0;
+            top--;
+        }
+        i--;
+    }
+}
+```
+
+**复杂度分析**
+时间复杂度：O(n)
+空间复杂度：O(1)
+![Snipaste_2022-06-16_21-55-07.png](https://pic.leetcode-cn.com/1655395909-iDdapo-Snipaste_2022-06-16_21-55-07.png)
+如果对您有帮助，**记得关注 + 点赞 + 收藏呦！！！**
+**每天都会更新每日一题题解，欢迎大家评论区指出错误，大家加油！！**

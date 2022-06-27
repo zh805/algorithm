@@ -1,0 +1,42 @@
+### 解题思路
+
+先排序，再依次遍历数组，每两个数交换位置。
+
+也可以不排序，直接判断奇数位和偶数位的数字是否符合要求。
+
+### 代码
+
+* []
+
+```python3
+class Solution:
+    def wiggleSort(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        nums.sort()
+        n = len(nums)
+        for i in range(0, n, 2):
+            if i <= n - 2:
+                nums[i], nums[i+1] = nums[i+1], nums[i]
+
+```
+
+* []
+
+```python3
+class Solution:
+    def wiggleSort(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        n = len(nums)
+        for i in range(n-1):
+            if i % 2 == 0:
+                if nums[i] < nums[i+1]:
+                    nums[i], nums[i+1] = nums[i+1], nums[i]
+            else:
+                if nums[i] > nums[i+1]:
+                    nums[i], nums[i+1] = nums[i+1], nums[i]
+```
+

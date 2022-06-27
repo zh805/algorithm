@@ -1,0 +1,56 @@
+1、解法一：拼接字符串
+这个是大家都能想到的，用StringBuilder减少新空间的创建
+
+* 
+
+```
+class Solution {
+    public boolean arrayStringsAreEqual(String[] word1, String[] word2) {
+        StringBuilder str1 = new StringBuilder();
+        StringBuilder str2 = new StringBuilder();
+        for (int i = 0; i < word1.length; i++) {
+            str1.append(word1[i]);
+        }
+        for (int j = 0; j < word2.length; j++) {
+            str2.append(word2[j]);
+        }
+        return str1.toString().equals(str2.toString());
+    }
+}
+```
+
+2、解法二：指针偏移，两个数组下标偏移，同时再比对下标元素字符串（内部再双指针偏移比对）
+
+* 
+
+```
+class Solution {
+    public boolean arrayStringsAreEqual(String[] word1, String[] word2) {
+        //word1数组的下标
+        int left = 0;
+        //word2数组的下标
+        int right = 0;
+        //word1[left]字符串的偏移下标
+        int i = 0;
+        int j = 0;
+        while (left < word1.length && right < word2.length) {
+            if (word1[left].charAt(i) != word2[right].charAt(j)) {
+                return false;
+            }
+            i++;
+            if (i == word1[left].length()) {
+                //word1[left]内部偏移完了，重置i，继续下一个word1数组字符串
+                left++;
+                i = 0;
+            }
+            j++;
+            if (j == word2[right].length()) {
+                right++;
+                j = 0;
+            }
+        }
+        return left == word1.length && right == word2.length;
+    }
+}
+```
+

@@ -1,0 +1,181 @@
+# 思路
+
+先`copyOf()`出1个新数组，对其排序。
+比如排序结果为：1, 2, 3, 4, 5
+每次取1个最大值，再取1个最小值，如此往复直到取完即可：
+如：先取最大值`5`，得到为`5`, 剩余`1, 2, 3, 4`
+再取最小值1，得到`5, 1`，剩余`2, 3, 4`
+再取最大值4，得到`5, 1, 4`, 剩余`2, 3`
+再取最小值2，得到`5, 1，4, 2`, 剩余`3`
+再取最大值3，得到`5, 1，4, 2, 3`，无剩余
+
+简而言之就是头拿1个，尾拿1个即可
+
+# 完全排序(`Arrays.sort()`)代码
+
+* [-java版]
+
+```java
+class Solution {
+    public void wiggleSort(int[] nums) {
+        int idx = 0, len = nums.length;
+        if (len < 3) return;
+        int low = 0, high = len - 1;
+        int[] sorted = Arrays.copyOf(nums, len);
+        Arrays.sort(sorted);
+        while (low < high) {
+            nums[idx++] = sorted[high--];
+            nums[idx++] = sorted[low++];
+        }
+        if (len % 2 > 0)
+            nums[idx] = sorted[low];
+    }
+}
+```
+
+* [-c++版]
+
+```c++
+class Solution {
+public:
+    void wiggleSort(vector<int>& nums) {
+        size_t idx = 0, len = nums.size();
+        if (len < 3) return;
+        size_t low = 0, high = len - 1;
+        vector<int> sorted(nums);
+        sort(sorted.begin(), sorted.end());
+        while (low < high) {
+            nums[idx++] = sorted[high--];
+            nums[idx++] = sorted[low++];
+        }
+        if (len % 2 > 0) nums[idx] = sorted[low];
+    }
+};
+```
+
+# 优先队列(堆)
+
+基于上面的思想，发现其实并不需要使得数组整体有序，只需要以数组的中间为界线，界线左侧的值全部都 < 界线右侧的任意值即可。(可以联想到**快速排序**)
+也就是说，找到数组中前nums.length / 2个大(或小)的值，即可满足这种思想。
+
+* [-java版]
+
+```java
+class Solution {
+    public void wiggleSort(int[] nums) {
+        int i = 0, len = nums.length;
+        if (len < 3) return;
+        int half = len >> 1, idx = 0;
+        int[] copy_nums = Arrays.copyOf(nums, len);
+        PriorityQueue<Integer> min_heap = new PriorityQueue<>();
+        for (; i < half; ++i)
+            min_heap.offer(copy_nums[i]);
+        for (; i < len; ++i) {
+            min_heap.offer(copy_nums[i]);
+            nums[idx] = min_heap.poll();
+            idx += 2;
+        }
+        idx = 1;
+        for (int num : min_heap) {
+            nums[idx] = num;
+            idx += 2;
+        }
+    }
+}
+```
+
+* [-c++版]
+
+```c++
+class Solution {
+public:
+    void wiggleSort(vector<int>& nums) {
+        size_t idx = 0, len = nums.size();
+        if (len < 3) return;
+        size_t half = len >> 1, i = half;
+        vector<int> copy_nums(nums);
+        vector<int> min_heap(nums.begin(), nums.begin() + half);
+        make_heap(min_heap.begin(), min_heap.end(), greater<int>());
+        for (; i < len; ++i) {
+            min_heap.push_back(copy_nums[i]);
+            push_heap(min_heap.begin(), min_heap.end(), greater<int>());
+            pop_heap(min_heap.begin(), min_heap.end(), greater<int>());
+            nums[idx] = min_heap.back();
+            min_heap.pop_back();
+            idx += 2;
+        }
+        idx = 1;
+        for (const auto& num : min_heap) {
+            nums[idx] = num;
+            idx += 2;
+        }
+    }
+};
+```
+
+# 从局部谷-峰-谷 到 全局谷-峰-谷
+
+简单来说即先确认数组的形式：
+1. 峰-谷-峰
+2. 谷-峰-谷
+
+本例采用**后者**。
+
+现有数组`[3,5,2,1,6,4]`：
+先维护一个**局部**谷-峰-谷，初始为`[3]`，接着从左往右遍历数据，将新元素加入**局部**谷-峰-谷的最右侧。
+将`5`加入**局部**谷-峰-谷，得到`[3 < 5]`，无需调整。
+
+将`2`加入**局部**谷-峰-谷，得到`[3 < 5 > 2]`，无需调整。
+
+将`1`加入**局部**谷-峰-谷，得到`[3 < 5 > 2 > 1]`，此时存在`5 > 2 > 1`，需要调整。
+已知`1`的位置应当是峰，但出现了`2 > 1`；
+又已知加入新元素前的子数组`[3 < 5 > 2]`是**局部**谷-峰-谷，即`5 > 2`是隐含条件。
+既然`5 > 2`成立，`5 > 1`也必然成立；同时`2 > 1`，因此将`5 > 2 > 1`变成`5 > 1 < 2`即可。
+调整完毕后的**局部**谷-峰-谷为`[3 < 5 > 1 < 2]`。
+
+将`6`加入**局部**谷-峰-谷，得到`[3 < 5 > 1 < 2 < 6]`，此时存在`1 < 2 < 6`，需要调整。
+已知`6`的位置应当是谷，但出现了`2 < 6`；
+又已知加入新元素前的子数组`[3 < 5 > 1 < 2]`是**局部**谷-峰-谷，即`1 < 2`是隐含条件。
+既然`1 < 2`成立，`1 < 6`也必然成立；同时`6 > 2`，因此将`1 < 2 < 6`变成`1 < 6 > 2`即可。
+调整完毕后的**局部**谷-峰-谷为`[3 < 5 > 1 < 6 > 2]`。
+
+将`4`加入**局部**谷-峰-谷，得到`[3 < 5 > 1 < 6 > 2 < 4]`，无需调整。
+
+总结：当出现问题时，要么是出现了`a < b < c`，要么是出现了`a > b > c`。
+最终只要调整为`a < c > b`或`a > c < b`即可。
+讲的比较啰嗦，见谅。
+
+思想可以类比排序，从局部有序到最终的全局有序。
+
+* [-java代码]
+
+```java
+class Solution {
+    public void wiggleSort(int[] nums) {
+        int n = nums.length;
+        for (int i = 1; i < n; ++i)
+            if ((i & 1) == 1 ? nums[i] < nums[i - 1] : nums[i] > nums[i - 1])
+                swap(nums, i, i - 1);
+    }
+
+    private void swap(int[] nums, int idx1, int idx2) {
+        nums[idx1] ^= nums[idx2];
+        nums[idx2] ^= nums[idx1];
+        nums[idx1] ^= nums[idx2];
+    }
+}
+```
+
+* [-c++代码]
+
+```c++
+class Solution {
+public:
+    void wiggleSort(vector<int>& nums) {
+        for (size_t i = 1; i < nums.size(); ++i)
+            if (i & 1 ? nums[i - 1] > nums[i] : nums[i] > nums[i - 1])
+                swap(nums[i - 1], nums[i]);
+    }
+};
+```
+

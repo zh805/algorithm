@@ -1,0 +1,64 @@
+### 解题思路
+
+1. 如果写最原始的组合总和，即最原始的回溯模版，那会导致超时。超时原因，当前层会有很多同级层一样的值。
+   注意，我们要剪枝的是 1 - 1 - 1(同一层内相同的值)的情况，而我们一定要保留如下的情况：
+
+* 
+
+```
+    1
+   /
+  1
+ /
+1
+```
+
+2. 如何实现上述的回溯树剪枝？**一言以蔽之，回溯模版的for循环是用来遍历当前层的，即宽度遍历，而递归调用才是深度遍历！**，那么，对于当前层的相同节点值的树，我们只取第一个进行递归，即回溯的基操：先append再递归再pop。
+
+   2.1 首先对原数组进行排序，那么同层所有相同的树的值就都排在了一起。
+   2.2 在回溯的for循环内，加入如下的去重代码：
+
+* 
+
+```
+        def backtracking(idx, target, ans):
+
+            # 返回条件部分
+            # 略
+
+            for i in range(idx, len(candidates)):
+                if i > idx and candidates[i] == candidates[i - 1]:
+                    continue
+                ans.append(candidates[i])
+                backtracking(i + 1, target - candidates[i], ans)
+                ans.pop()
+```
+
+3. 深入思考对candidates进行排序的作用：有两个作用，一是方便进行去重判断，candidates[i] == candidates[i - 1]。二是避免使用了used数组。为什么可以避免使用了used？因为for i in range(idx, len(candidates)),我们backtrack的idx是i + 1。
+
+### 代码
+
+* python3
+
+```python3
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        # backtracking
+        res = []
+        def backtracking(idx, target, ans):
+            if target == 0:
+                res.append(ans[:])
+                return 
+            if target < 0:
+                return
+            for i in range(idx, len(candidates)):
+                if i > idx and candidates[i] == candidates[i - 1]:
+                    continue
+                ans.append(candidates[i])
+                backtracking(i + 1, target - candidates[i], ans)
+                ans.pop()
+        candidates.sort()
+        backtracking(0, target, [])
+        return res
+```
+

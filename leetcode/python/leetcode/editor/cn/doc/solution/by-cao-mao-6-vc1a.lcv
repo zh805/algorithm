@@ -1,0 +1,31 @@
+### 解题思路
+
+1、从角标0开始，每个元素都有两种情况，选或者不选
+2、不选择index+1，list不变
+3、选择index+1，list添加nums[index]
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    List<List<Integer>> ans1 =new ArrayList<>();
+    public List<List<Integer>> subsets(int[] nums) {
+        dfs(nums, 0, new ArrayList<>());
+        return ans1;
+    }
+
+    public void dfs(int[] nums, int index, List<Integer> list) {
+        if(index ==nums.length) {
+            ans1.add(new ArrayList<>(list));
+            return;
+        }
+        dfs(nums, index +1, list);
+        list.add(nums[index]);
+        dfs(nums, index +1, list);
+        list.remove(list.size() -1);
+    }
+}
+```
+

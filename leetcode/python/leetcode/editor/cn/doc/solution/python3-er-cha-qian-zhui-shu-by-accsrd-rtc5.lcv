@@ -1,0 +1,62 @@
+### 解题思路
+
+使用一个二叉的前缀树储存每个数字。
+这里有个贪心的小trick，我们不需要考虑结尾标记。即，我们先设定一个统一的字符串长度，那么只要这条二进制路径开了，那么能走到叶子结点的所有路径都是有效的。
+然后再遍历一遍，检查每个数字，对于每一位，能去不同的就去不同的，不行就
+
+### 代码
+
+* python3
+
+```python3
+class TrieNode:
+    def __init__(self):
+        self.zero = None
+        self.one = None
+
+class Trie:
+    def __init__(self, d):
+        self.depth = d
+        self.root = TrieNode()
+
+    def _get_str(self, num: int) -> str: # 得到二进制字符串，前面补0
+        b_num = format(num, 'b')
+        return '0' * (self.depth - len(b_num)) + b_num
+
+    def insert(self, num: int) -> None:
+        cur_node = self.root
+        for char in self._get_str(num):
+            if char == '0':
+                if not cur_node.zero:
+                    cur_node.zero = TrieNode()
+                cur_node = cur_node.zero
+            else:
+                if not cur_node.one:
+                    cur_node.one = TrieNode()
+                cur_node = cur_node.one
+
+    def XOR(self, num: int):
+        cur_node = self.root
+        depth = self.depth
+        ans = 0
+        for char in self._get_str(num):
+            if char == '0' and cur_node.one: # 能去相反的就去相反的
+                ans += 2 ** (depth - 1)
+                cur_node = cur_node.one
+            elif char == '1' and cur_node.zero:
+                ans += 2 ** (depth - 1)
+                cur_node = cur_node.zero
+            else:
+                cur_node = cur_node.zero if cur_node.zero else cur_node.one # 有哪个去哪个吧
+            depth -= 1
+        return ans
+
+
+class Solution:
+    def findMaximumXOR(self, nums: List[int]) -> int:
+        T, ans = Trie(len(format(max(nums), 'b'))), 0
+        for num in nums: T.insert(num) # 插入所有数字
+        for num in nums: ans = max(ans, T.XOR(num)) # 检查所有数字
+        return ans
+```
+

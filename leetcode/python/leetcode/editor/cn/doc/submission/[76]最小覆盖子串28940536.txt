@@ -1,0 +1,43 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        int left=0,right=0;
+        int start=0,minLen = INT_MAX;
+        
+        unordered_map<char,int> win;
+        unordered_map<char,int> needs;
+        
+        int match=0;
+        
+        for(char c:t)
+            needs[c]++;
+        
+        while(right<s.size()){
+            char c1 = s[right];
+            if(needs.count(c1)){
+                win[c1]++;
+                if(win[c1] == needs[c1])
+                    match++;
+            }
+            right++;
+            
+            while(match == needs.size()){
+                if(right-left < minLen){
+                    start = left;
+                    minLen = right-left;
+                }
+                
+                char c2 = s[left];
+                if(needs.count(c2)){
+                    win[c2]--;
+                    if(win[c2] < needs[c2])
+                        match--;
+                }
+                left++;
+            }
+        }
+        return minLen == INT_MAX?"":s.substr(start,minLen);
+    }
+};
+//runtime:40 ms
+//memory:9.8 MB

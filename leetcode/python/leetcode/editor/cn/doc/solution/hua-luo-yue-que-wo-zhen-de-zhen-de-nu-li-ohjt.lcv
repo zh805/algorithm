@@ -1,0 +1,70 @@
+- 我花了好大力气做了图解，如果还是有模糊的地方，请评论留言，我再努力改改(Ｔ▽Ｔ)
+- 这个题我觉得真的挺重要的，大家一定要会啊！(๑*◡*๑)
+- 代码我已经努力精简过了，个人觉得还是很有参考价值的。ヾ(๑╹◡╹)ﾉ"
+- 下面看 PPT 进行解题吧。ヾ(@^▽^@)ノ
+- PS：用 stack 速度不是很快，外加一版 Deque 模拟 stack 的代码(✧◡✧)
+
+<![直方图最大矩形面积_01.png](https://pic.leetcode-cn.com/1645274800-HXLaSo-%E7%9B%B4%E6%96%B9%E5%9B%BE%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2%E9%9D%A2%E7%A7%AF_01.png),![直方图最大矩形面积_02.png](https://pic.leetcode-cn.com/1645274809-EJckhx-%E7%9B%B4%E6%96%B9%E5%9B%BE%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2%E9%9D%A2%E7%A7%AF_02.png),![直方图最大矩形面积_03.png](https://pic.leetcode-cn.com/1645274906-gRuNHS-%E7%9B%B4%E6%96%B9%E5%9B%BE%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2%E9%9D%A2%E7%A7%AF_03.png),![直方图最大矩形面积_04.png](https://pic.leetcode-cn.com/1645274916-tKDebd-%E7%9B%B4%E6%96%B9%E5%9B%BE%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2%E9%9D%A2%E7%A7%AF_04.png),![直方图最大矩形面积_05.png](https://pic.leetcode-cn.com/1645274921-ZCegYW-%E7%9B%B4%E6%96%B9%E5%9B%BE%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2%E9%9D%A2%E7%A7%AF_05.png),![直方图最大矩形面积_06.png](https://pic.leetcode-cn.com/1645274927-GJHrxG-%E7%9B%B4%E6%96%B9%E5%9B%BE%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2%E9%9D%A2%E7%A7%AF_06.png),![直方图最大矩形面积_07.png](https://pic.leetcode-cn.com/1645274931-avYHqv-%E7%9B%B4%E6%96%B9%E5%9B%BE%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2%E9%9D%A2%E7%A7%AF_07.png),![直方图最大矩形面积_08.png](https://pic.leetcode-cn.com/1645274935-QFDqJR-%E7%9B%B4%E6%96%B9%E5%9B%BE%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2%E9%9D%A2%E7%A7%AF_08.png),![直方图最大矩形面积_09.png](https://pic.leetcode-cn.com/1645274940-SGgKHd-%E7%9B%B4%E6%96%B9%E5%9B%BE%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2%E9%9D%A2%E7%A7%AF_09.png),![直方图最大矩形面积_10.png](https://pic.leetcode-cn.com/1645274945-pqshDT-%E7%9B%B4%E6%96%B9%E5%9B%BE%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2%E9%9D%A2%E7%A7%AF_10.png),![直方图最大矩形面积_11.png](https://pic.leetcode-cn.com/1645274948-kymuFj-%E7%9B%B4%E6%96%B9%E5%9B%BE%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2%E9%9D%A2%E7%A7%AF_11.png),![直方图最大矩形面积_12.png](https://pic.leetcode-cn.com/1645274951-nGIPNY-%E7%9B%B4%E6%96%B9%E5%9B%BE%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2%E9%9D%A2%E7%A7%AF_12.png)>
+
+---
+
+* [-题解Stack]
+
+```java
+public class Offer039 {
+    public int largestRectangleArea(int[] heights) {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(-1);
+        int area = 0;
+        for (int i = 0, length = heights.length; i < length; i++) {
+            while (stack.peek() != -1 && heights[stack.peek()] >= heights[i]) {
+                area = Math.max(area, heights[stack.pop()] * (i - stack.peek() - 1));
+            }
+            stack.push(i);
+        }
+        while (stack.peek() != -1) {
+            area = Math.max(area, heights[stack.pop()] * (heights.length - stack.peek() - 1));
+        }
+        return area;
+    }
+}
+```
+
+* [-题解Deque]
+
+```java
+public class Offer039 {
+    public int largestRectangleArea(int[] heights) {
+        int length = heights.length;
+        int area = 0;
+        Deque<Integer> stack = new ArrayDeque<>();
+        stack.addLast(-1);
+        for (int i = 0; i < length; i++) {
+            while (stack.peekLast() != -1 && heights[stack.peekLast()] >= heights[i]) {
+                area = Math.max(area, heights[stack.pollLast()] * (i - stack.peekLast() - 1));
+            }
+            stack.addLast(i);
+        }
+        while (stack.peekLast() != -1) {
+            area = Math.max(area, heights[stack.pollLast()] * (length - stack.peekLast() - 1));
+        }
+        return area;
+    }
+}
+```
+
+* [-测试]
+
+```java
+@Test
+public void testOffer039() {
+    Offer039 test = new Offer039();
+    assertEquals(10, test.largestRectangleArea(new int[]{2, 1, 5, 6, 2, 3}));
+    assertEquals(4, test.largestRectangleArea(new int[]{2, 4}));
+    assertEquals(1, test.largestRectangleArea(new int[]{1}));
+}
+```
+
+---
+
+![2054199.jpg](https://pic.leetcode-cn.com/1645275073-SJebkG-2054199.jpg)

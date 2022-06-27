@@ -1,0 +1,39 @@
+### 解题思路
+
+这个题目可以使用动态规划的完全背包思路做，定义二维DP阵dp(i,j)代表在0-i个数可以使用的情况下，拼凑出target == j 的所有可能结果。然后返回dp[candidates.size(),target] 就是想要的结果。
+具体的方程还确实不太好写，可以参考背包九讲吧。
+因为都是正整数，可以提前将比较大的数都pop掉，另外还对空间做了优化，把二维状态阵做成一维的了。
+
+### 代码
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        sort(candidates.begin(),candidates.end());
+        while(candidates.size() && candidates.back() > target)  candidates.pop_back();
+
+        typedef vector<vector<int>> VI;
+        vector<VI> dp(target+1);
+        for(auto num: candidates)
+        {
+            dp[num].push_back({{num}});
+            for(int i = num;i<=target;++i)
+            {
+                if(dp[i-num].size())
+                {
+                    for(auto vec : dp[i-num])
+                    {
+                        vec.emplace_back(num);
+                        dp[i].emplace_back(vec);
+                    }
+                }
+            }
+        }
+        return dp[target];
+    }
+};
+```
+

@@ -1,0 +1,49 @@
+* 
+
+```
+class MyCalendar {
+public:
+    set<pair<int,int>> st;
+    MyCalendar() {}
+    
+    bool book(int start, int end) {
+        auto it=st.lower_bound({start,0});
+        if(st.size()==0){
+            st.insert({start,end});             //没有元素直接添加
+            return true;
+        }
+        if(it==st.end()){                       //set中区间都在start左边，只要考虑前一个区间的end
+            it--;
+            if((*it).second<=start){            
+                st.insert({start,end});
+                return true;
+            }else return false;
+        }
+        else if(it==st.begin()){                //set中区间都在start右边，只要考虑后一个区间的start
+            if((*it).first>=end){
+            st.insert({start,end});
+            return true;
+            }
+            else return false;
+        }
+        else{                                   //set中既有在start的左边的区间，又有在start右边的区间，
+            if((*it).first>=end){                   //两边都要考虑
+                it--;
+                if((*it).second<=start){
+                st.insert({start,end});
+                return true;
+                }else return false;
+            }
+            else return false;
+        }
+    }
+};
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar* obj = new MyCalendar();
+ * bool param_1 = obj->book(start,end);
+ */
+```
+
+时间复杂度O（logn）

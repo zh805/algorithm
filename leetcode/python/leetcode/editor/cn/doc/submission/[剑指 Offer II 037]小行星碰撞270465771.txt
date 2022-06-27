@@ -1,0 +1,7 @@
+class Solution:
+    def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+
+# runtime_error:IndentationError: expected an indented block after function definition on line 52
+    import sys
+Line 4  (Solution.py)
+# last_testcase:[5,10,-5]

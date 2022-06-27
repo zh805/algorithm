@@ -1,0 +1,38 @@
+按层序遍历然后奇偶层判断是否符合题目条件
+
+* 
+
+```
+func isEvenOddTree(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	queue := []*TreeNode{root}
+	level := 1
+	for len(queue) > 0 {
+		l := len(queue)
+		for i := range queue {
+			//fmt.Println(queue[i].Val, level)
+			if (queue[i].Val&1)^level == 1 {
+				return false
+			}
+			if level == 1 && i > 0 && queue[i].Val <= queue[i-1].Val {
+				return false
+			}
+			if level == 0 && i > 0 && queue[i].Val >= queue[i-1].Val {
+				return false
+			}
+			if queue[i].Left != nil {
+				queue = append(queue, queue[i].Left)
+			}
+			if queue[i].Right != nil {
+				queue = append(queue, queue[i].Right)
+			}
+		}
+		level ^= 1
+		queue = queue[l:]
+	}
+	return true
+}
+```
+

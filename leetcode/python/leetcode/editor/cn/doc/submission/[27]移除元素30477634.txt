@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        return remove(nums.begin(),nums.end(),val) - nums.begin();
+        // int n = nums.size();
+        // int l=0;
+        // int r=n-1;
+        // int len = n;
+        // while(l<=r){
+        //     while(nums[l] != val)
+        //         l++;
+        //     while(nums[r] == val){
+        //         r--;
+        //         len--;
+        //     }
+        //     swap(nums[l],nums[r]);
+        // }
+        // return len;
+    }
+};
+//runtime:4 ms
+//memory:8.3 MB

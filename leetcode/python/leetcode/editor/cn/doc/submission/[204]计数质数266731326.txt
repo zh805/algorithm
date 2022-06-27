@@ -1,0 +1,90 @@
+import math
+
+
+class Solution:
+    # def countPrimes(self, n: int) -> int:
+    #     """
+    #     方法1：遍历判断一个数是否是质数。本解法会超时，需要优化。
+    #     :param n:
+    #     :return:
+    #     """
+    #
+    #     def is_prime(num: int) -> bool:
+    #         # 质数判断
+    #         # 过滤2和3的倍数
+    #         if num <= 1:
+    #             return False
+    #         elif num == 2:
+    #             return True
+    #         elif num % 2 == 0:
+    #             return False
+    #         # 除以从 [2,根号2]的数，能整除说明不是质数
+    #         for i in range(3, int(num ** 0.5) + 1, 2):
+    #             if num % i == 0:
+    #                 return False
+    #         return True
+    #
+    #     res = 0
+    #     for i in range(n):
+    #         if is_prime(i):
+    #             print(i)
+    #             res += 1
+    #     return res
+
+    # def countPrimes(self, n: int) -> int:
+    #     """
+    #     方法2：遍历判断是否是质数
+    #     质数规律：偶数只可能为5n
+    #     6n: 偶数，否
+    #     6n + 1: 可能为质数
+    #     6n + 2: 偶数，否
+    #     6n + 3: 能被3整除，否
+    #     6n + 4: 偶数，否
+    #     6n + 5: 可能为质数
+    #     :param n:
+    #     :return:
+    #     """
+    #
+    #     def is_prime(num: int) -> bool:
+    #         if num == 0 or num == 1:
+    #             return False
+    #         elif num == 2 or num == 3:
+    #             return True
+    #         elif num & 1 == 0:
+    #             return False
+    #         if num % 6 != 1 and num % 6 != 5:
+    #             return False
+    #
+    #         for i in range(5, int(num ** 0.5) + 1, 6):
+    #             if (num % i == 0) or (num % (i + 2) == 0):
+    #                 return False
+    #         return True
+    #
+    #     res = 0
+    #     for i in range(n):
+    #         if is_prime(i):
+    #             print(i)
+    #             res += 1
+    #     return res
+
+    def countPrimes(self, n: int) -> int:
+        """
+        方法3：埃氏筛，原理：当一个数是质数时，则它的倍数一定不是质数。
+        :param n:
+        :return:
+        """
+        res = 0
+        flag = [False for _ in range(n)]
+        for num in range(2, n):
+            if not flag[num]:
+                # 第一次遍历到，肯定为质数
+                res += 1
+                for i in range(num * num, n, num):
+                    #  把它的倍数都设置为True
+                    flag[i] = True
+        return res
+
+
+
+# runtime:3664 ms
+# memory:71.1 MB

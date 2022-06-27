@@ -1,0 +1,53 @@
+### 解题思路
+
+![image.png](https://pic.leetcode-cn.com/1646723745-ezOGTi-image.png)
+
+### 代码
+
+* java
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node prev;
+    public Node next;
+    public Node child;
+};
+*/
+
+class Solution {
+    /**
+     * 栈
+     */
+    public Node flatten(Node head) {
+        Node cur = head;
+        Node pre = null;
+        Deque<Node> stack = new ArrayDeque<>();
+        while (cur != null || !stack.isEmpty()){
+            if (cur == null){
+                //获取入栈的节点, 绑定pre节点和出栈节点的关系
+                cur = stack.pop();
+                pre.next = cur;
+                cur.prev = pre;
+            }
+            if (cur.child != null){
+                //将当前节点的next节点入栈
+                if (cur.next != null){
+                    stack.push(cur.next);
+                }
+                //绑定当前节点的下一节点为子节点
+                cur.next = cur.child;
+                cur.child = null;
+                cur.next.prev = cur;
+            }
+            //记录下一轮的上一个节点
+            pre = cur;
+            cur = cur.next;
+        }
+        return head;
+    }
+}
+```
+

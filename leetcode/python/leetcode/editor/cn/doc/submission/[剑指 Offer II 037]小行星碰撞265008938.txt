@@ -1,0 +1,28 @@
+
+from typing import List
+
+
+class Solution:
+    def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+        """
+        方法1：使用栈, 需要理清楚压栈出栈的情况。
+        :param asteroids:
+        :return:
+        """
+        stack = []
+        for item in asteroids:
+            # 只有栈顶炸
+            while stack and 0 < stack[-1] < -item:
+                stack.pop()
+            # 不爆炸，直接入栈
+            if not stack or stack[-1] < 0 or item > 0:
+                stack.append(item)
+            # 同时爆炸
+            elif stack[-1] == -item:
+                stack.pop()
+        return stack
+
+
+
+# runtime:52 ms
+# memory:15.9 MB

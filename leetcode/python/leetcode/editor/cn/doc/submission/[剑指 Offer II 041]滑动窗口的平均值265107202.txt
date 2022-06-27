@@ -1,0 +1,45 @@
+
+# class MovingAverage:
+#
+#     def __init__(self, size: int):
+#         """
+#         Initialize your data structure here.
+#         # 方法1：使用内置的双端队列deque
+#         """
+#         self.size = size
+#         self.q = deque(maxlen=self.size)
+#
+#     def next(self, val: int) -> float:
+#         self.q.append(val)
+#         return sum(self.q) / len(self.q)
+
+
+class MovingAverage:
+
+    def __init__(self, size: int):
+        """
+        Initialize your data structure here.
+        # 方法2：使用list
+        """
+        self.size = size
+        self.data = []
+
+    def next(self, val: int) -> float:
+        # 直接添加元素
+        self.data.append(val)
+        # 计算平均值时需要看队列中元素数量
+        length = len(self.data)
+        if length < self.size:
+            result = sum(self.data) / length
+        else:
+            result = sum(self.data[-self.size:]) / self.size
+
+        return result
+
+
+# Your MovingAverage object will be instantiated and called as such:
+# obj = MovingAverage(size)
+# param_1 = obj.next(val)
+
+# runtime:92 ms
+# memory:18.5 MB

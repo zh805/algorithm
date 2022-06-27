@@ -1,0 +1,108 @@
+大家好，我是 [@负雪明烛](https://leetcode-cn.com/u/fuxuemingzhu/)。👈👈 点击关注，优质题解不间断。
+
+## 题目大意
+
+推多米诺骨牌。
+​
+
+在起始的时候，都是站着的，然后同时像某些方向推，`L`代表向左边推，`R`代表向右边推，`.`代表不推。
+​
+
+如果左右撞在一起，那么就受力平衡所以仍然站着。
+​
+
+另外，很重要的一点，如果一个牌倒在了另外一个已经倒了的牌上，不会给它施加任何力。换句话说，**一个推倒了的牌（**`"L"`**或**`"R"`**）只能对另一个站着的牌（**`"."`**）起作用**。
+
+## 解题方法
+
+如果理解了「**一个推倒了的牌只能对另一个站着的牌起作用**」这句话那么基本上就能做出来这个题了，否则是做不出来的。
+​
+
+含义是：
+
+1. **两个相邻的被推倒的牌互不影响。**
+2. **一张站立的牌（**`"."`**）的最终状态与离其两侧最近的 **`"L"`** 或 **`"R"`** 有关。**
+
+所以我们应该找出每个（`"."`）左右两边**最近的两个被推倒了的牌**，然后判断这两个牌是什么样子的即可，不用考虑这个区间以外的牌。因为这两张牌被推倒了，而这个区间外的其他牌不会对推倒了的牌起作用。
+
+![838. 推多米诺.001.png](https://pic.leetcode-cn.com/1645407132-uQNwgQ-838.%20%E6%8E%A8%E5%A4%9A%E7%B1%B3%E8%AF%BA.001.png)
+
+### 双指针
+
+可以使用「**双指针**」的方式寻找 `"."`左右两边距离最近的被推倒的牌。
+
+在这两个被推倒了牌形成的区间里：
+
+* 
+
+```
+'R......R' => 'RRRRRRRR'
+'R......L' => 'RRRRLLLL' or 'RRRR.LLLL'
+'L......R' => 'L......R'
+'L......L' => 'LLLLLLLL'
+```
+
+使用双指针算法：
+
+1. `l`指向区间的开始（指向 `"L"` 或者 `"R"`）；
+2. `r`跳过所有的 `"."`，指向区间的结束（也指向 `"L"` 或者 `"R"`）。
+3. 此时区间的形状为 `"X....Y"`，判断这个区间左右端点的 `"X"`、 `"Y"`是什么，确定中间的 `"."`的状态。
+
+![838. 推多米诺.002.png](https://pic.leetcode-cn.com/1645407162-iCWgoh-838.%20%E6%8E%A8%E5%A4%9A%E7%B1%B3%E8%AF%BA.002.png)
+
+由于可能存在输入的`dominoes`的最左边和最右边都有 `"."`，那么形成不了`"X....Y"` 这样的区间。所以，下面的代码中，给`dominoes`最左边添加了一个 `"L"`，最右边添加了一个 `"R"`，添加的这两个**虚拟的牌**不会影响`dominoes`内部所有的牌的倒向，但是有助于我们形成区间，而且这两个添加的牌，也不会放到最终结果里。
+
+![838. 推多米诺.003.png](https://pic.leetcode-cn.com/1645407172-VWzlZL-838.%20%E6%8E%A8%E5%A4%9A%E7%B1%B3%E8%AF%BA.003.png)
+
+代码如下：
+
+* []
+
+```Python
+class Solution(object):
+    def pushDominoes(self, d):
+        """
+        :type dominoes: str
+        :rtype: str
+        """
+        d = "L" + d + "R"
+        res = []
+        l = 0
+        for r in range(1, len(d)):
+            if d[r] == '.':
+                continue
+            mid = r - l - 1
+            if l: # 虚拟的牌不放入结果
+                res.append(d[l])
+            if d[l] == d[r]:
+                res.append(d[l] * mid)
+            elif d[l] == 'L' and d[r] == 'R':
+                res.append('.' * mid)
+            else:
+                res.append('R' * (mid // 2) + '.' * (mid % 2) + 'L' * (mid // 2))
+            l = r
+        return "".join(res)
+```
+
+参考资料：
+[https://leetcode.com/problems/push-dominoes/discuss/132332/C++JavaPython-Two-Pointers](https://leetcode.com/problems/push-dominoes/discuss/132332/C++JavaPython-Two-Pointers)
+
+## 时间复杂度
+
+- 时间复杂度：$O(N)$，其中 $N$ 是数组长度；
+- 空间复杂度：结果不算的话，是 $O(1)$。
+
+### 总结
+
+1. 重要的永远是题意！理解题意，成功大半！
+2. 不妨向我一样画个图，能清晰很多！
+
+---
+
+我是 [@负雪明烛](https://leetcode-cn.com/u/fuxuemingzhu/) ，刷算法题 1000 多道，写了 1000 多篇算法题解，收获阅读量 300 万。
+**关注我**，你将不会错过我的精彩动画题解、面试题分享、组队刷题活动，进入主页 [@负雪明烛](https://leetcode-cn.com/u/fuxuemingzhu/) 右侧有刷题组织，从此刷题不再孤单。
+
+- 在刷题的时候，如果你不知道该怎么刷题，可以看 [LeetCode 应该怎么刷？](https://mp.weixin.qq.com/s/viDYrSlF5INEhVWiJhM2EQ)
+- 如果你觉得题目太多，想在短时间内快速提高，可以看 [LeetCode 最经典的 100 道题](https://mp.weixin.qq.com/s/e51CEkEP6Wz850JYbgz8dw)。
+- 送你一份刷题的代码模板：[【LeetCode】代码模板，刷题必会](https://blog.csdn.net/fuxuemingzhu/article/details/101900729)
+

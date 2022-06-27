@@ -1,0 +1,81 @@
+首先看数据范围，最多只有16个数，所以可以想到用状压dp，用一个16位的2进制x表示nums中数的选取情况，x的第i位为1表示选择$nums[i]$，否则就是不选择$nums[i]$。
+
+因此使用一个(1<<16)大小的dp数组，其中dp[x]表示nums中数的选择情况构成的二进制为x时，所选择数进行或运算后的值，状态转移方程为：
+
+假设x中第一个1的位置为i，dp[x]=d[x^(1<<i)]|nums[i]，其中x^(1<<i)表示x中所选择的所有数除去第i个数后的那些数进行或运算得到的值。
+
+算法步骤：
+
+1、for循环枚举nums中数的选择情况x，假设nums的大小为n，那么x从1枚举到(1<<n)；
+
+2、计算x中第一个1所在的位置（在nums中的下标）idx：$(x&(-x))==(1<<idx)$；
+
+3、dp[x]=dp[x^(1<<idx)]|nums[idx]；
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    int countMaxOrSubsets(vector<int>& nums) {
+        int n = nums.size();
+        int cnt = 0,maxv=0;
+        int dp[1<<n];
+        memset(dp,0,sizeof(dp));
+        //二进制枚举所有可能的选择情况
+        for(int i=1;i<(1<<n);i++){
+            //计算枚举值i中第一个1在数组中的下标idx
+            int val=i&(-i);
+            int idx=0;
+            while(val>>1){
+                idx++;
+                val>>=1;
+            }
+            val=i&(-i);
+            //应用状态转移方程得到选择这些数的或运算值
+            dp[i]=dp[i^val]|nums[idx];
+            if(dp[i]>maxv){
+                maxv=dp[i];
+                cnt=1;
+            }
+            else if(dp[i]==maxv)cnt++;
+        }
+        return cnt;
+    }
+};
+```
+
+![image.png](https://pic.leetcode-cn.com/1647304673-GWBsQF-image.png)
+
+**直接二进制枚举解此题的代码**
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    int countMaxOrSubsets(vector<int>& nums) {
+        int n = nums.size();
+        int cnt = 0,maxv=0;
+        
+        for(int i=1;i<(1<<n);i++){
+            int cur=0;
+            for(int j=0;j<n;j++){
+                if(i&(1<<j)){
+                    cur|=nums[j];
+                }
+            }
+            if(cur>maxv){
+                maxv=cur;
+                cnt=1;
+            }
+            else if(cur==maxv)cnt++;
+        }
+        return cnt;
+    }
+};
+```
+
+![image.png](https://pic.leetcode-cn.com/1647304633-bQVMrS-image.png)
+
+**对比可以发现，状压dp的运行速度更快，但是所占用的空间更多**

@@ -1,0 +1,74 @@
+### 解题思路1
+
+1. 简单的计算每个整数的二进制形式中1的个数
+2. 利用 i & (i-1) 能将整数i的二进制形式最右边的1变为0
+
+### 代码
+
+* javascript
+
+```javascript
+/**
+ * @param {number} n
+ * @return {number[]}
+ */
+var countBits = function (n) {
+  let res = new Array(n + 1).fill(0);
+  for (let i = 0; i <= n; i++) {
+    let j = i;
+    while (j != 0) {
+      j = j & (j - 1);
+      res[i]++;
+    }
+  }
+  return res;
+};
+```
+
+### 解题思路2
+
+1. 根据 i & (i-1) 计算i的二进制形式中1的个数
+2. i & (i-1) 能将整数i的二进制形式最右边的1变为0，那么  整数i的二进制中1的个数比整数i&(i-1)的二进制中1的个数多1.
+
+### 代码
+
+* javascript
+
+```javascript
+/**
+ * @param {number} n
+ * @return {number[]}
+ */
+var countBits = function (n) {
+  let res = new Array(n + 1).fill(0);
+  for (let i = 1; i <= n; i++) {
+    res[i] = res[i & (i - 1)] + 1;
+  }
+  return res;
+};
+```
+
+### 解题思路3
+
+1. 如果正整数i是一个偶数，那么i相当于将i/2左移一位的结果，也就是说偶数i和i/2的二进制形式中的1的个数是相同的
+2. 如果i是奇数，则i相当于将i/2左移一位之后再将最右边一位设为1的结果，因此奇数i的二进制形式中1的个数比i/2的1的个数多1
+3. 比方说3的二进制为11，有2个1；偶数6的二进制为110，有2个1；奇数7的二进制为111，有3个1，所以我们可以根据3的二进制中1的个数来直接求出6和7的二进制形式中1的个数
+
+### 代码
+
+* javascript
+
+```javascript
+/**
+ * @param {number} n
+ * @return {number[]}
+ */
+var countBits = function (n) {
+  let res = new Array(n + 1).fill(0);
+  for (let i = 1; i <= n; i++) {
+    res[i] = res[i >> 1] + (i & 1);
+  }
+  return res;
+};
+```
+

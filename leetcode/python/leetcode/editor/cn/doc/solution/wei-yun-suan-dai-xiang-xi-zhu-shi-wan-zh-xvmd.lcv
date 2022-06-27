@@ -1,0 +1,35 @@
+* []
+
+```python
+class Solution:
+    def divide(self, a: int, b: int) -> int:
+        INT_MIN, INT_MAX = -2**31, 2**31 - 1
+        ans = 0
+        if a == INT_MIN and b == -1:  # 溢出情况
+            return INT_MAX
+        
+        # 处理边界，防止转正数溢出
+        if b == INT_MIN:  # 除数绝对值最大，结果必为0或1
+            return 1 if a == b else 0
+        if a == INT_MIN:  # 被除数先减去一个除数
+            a -= -abs(b)
+            ans += 1
+
+        positive = False if (a>0) ^ (b>0) else True  # 判断符号
+        
+        a, b = abs(a), abs(b)  # 均转为正数
+
+        for i in range(31, -1, -1):
+            if a>>i >= b:  # a//2^i >= b，即 a >= b*2^i，这里不直接对 b 操作，防止溢出
+                ans += 1<<i  # ans += 2^i
+                a -= b<<i
+
+        return ans if positive else -ans
+```
+
+位运算部分的原理建议参考：https://leetcode-cn.com/problems/xoh6Oh/solution/jian-dan-yi-dong-javac-pythonjs-zheng-sh-e8r6/
+
+下面是对于边界处理的补充：
+由于此解法需用到 `a>>i == a//2^i`，必须保证 a 为正数，否则带符号移位结果会出错。
+但是在 `a, b = abs(a), abs(b)` 时，若 a, b 为最小值，则会导致溢出。
+因此，需对 a, b 为最小值时单独处理。

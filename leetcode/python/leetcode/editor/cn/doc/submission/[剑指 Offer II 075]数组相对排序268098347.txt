@@ -1,0 +1,31 @@
+
+from typing import List
+
+
+class Solution:
+    def relativeSortArray(self, arr1: List[int], arr2: List[int]) -> List[int]:
+        """
+        方法1：计数排序
+        :param arr1:
+        :param arr2:
+        :return:
+        """
+        count_list = [0 for _ in range(1001)]
+        # 计数列表，统计arr1中每个元素出现的次数
+        for num in arr1:
+            count_list[num] += 1
+        res = []
+        for num in arr2:
+            # 在arr2中出现的元素，先按顺序放入res
+            res.extend(num for _ in range(count_list[num]))
+
+        for idx, times in enumerate(count_list):
+            if idx in arr2:
+                continue
+            # 按顺序放入不在arr2中出现的元素
+            res.extend([idx for _ in range(times)])
+        return res
+
+
+# runtime:56 ms
+# memory:15 MB

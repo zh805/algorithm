@@ -1,0 +1,79 @@
+### 代码
+
+**1.中序递归**
+
+* golang
+
+```golang
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func trimBST(root *TreeNode, low int, high int) *TreeNode {
+    // 递归法-中序
+	if root == nil {
+		return nil
+	}
+	// 1.节点值小于low，递归root.Right，返回right
+	if root.Val < low {
+		right := trimBST(root.Right, low,high)
+		return right
+	// 2.节点值大于high，递归root.Left，返回left
+	} else if root.Val > high {
+		left := trimBST(root.Left, low, high)
+		return left
+	}
+	// 分别递归左右子树
+	root.Left = trimBST(root.Left, low,high)
+	root.Right = trimBST(root.Right, low,high)
+	return root
+}
+```
+
+**2.迭代**
+
+* golang
+
+```golang
+func trimBST(root *TreeNode, low, high int) *TreeNode {
+	// 迭代
+	// 思路：
+	// 1.root更新到low-high区间
+	// 2.处理左子树中小于low的节点
+	// 3.处理右子树中大于high的节点
+	// 注：更新指向即可
+	if root == nil {
+		return nil
+	}
+	// 处理root，将root移入[low, high]
+	for root != nil && (root.Val < low || root.Val > high) {
+		if root.Val < low {
+			root = root.Right
+		} else {
+			root = root.Left
+		}
+	}
+	// 此时更新的root在区间内，处理左孩子元素小于low的
+	cur := root
+	for cur != nil {
+		for cur.Left != nil && cur.Left.Val < low {
+			cur.Left = cur.Left.Right
+		}
+		cur = cur.Left
+	}
+	// 此时cur在区间内，处理右孩子元素大于high的
+	cur = root
+	for cur != nil {
+		for cur.Right != nil && cur.Right.Val > high {
+			cur.Right = cur.Right.Left
+		}
+		cur = cur.Right
+	}
+	return root
+}
+```
+

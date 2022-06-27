@@ -1,0 +1,35 @@
+## 方便快速学习算法与理解~
+
+🌇 点赞 👍 收藏 ⭐留言 📝 一键三连 ~关注Jam，从你我做起！
+推荐 python 算法的书籍，体系化学习算法与数据结构，用正确的方式成为offer收割机
+[leetcode](https://github.com/ls1248659692/leetcode) ——  系统化快速学习各种 python 算法与书籍
+[python_guide](https://github.com/ls1248659692/python_guide) —— python 系统化的后端开发学习
+![image.png](https://pic.leetcode-cn.com/1645408012-UEkAys-image.png)
+
+---
+
+## 求解思路
+
+> 本体本质就是字符串转换，先找规律：
+
+0. 要保护 R.L 避免因为其他规则影响，每次出现R.L修改需要标记其发生变化
+1. R. ==> RR
+2. .L ==> LL
+3. 其他的均保持不变，注意单向性
+
+### 代码
+
+* python3
+
+```python3
+class Solution:
+    def pushDominoes(self, dominoes: str) -> str:
+        res = []
+        while True:
+            dominoes = dominoes.replace('R.L','R*L').replace('R.','RR').replace('.L','LL')
+            res.append(dominoes)
+            if res.count(dominoes) >= 2:
+                break
+        return dominoes.replace('*','.')
+```
+

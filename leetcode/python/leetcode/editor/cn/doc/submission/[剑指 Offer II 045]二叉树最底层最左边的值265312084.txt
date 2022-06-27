@@ -1,0 +1,54 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    # def findBottomLeftValue(self, root: TreeNode) -> int:
+    #     """
+    #     方法1：层序遍历
+    #     :param root:
+    #     :return:
+    #     """
+    #     from collections import deque
+    #     q = deque()
+    #     q.append(root)
+    #     res = []
+    #     while q:
+    #         layer = []
+    #         for _ in range(len(q)):
+    #             node = q.popleft()
+    #             layer.append(node.val)
+    #             if node.left:
+    #                 q.append(node.left)
+    #             if node.right:
+    #                 q.append(node.right)
+    #         res.append(layer)
+    #     return res[-1][0]
+
+    def findBottomLeftValue(self, root: TreeNode) -> int:
+        """
+        方法1：层序遍历,改进：遍历时记录每行第一个值
+        :param root:
+        :return:
+        """
+        from collections import deque
+        q = deque()
+        ret = root.val
+        q.append(root)
+        while q:
+            for i in range(len(q)):
+                node = q.popleft()
+                if i == 0:
+                    ret = node.val
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+        return ret
+
+
+
+# runtime:48 ms
+# memory:17.5 MB

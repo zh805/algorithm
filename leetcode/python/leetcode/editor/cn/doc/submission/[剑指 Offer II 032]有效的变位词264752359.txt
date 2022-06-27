@@ -1,0 +1,27 @@
+class Solution:
+    # def isAnagram(self, s: str, t: str) -> bool:
+    #     """
+    #     方法1：排序
+    #     :param s:
+    #     :param t:
+    #     :return:
+    #     """
+    #     if len(s) != len(t) or s == t:
+    #         return False
+    #     return ''.join(sorted(s)) == ''.join(sorted(t))
+
+    def isAnagram(self, s: str, t: str) -> bool:
+        """
+        方法2：哈希
+        :param s: 
+        :param t: 
+        :return: 
+        """
+        from collections import Counter
+        if len(s) != len(t) or s == t:
+            return False
+        return Counter(s) == Counter(t)
+        
+
+# runtime:52 ms
+# memory:15.2 MB

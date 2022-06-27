@@ -1,0 +1,91 @@
+### 解题思路
+
+从左向右看，维护每个坐标左边递减的个数；从右向左看，维护每个坐标右边递增的个数。
+最终答案由两边个数都大于等于time的坐标构成
+
+### 代码
+
+* []
+
+```Python3
+class Solution:
+    def goodDaysToRobBank(self, security: List[int], time: int) -> List[int]:
+        n = len(security)
+        left, right = [0] * n, [0] * n
+        for i in range(1, n):
+            if security[i - 1] >= security[i]:
+                left[i] = left[i - 1] + 1
+            if security[n - i] >= security[n - 1 - i]:
+                right[n - 1 - i] = right[n - i] + 1
+        return [i for i in range(n) if left[i] >= time and right[i] >= time]
+```
+
+* []
+
+```Java
+class Solution {
+    public List<Integer> goodDaysToRobBank(int[] security, int time) {
+        int n = security.length;
+        int[] left = new int[n], right = new int[n];
+        for(int i = 1; i < n; i++) {
+            if(security[i - 1] >= security[i])
+                left[i] = left[i - 1] + 1;
+            if(security[n - i] >= security[n - 1 - i])
+                right[n - 1 - i] = right[n - i] + 1;
+        }
+        List<Integer> ans = new ArrayList<>();
+        for(int i = 0; i < n; i++)
+            if(left[i] >= time && right[i] >= time)
+                ans.add(i);
+        return ans;
+    }
+}
+```
+
+* []
+
+```JavaScript
+/**
+ * @param {number[]} security
+ * @param {number} time
+ * @return {number[]}
+ */
+var goodDaysToRobBank = function(security, time) {
+    const n = security.length, ans = new Array()
+    const left = new Array(n).fill(0), right = new Array(n).fill(0)
+    for(let i = 1; i < n; i++) {
+        if(security[i - 1] >= security[i])
+            left[i] = left[i - 1] + 1
+        if(security[n - i] >= security[n - 1 - i])
+            right[n - 1 - i] = right[n - i] + 1
+    }
+    for(let i = 0; i < n; i++)
+        if(left[i] >= time && right[i] >= time)
+            ans.push(i)
+    return ans
+};
+```
+
+* []
+
+```Go
+func goodDaysToRobBank(security []int, time int) (ans []int) {
+    n := len(security)
+    left, right := make([]int, n), make([]int, n)
+    for i := 1; i < n; i++ {
+        if security[i - 1] >= security[i] {
+            left[i] = left[i - 1] + 1
+        }
+        if security[n - i] >= security[n - 1 - i] {
+            right[n - 1 - i] = right[n - i] + 1
+        }
+    }
+    for i := 0; i < n; i++ {
+        if left[i] >= time && right[i] >= time {
+            ans = append(ans, i)
+        }
+    }
+    return
+}
+```
+

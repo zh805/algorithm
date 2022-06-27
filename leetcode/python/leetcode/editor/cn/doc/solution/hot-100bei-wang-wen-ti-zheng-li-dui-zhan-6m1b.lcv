@@ -1,0 +1,77 @@
+### 接雨水系列问题：
+
+[84. 可组成最大矩形面积](https://leetcode-cn.com/problems/largest-rectangle-in-histogram/)
+[剑指Offer相同题目](https://leetcode-cn.com/problems/0ynMMM/)
+思路： 搜索两侧第一个严格不比自己更高的柱
+
+[82. 一维接雨水](https://leetcode-cn.com/problems/trapping-rain-water/)
+思路： 每次向前遍历严格不比自己更高的柱，以及这个柱的前一个（以形成雨水容器）。
+
+[407. 三维接雨水](https://leetcode-cn.com/problems/trapping-rain-water-ii/)
+思路： 类似DP， 但用小根堆保存数据，查询当前柱附近的最小柱进行更新
+相关链接 https://stackoverflow.com/questions/66774119/how-does-greaterpairint-int-work-in-a-priority-queue
+
+### 解题思路
+
+略。
+
+### 代码
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) 
+    {
+        int n = heights.size();
+        vector<int> left(n, 0);
+        vector<int> right(n, 0);
+
+        stack<int> s;
+        for(int i = 0 ; i < n ; i++)
+        {
+            while(!s.empty() && heights[s.top()] >= heights[i])
+            {
+                s.pop();
+            }
+
+            left[i] = s.empty() ? -1 : s.top();
+
+            s.push(i);
+        }
+
+        //cout << 0 << endl;
+
+        s = stack<int>();
+
+        for(int i = n - 1 ; i >= 0 ; i--)
+        {
+            while(!s.empty() && heights[s.top()] >= heights[i])
+            {
+                s.pop();
+            }
+
+            right[i] = s.empty() ? n : s.top();
+
+            s.push(i);
+        }
+
+        int ans = 0;
+
+        //cout << 0 << endl;
+
+        for(int i = 0 ; i < n ; i++)
+        {
+            ans = max(
+                ans,
+                ( right[i] - left[i] - 1 ) 
+                * heights[i]
+            );
+        }
+
+        return ans;
+    }
+};
+```
+

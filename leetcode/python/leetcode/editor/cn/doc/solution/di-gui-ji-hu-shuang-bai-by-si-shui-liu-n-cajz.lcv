@@ -1,0 +1,33 @@
+![image.png](https://pic.leetcode-cn.com/1631325475-iLSRhm-image.png)
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> lists = new ArrayList<>();
+        //如果k>n，数据都不够，直接返回吧..
+        if (k > n) return lists;
+        dfs(1, n, lists, new ArrayList<>(), k);
+        return lists;
+    }
+
+    private void dfs(int index, int n, List<List<Integer>> lists, List<Integer> list, int k) {
+        //当剩余需要添加的数的个数是0的时候，已经满足数据个数了，保存并结束方法
+        if (k == 0) {
+            lists.add(new ArrayList<>(list));
+            return;
+        }
+        //当index>n时，已经超出n的范围了，结束...
+        if (index > n) return;
+        for (int i = index; i <= n - k + 1; i++) {
+            list.add(i);
+            dfs(i + 1, n, lists, list, k - 1);
+            list.remove(list.size() - 1);
+        }
+    }
+}
+```
+

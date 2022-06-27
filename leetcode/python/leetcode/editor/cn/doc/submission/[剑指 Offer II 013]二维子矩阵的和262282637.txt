@@ -1,0 +1,81 @@
+
+from typing import List
+
+
+class NumMatrix:
+
+    # def __init__(self, matrix: List[List[int]]):
+    #     self.matrix = matrix
+
+    # def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+    #     """
+    #     方法1: 切分，然后计算；能解，但超时。
+    #     :param row1:
+    #     :param col1:
+    #     :param row2:
+    #     :param col2:
+    #     :return:
+    #     """
+    #     sub_row = self.matrix[row1: row2 + 1]
+    #     result = 0
+    #     for row in sub_row:
+    #         result += sum(row[col1: col2 + 1])
+    #     return result
+
+    # def __init__(self, matrix: List[List[int]]):
+    #     """
+    #     方法2: 初始化时，按行计算每行的前缀和
+    #     :param matrix:
+    #     """
+    #     self.matrix = matrix
+    #
+    #     matrix_pre_sum_dict = {}
+    #     for idx_row, row in enumerate(self.matrix):
+    #         pre_sum = 0
+    #         row_pre_sum_dict = {}
+    #         for idx, num in enumerate(row):
+    #             pre_sum += num
+    #             row_pre_sum_dict[idx] = pre_sum
+    #         matrix_pre_sum_dict[idx_row] = row_pre_sum_dict
+    #     self.matrix_pre_sum_dict = matrix_pre_sum_dict
+    #
+    # def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+    #     result = 0
+    #     for r in range(row1, row2 + 1):
+    #         row_pre_sum_dict = self.matrix_pre_sum_dict[r]
+    #         result += row_pre_sum_dict[col2] - row_pre_sum_dict[col1] + self.matrix[r][col1]
+    #     return result
+
+    def __init__(self, matrix: List[List[int]]):
+        """
+        方法3: 初始化时，计算每个元素的前缀和，即计算从坐标（0，0）到当前坐标的所有坐标的和。
+        计算时，右下角坐标前缀和减去左上角前缀和即可。
+        :param matrix:
+        """
+        self.matrix = matrix
+
+        # 前缀和字典。key为(i, j)坐标，value为: (0, 0)到此坐标矩形框的和。
+        matrix_pre_sum_dict = {}
+        for row_idx, row in enumerate(self.matrix):
+            row_pre_sum = 0
+            for idx, num in enumerate(row):
+                row_pre_sum += num
+                matrix_pre_sum_dict[(row_idx, idx)] = row_pre_sum + matrix_pre_sum_dict.get((row_idx - 1, idx), 0)
+        self.matrix_pre_sum_dict = matrix_pre_sum_dict
+
+    def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+        # 右下角最大前缀和 - 左下角 - 右上角 + （左上角多减去的）
+        big = self.matrix_pre_sum_dict[(row2, col2)]
+        left_down = self.matrix_pre_sum_dict.get((row2, col1 - 1), 0)
+        right_up = self.matrix_pre_sum_dict.get((row1 - 1, col2), 0)
+        small = self.matrix_pre_sum_dict.get((row1 - 1, col1 - 1), 0)
+        result = big - left_down - right_up + small
+        return result
+
+
+# Your NumMatrix object will be instantiated and called as such:
+# obj = NumMatrix(matrix)
+# param_1 = obj.sumRegion(row1,col1,row2,col2)
+
+# runtime:272 ms
+# memory:32.9 MB

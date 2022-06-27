@@ -1,0 +1,26 @@
+### 解题思路
+
+### 代码
+
+* python3
+
+```python3
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        def recall(n0,n1,nk):
+            res = []
+            if nk == 1:
+                res = [[i] for i in range(n0,n1+1)]
+                return res
+            else:
+                for i in range(n0,n1):
+                    temp = recall(i+1,n1,nk-1)
+                    for j in temp:
+                        res.append([i]+j)
+                return res
+        return recall(1,n,k)
+        
+
+```
+
+![image.png](https://pic.leetcode-cn.com/1639984696-pNDGwS-image.png)

@@ -1,0 +1,25 @@
+class Solution:
+    # def CheckPermutation(self, s1: str, s2: str) -> bool:
+    #     l1, l2 = list(s1), list(s2)
+    #     l1.sort()
+    #     print(l1)
+    #     l2.sort()
+    #     print(l2)
+    #     return True if l1 == l2 else False
+
+    # 记忆化数组
+    def CheckPermutation(self, s1: str, s2: str) -> bool:
+        if len(s1) == 0 or len(s2) == 0 or len(s1) != len(s2):
+            return False
+        memory = [0 for _ in range(26)]
+        for item in zip(s1, s2):
+            memory[ord(item[0]) - ord('a')] += 1
+            memory[ord(item[1]) - ord('a')] -= 1
+        for m in memory:
+            if m != 0:
+                return False
+        return True
+
+
+# runtime:44 ms
+# memory:15.2 MB

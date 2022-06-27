@@ -1,0 +1,21 @@
+### 解题思路
+
+unordered_set
+
+### 代码
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    unordered_set<string> st;
+    string destCity(vector<vector<string>>& paths) {
+        for(auto& e : paths) st.insert(e[0]);
+        for(auto& e : paths) if(!st.count(e[1])) return e[1];
+        return "";
+
+    }
+};
+```
+

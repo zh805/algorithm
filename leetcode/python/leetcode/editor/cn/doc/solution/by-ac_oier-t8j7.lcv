@@ -1,0 +1,46 @@
+## 枚举 + 数学
+
+对于数位为 $n$ 的两个数而言，其乘积的位数要么是 $2 * n$，要么是 $2 * n - 1$。
+
+当数位 $n > 1$ 时，我们总能在数位为 $2 * n$ 中找到答案。
+
+利用回文串的特性，我们只需枚举回文串的前半部分即可（后半部分唯一确定），我们只要在枚举前半部分时按照「从大到小」进行，即可确保找到的第一个合法值为最大数，对于一个数位为 $n$ 的最大数为 $10^n - 1$。
+
+具体的，当枚举到回文串的前半部分 $i$ 时，我们利用回文串特性构造出具实际的回文数值 $nums$，随后检查 $nums$ 能否分解成数位为 $n$ 的数对 $(a, b)$，利用乘法具有交换律，我们只需要枚举数对中的较大数即可。
+
+代码：
+
+* []
+
+```Java
+class Solution {
+    public int largestPalindrome(int n) {
+        if (n == 1) return 9;
+        int max = (int) Math.pow(10, n) - 1;
+        for (int i = max; i >= 0; i--) {
+            long num = i, t = i;
+            while (t != 0) {
+                num = num * 10 + (t % 10);
+                t /= 10;
+            }
+            for (long j = max; j * j >= num; j--) {
+                if (num % j == 0) return (int)(num % 1337);
+            }
+        }
+        return -1;
+    }
+}
+```
+
+* 时间复杂度：枚举回文串的前半部分复杂度为 $O(10^n)$；检查回文串能否被分解复杂度为 $O(10^n)$。整体复杂度为 $O(10^{2n})$
+* 空间复杂度：$O(1)$
+
+---
+
+## 最后
+
+**如果有帮助到你，请给题解点个赞和收藏，让更多的人看到 ~ ("▔□▔)/**
+
+也欢迎你 [关注我](https://oscimg.oschina.net/oscnet/up-19688dc1af05cf8bdea43b2a863038ab9e5.png) 和 加入我们的[「组队打卡」](https://leetcode-cn.com/u/ac_oier/)小群 ，提供写「证明」&「思路」的高质量题解。
+
+所有题解已经加入 [刷题指南](https://github.com/SharingSource/LogicStack-LeetCode/wiki)，欢迎 star 哦 ~

@@ -1,0 +1,70 @@
+
+from typing import List
+
+import six
+
+
+class Solution:
+    # def threeSum(self, nums: List[int]) -> List[List[int]]:
+    #     """
+    #     方法1：利用itertools找出所有的组合; 会超时，未通过；
+    #     :param nums:
+    #     :return:
+    #     """
+    #     import itertools
+    #
+    #     res = set()
+    #     for item in itertools.combinations(nums, 3):
+    #         if sum(item) == 0:
+    #             res.add(tuple(sorted(item)))
+    #     return [list(i) for i in res]
+
+    # def threeSum(self, nums: List[int]) -> List[List[int]]:
+    #     """
+    #     方法2: 暴力循环法; 可解，但会超时
+    #     :param nums:
+    #     :return:
+    #     """
+    #     res = set()
+    #     length = len(nums)
+    #     if length < 3:
+    #         return []
+    #     nums.sort()
+    #     for i in range(length):
+    #         for j in range(i+1, length):
+    #             for k in range(j+1, length):
+    #                 if sum((nums[i], nums[j], nums[k])) == 0:
+    #                     res.add((nums[i], nums[j], nums[k]))
+    #     return [list(item) for item in res]
+
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        """
+        方法3：双指针法；固定第一项，后两项逼近；
+        :param nums:
+        :return:
+        """
+        length = len(nums)
+        if length < 3:
+            return []
+        nums.sort()
+
+        res = set()
+        for i in range(length):
+            target = -nums[i]
+            left, right = i + 1, length - 1
+            while left < length - 1 and left < right < length:
+                s = nums[left] + nums[right]
+                if s < target:
+                    left += 1
+                elif s > target:
+                    right -= 1
+                else:
+                    res.add((nums[i], nums[left], nums[right]))
+                    left += 1
+                    right -= 1
+        return [list(item) for item in res]
+
+
+
+# runtime:1948 ms
+# memory:20.2 MB

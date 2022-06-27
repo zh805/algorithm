@@ -1,0 +1,38 @@
+### 解题思路
+
+递归
+
+### 代码
+
+* java
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean checkSubTree(TreeNode t1, TreeNode t2) {
+        if (t1 == null && t2 == null){
+            return true;
+        }else if (t1 == null && t2 != null){
+            return false;
+        }else if (t1 != null && t2 == null){
+            return false;
+        }
+        if (t1.val == t2.val){
+            return checkSubTree(t1.left,t2.left) && checkSubTree(t1.right,t2.right);
+        }else {
+            return checkSubTree(t1.left,t2) || checkSubTree(t1.right,t2);
+        }
+        
+    }
+}
+```
+
+![屏幕截图 2022-02-24 100014.png](https://pic.leetcode-cn.com/1645685530-HNrIQm-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202022-02-24%20100014.png)

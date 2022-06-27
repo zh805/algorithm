@@ -1,0 +1,23 @@
+### 解题思路
+
+### 代码
+
+* python3
+
+```python3
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        ans=[]
+        def check(t,path):
+            if len(path)==k:
+                ans.append(path[:])
+            elif k-len(path)>n-t+1:
+                return
+            else:
+                check(t+1,path+[t])
+                check(t+1,path)
+        check(1,[])
+        return ans
+
+```
+

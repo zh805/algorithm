@@ -1,0 +1,23 @@
+class Solution:
+    def compressString(self, S: str) -> str:
+        res = ''
+        temp = []
+        for char in S:
+            if len(temp) > 0:
+                if temp[-1] == char:
+                    temp.append(char)
+                else:
+                    res += temp[-1] + str(len(temp))
+                    temp.clear()
+                    temp.append(char)
+            else:
+                temp.append(char)
+        if len(temp) > 0:
+            res += temp[-1] + str(len(temp))
+        return res if len(res) < len(S) else S
+            
+            
+                
+
+# runtime:68 ms
+# memory:15.2 MB

@@ -1,0 +1,28 @@
+
+from typing import List
+import heapq
+
+
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        """
+        方法1：最小堆。
+        :param nums:
+        :param k:
+        :return:
+        """
+        min_heap = [] 
+        for num in nums:
+            if len(min_heap) < k:
+                heapq.heappush(min_heap, num)
+            else:
+                if num < min_heap[0]:
+                    continue
+                else:
+                    heapq.heappop(min_heap)
+                    heapq.heappush(min_heap, num)
+        return min_heap[0]
+        
+
+# runtime:32 ms
+# memory:15.6 MB

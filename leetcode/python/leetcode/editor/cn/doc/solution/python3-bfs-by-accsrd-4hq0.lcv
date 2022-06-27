@@ -1,0 +1,27 @@
+### 解题思路
+
+很简单的BFS。每层记录一下长度，进循环即可。
+
+### 代码
+
+* python3
+
+```python3
+class Solution:
+    def largestValues(self, root: TreeNode) -> List[int]:
+        if not root: return []
+
+        ans, stack = [], deque([root])
+        while stack:
+            len_node = len(stack)
+            max_val = float('-inf')
+            for _ in range(len_node):
+                cur_node = stack.popleft()
+                max_val = max(max_val, cur_node.val)
+                if cur_node.left: stack.append(cur_node.left)
+                if cur_node.right: stack.append(cur_node.right)
+            ans.append(max_val)
+        
+        return ans
+```
+

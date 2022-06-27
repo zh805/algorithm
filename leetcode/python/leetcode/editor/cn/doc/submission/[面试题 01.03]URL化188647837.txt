@@ -1,0 +1,12 @@
+class Solution:
+    def replaceSpaces(self, S: str, length: int) -> str:
+        res = ''
+        for char in S[:length]:
+            if char == ' ':
+                res += '%20'
+            else:
+                res += char
+        return res
+
+# runtime:140 ms
+# memory:20.4 MB

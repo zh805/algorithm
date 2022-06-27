@@ -1,0 +1,17 @@
+class Solution:
+    def groupAnagrams(self, strs):
+        from collections import defaultdict
+        str_map = defaultdict(list)
+        for str in strs:
+            key = ''.join(sorted(list(str)))
+            str_map[key].append(str)
+        # res = []
+        # for k, v in str_map.items():
+        #     res.append(v)
+        # return res
+        return list(str_map.values())
+
+
+
+# runtime:52 ms
+# memory:17.7 MB

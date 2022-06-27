@@ -1,0 +1,32 @@
+class Solution {
+
+private:
+    static bool compare(vector<int>& a,vector<int>& b){
+        if(a.back() != b.back())
+            return a.back() < b.back();
+        return a.front() < b.front();
+    }
+    
+public:
+    
+    int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+        
+        if(intervals.empty())
+            return 0;
+        
+        sort(intervals.begin(),intervals.end(),compare);
+        
+        int res = 1;
+        int prev = 0;
+        for(int i=1;i<intervals.size();i++){
+            if(intervals[prev].back() <= intervals[i].front()){
+                res++;
+                prev = i;
+            }
+        }
+        
+        return intervals.size() - res;
+    }
+};
+//runtime:28 ms
+//memory:11.5 MB

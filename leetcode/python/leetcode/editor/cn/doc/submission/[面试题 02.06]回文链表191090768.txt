@@ -1,0 +1,79 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+class Solution:
+    # def isPalindrome(self, head: ListNode) -> bool:
+    #     """
+    #     1.链表值放入列表
+    #     2.比较列表
+    #     :param head:
+    #     :return:
+    #     """
+    #     if not head:
+    #         return True
+    #     cur = head
+    #     val_list = list()
+    #     while cur:
+    #         val_list.append(cur.val)
+    #         cur = cur.next
+    #
+    #     # for i in range(len(val_list)):
+    #     #     if val_list[i] != val_list[0-i-1]:
+    #     #         return False
+    #     val_list_r = val_list[::-1]
+    #     if val_list != val_list_r:
+    #         return False
+    #     return True
+
+    def isPalindrome(self, head: ListNode) -> bool:
+        """
+        1.快慢指针找到链表中间位置
+        2.反转链表后半部分
+        3.比较反转后是否相同
+        3.恢复链表
+        :param head:
+        :return:
+        """
+        if not head:
+            return True
+        midNode = self.findMidNode(head)
+        secondHead = self.reverseListNode(midNode.next)
+        
+        first = head
+        second = secondHead
+        while first and second:
+            if first.val != second.val:
+                return False
+            first = first.next
+            second = second.next
+        
+        midNode.next = self.reverseListNode(secondHead)
+        return True
+    
+    def findMidNode(self, head):
+        slow = head
+        fast = head
+        while fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+        return slow
+
+    def reverseListNode(self, head):
+        pre = None
+        cur = head
+        while cur:
+            next_node = cur.next
+            cur.next = pre
+            pre = cur
+            cur = next_node
+        return pre
+
+    def compareListNode(self, head1, head2):
+        pass
+
+        
+
+# runtime:80 ms
+# memory:25 MB

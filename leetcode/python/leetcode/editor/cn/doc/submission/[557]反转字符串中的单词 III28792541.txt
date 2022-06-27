@@ -1,0 +1,28 @@
+class Solution {
+public:
+    string reverseWords(string s) {
+        stack<char> sta;
+        string res;
+        int len = s.size();
+        for(int i=0;i<len;i++){
+            if(s[i]==' '){
+                while(!sta.empty()){
+                    res.push_back(sta.top());
+                    sta.pop();
+                }
+                res.push_back(' ');
+            }else{
+                sta.push(s[i]);
+            }
+        }
+        for(int j=len-1;j>=0;j--){
+            if(s[j]!=' ')
+                res.push_back(s[j]);
+            else
+                break;
+        }
+        return res;
+    }
+};
+//runtime:44 ms
+//memory:12.9 MB

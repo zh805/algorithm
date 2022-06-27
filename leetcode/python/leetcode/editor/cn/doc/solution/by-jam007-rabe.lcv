@@ -1,0 +1,27 @@
+### 方便快速学习算法与理解~
+
+🌇 点赞 👍 收藏 ⭐留言 📝 一键三连 ~关注Jam，从你我做起！
+
+**兄弟会背叛你，女人会离开你，金钱会诱惑你，生活会刁难你，只有数学不会，不会就是不会**
+
+推荐 python 算法的书籍，体系化学习算法与数据结构，用正确的方式成为offer收割机
+[leetcode](https://github.com/ls1248659692/leetcode) ——  系统化快速学习各种 python 算法与书籍
+[python_guide](https://github.com/ls1248659692/python_guide) —— python 系统化的后端开发学习
+![image.png](https://pic.leetcode-cn.com/1647000027-VVkFMG-image.png)
+
+---
+
+### 求解思路
+
+直接调用接口就行，**人生苦短，我用Python**
+
+### 代码
+
+* python3
+
+```python3
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        return [j for i in range(len(nums)+1) for j in combinations(nums, i)]
+```
+

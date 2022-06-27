@@ -1,0 +1,54 @@
+
+from typing import List
+
+
+class Solution:
+    # def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
+    #     """
+    #     方法1：暴力法：构建字典，然后排序。
+    #     :param nums1:
+    #     :param nums2:
+    #     :param k:
+    #     :return:
+    #     """
+    #     from collections import defaultdict
+    #     d = defaultdict(list)
+    #     for x in nums1:
+    #         for y in nums2:
+    #             d[x + y].append([x, y])
+    #     d_l = sorted(d.items(), key=lambda item: item[0])
+    #     res = []
+    #     for item in d_l:
+    #         for item_3 in item[1]:
+    #             res.append(item_3)
+    #             if len(res) == k:
+    #                 break
+    #     return res[:k]
+
+    def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
+        """
+        方法2：堆排序
+        :param nums1:
+        :param nums2:
+        :param k:
+        :return:
+        """
+        import heapq
+        # python内置的是小顶堆，可用于取最大的K个数；本题是和最小的K个，需要使用大顶堆。
+        # 把值取负加入堆，即可实现大顶堆的效果。
+        h = []
+        for num1 in nums1:
+            for num2 in nums2:
+                s = -(num1 + num2)
+                if len(h) == k:
+                    if s > h[0][0]:
+                        heapq.heappop(h)
+                        heapq.heappush(h, (s, [num1, num2]))
+                else:
+                    heapq.heappush(h, (s, [num1, num2]))
+        print(h)
+        return [item[1] for item in h]
+
+
+# runtime:120 ms
+# memory:15.3 MB

@@ -1,0 +1,126 @@
+### 题目分析
+
+- 将一个嵌套的数组变为一维数组
+
+题目的意思比较清晰 但是代码给出的是类的方式 需要注意官方给出的注释 提供的方法 和调用方式
+
+**提供的方法** :
+3 个内置的API
+- isInteger() // 判断元素是否为数字
+- getInteger() // 获取数字元素
+- getList() // 获取非数字元素
+
+**调用方式** :
+
+* 
+
+```
+/**
+ * Your NestedIterator will be called like this:
+ * var i = new NestedIterator(nestedList), a = [];
+ * while (i.hasNext()) a.push(i.next());
+*/
+```
+
+### 方法一： DFS
+
+以 [[1, 1], 2, [1, 1]] 为例
+
+* javascript
+
+```javascript
+[[1, 1], 2, [1, 1]] 
+    /     |    \
+  [1, 1]  2  [1, 1] 
+   / \         / \
+   1  1        1  1
+```
+
+> faltten以后为所有叶子节点
+> 这种方式被称之为树形递归，也被称之为线性递归
+
+- 在new 一个对象时进行 dfs调用 将原数组进行flatten操作 变为一维数组
+- next 返回数组第一个元素
+- hasNext 返回数组长度即可
+
+* javascript
+
+```javascript
+class NestedIterator {
+    constructor(list) {
+        this.q = [];
+        const dfs = list => {
+            for (let x of list)
+                if (x.isInteger())
+                    this.q.push(x.getInteger());
+                else
+                dfs(x.getList());
+        };
+        dfs(list);
+    }
+    next() {
+        return this.q.shift();
+    }
+    hasNext() {
+        return this.q.length;
+    }
+}
+```
+
+> 时间复杂度：构造函数的时间复杂度是 $O(N)$ ； next() 和 hasNext() 的时间复杂度是 $O(1)$ 。
+> 空间复杂度  $O(N)$
+
+### 方法二： 迭代法
+
+js的数组相当于一个双端队列：
+
+- 可以利用shift 和unshift api在队头进行插入删除操作
+- 题目中每次调用next 前都会调用 hasNext
+- 所以在hasNext进行操作 知道第一个元素为数字 返回true 如果是数组将数组插入队头
+- 调用next 返回第一个元素
+
+> 与栈的思想一致， 只不过栈需要逆序压入栈顶 取栈顶元素
+
+* javascript
+
+```javascript
+var NestedIterator = function(nestedList) {
+    this.list = nestedList
+};
+
+NestedIterator.prototype.hasNext = function() {
+    while (this.list.length != 0){
+        if (this.list[0].isInteger()){
+            return true
+        }else {
+            let cur = this.list[0].getList()
+            this.list.shift()
+            this.list.unshift(...cur)
+        }
+    }
+    
+};
+
+NestedIterator.prototype.next = function() {
+    return this.list.shift().getInteger()
+};
+```
+
+> 时间复杂度  $O(1)$
+> 空间复杂度  $O(N)$
+
+### 总结
+
+递归计算过程更自然，更直截了当，可以帮助我们理解和设计程序。
+而要规划出一个迭代计算过程，则需设计出各个状态变量，找到迭代规律，并不是所有的递归计算过程都可以很容易的整理成迭代计算过程。
+
+本题来说：
+- 迭代可以描述每次next 的变化过程 存储中间中间状态
+- dfs 需要在创建对象时得到扁平化的结果
+
+> 本题使用迭代法解题更符合题意 毕竟题目中是迭代器
+> 如果大家想更深入讨论递归计算过程与迭代计算过程 可以看 SICP 1.2.1
+
+***
+
+**(*^▽^*)** 祝大家offer多多 求点赞 求评论 **!!**

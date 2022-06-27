@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        res.clear();
+        if(nums.size()==0)
+            return res;
+        
+        vector<int> p;
+        
+        used = vector<bool>(nums.size(),false);
+        generatePermutation(nums,0,p);
+        
+        return res;
+    }
+
+private:
+    vector<bool> used;
+    vector<vector<int>> res;
+    
+    void generatePermutation(const vector<int>& nums,int index,vector<int>& p){
+        if(index == nums.size()){
+            res.push_back(p);
+            return ;
+        }
+        
+        for(int i=0;i<nums.size();i++){
+            if(!used[i]){
+                //将num[i]添加到p中
+                p.push_back(nums[i]);
+                used[i]=true;
+                generatePermutation(nums,index+1,p);
+                p.pop_back();
+                used[i]=false;
+            }
+        }
+        return;
+    }
+};
+//runtime:16 ms
+//memory:9.2 MB

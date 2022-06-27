@@ -1,0 +1,60 @@
+
+from typing import List
+
+
+class Solution:
+    # def evalRPN(self, tokens: List[str]) -> int:
+    #     """
+    #     方法1：栈
+    #     :param tokens:
+    #     :return:
+    #     """
+    #     stack = []
+    #     operators = ['+', '-', '*', '/']
+    #     for item in tokens:
+    #         if item in operators:
+    #             b = stack.pop()
+    #             a = stack.pop()
+    #             if item == '+':
+    #                 assist = a + b
+    #                 stack.append(assist)
+    #             elif item == '-':
+    #                 assist = a - b
+    #                 stack.append(assist)
+    #             elif item == '*':
+    #                 assist = a * b
+    #                 stack.append(assist)
+    #             elif item == '/':
+    #                 assist = int(a / b)
+    #                 stack.append(assist)
+    #         else:
+    #             stack.append(int(item))
+    #
+    #     return stack.pop()
+
+    def evalRPN(self, tokens: List[str]) -> int:
+        """
+        方法1：栈, 代码更优雅
+        :param tokens:
+        :return:
+        """
+        stack = []
+        operators = '+-*/'
+        calc = {
+            '+': lambda a, b: a + b,
+            '-': lambda a, b: a - b,
+            '*': lambda a, b: a * b,
+            '/': lambda a, b: int(a/b)
+        }
+        for item in tokens:
+            if item in operators:
+                b, a = stack.pop(), stack.pop()
+                stack.append(calc[item](a, b))
+            else:
+                stack.append(int(item))
+        return stack.pop()
+
+
+
+# runtime:48 ms
+# memory:16.7 MB

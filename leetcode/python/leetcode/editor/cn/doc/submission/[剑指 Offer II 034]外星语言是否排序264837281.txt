@@ -1,0 +1,64 @@
+import itertools
+from typing import List
+from itertools import zip_longest
+
+
+class Solution:
+    def isAlienSorted(self, words: List[str], order: str) -> bool:
+        """
+        方法1：哈希
+        :param words:
+        :param order:
+        :return:
+        """
+        alpha_dict = {'-': 0}
+        for idx, c in enumerate(order, start=1):
+            alpha_dict[c] = idx
+
+        # def cmp(w1, w2):
+        #     for c1, c2 in zip_longest(w1, w2, fillvalue='-'):
+        #         if c1 == c2:
+        #             continue
+        #         elif alpha_dict[c1] < alpha_dict[c2]:
+        #             return True
+        #         else:
+        #             return False
+        #     return True
+        #
+        # for i in range(len(words) - 1):
+        #     if not cmp(words[i], words[i + 1]):
+        #         return False
+
+        for i in range(len(words) - 1):
+            w1, w2 = words[i], words[i + 1]
+            for c1, c2 in zip_longest(w1, w2, fillvalue='-'):
+                if alpha_dict[c1] < alpha_dict[c2]:
+                    break
+                if alpha_dict[c1] > alpha_dict[c2]:
+                    return False
+
+        return True
+
+    # def isAlienSorted(self, words: List[str], order: str) -> bool:
+    #     """
+    #     方法2：哈希+遍历
+    #     :param words:
+    #     :param order:
+    #     :return:
+    #     """
+    #     d = {c: idx for idx, c in enumerate(order)}
+    #     for i in range(len(words) - 1):
+    #         w1, w2 = words[i], words[i + 1]
+    #         for j in range(max(len(w1), len(w2))):
+    #             idx1 = -1 if j >= len(w1) else d[w1[j]]
+    #             idx2 = -1 if j >= len(w2) else d[w2[j]]
+    #             if idx1 > idx2:
+    #                 return False
+    #             if idx1 < idx2:
+    #                 break
+    #     return True
+
+
+
+# runtime:40 ms
+# memory:15 MB

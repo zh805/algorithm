@@ -1,0 +1,154 @@
+在 [前缀树](https://leetcode-cn.com/problems/implement-trie-prefix-tree/solution/by-wo-yao-chu-qu-luan-shuo-yul1/) 的基础上实现替换单词。麻烦的地方在于`C++`没有`JAVA`那种`split()`方法可以按空格来分割字符串，需要逐个字符处理。
+
+### 1、代码
+
+* cpp
+
+```cpp
+class Solution {
+private:
+    struct TrieNode     //前缀树结构体，每个节点有26个子节点
+    {
+        bool isWord;
+        vector<TrieNode*> children;
+        TrieNode() : isWord(false), children(26, nullptr){}
+    };
+
+    TrieNode* root = new TrieNode();
+
+public:
+    void buildTrie(vector<string>& dictionary)  //构造前缀树
+    {
+        for (string& word : dictionary)
+        {
+            auto node = root;
+            for (char& ch : word)
+            {
+                if (node->children[ch - 'a'] == nullptr)
+                {
+                    node->children[ch - 'a'] = new TrieNode();
+                }
+
+                node = node->children[ch - 'a'];
+            }
+
+            node->isWord = true;
+        }
+    }
+
+    string findPrefix(const string& word)       //找前缀
+    {
+        auto node = root;
+        string res = "";
+        for (auto ch : word)
+        {
+            if (node->isWord || node->children[ch - 'a'] == nullptr) break;
+
+            res += ch;
+            node = node->children[ch - 'a'];
+        }
+
+        return node->isWord ? res : "";         //有前缀返回前缀，没有则返回空字符串
+    }
+
+    string replaceWords(vector<string>& dictionary, string sentence) {
+        buildTrie(dictionary);
+
+        string res = "", str = "";
+        
+        for (char& ch : sentence)
+        {
+            if (ch != ' ') str += ch;               //以空格分割单词
+            else
+            {
+                string prefix = findPrefix(str);
+                if (!prefix.empty()) res += prefix + " ";     //找到了就追加前缀
+                else res += str + " ";              //找不到就追加原单词
+                str = "";                           //重置str
+            }
+        }
+
+        res += findPrefix(str) == "" ? str : findPrefix(str);       //添加最后一个单词
+
+        return res;
+    }
+};
+```
+
+### 2、智能指针版本
+
+> 其他地方都一样，就只有三行改成了智能指针。
+
+* cpp
+
+```cpp
+class Solution {
+private:
+    struct TrieNode
+    {
+        bool isWord;
+        vector<shared_ptr<TrieNode>> children;              //智能指针
+        TrieNode() : isWord(false), children(26, nullptr){}
+    };
+
+    shared_ptr<TrieNode> root = make_shared<TrieNode>();    //智能指针
+
+public:
+    void buildTrie(vector<string>& dictionary)
+    {
+        for (string& word : dictionary)
+        {
+            auto node = root;
+            for (char& ch : word)
+            {
+                if (node->children[ch - 'a'] == nullptr)
+                {
+                    node->children[ch - 'a'] = make_shared<TrieNode>(); //智能指针
+                }
+
+                node = node->children[ch - 'a'];
+            }
+
+            node->isWord = true;
+        }
+    }
+
+    string findPrefix(const string& word)
+    {
+        auto node = root;
+        string res = "";
+        for (auto ch : word)
+        {
+            if (node->isWord || node->children[ch - 'a'] == nullptr) break;
+
+            res += ch;
+            node = node->children[ch - 'a'];
+        }
+
+        return node->isWord ? res : "";
+    }
+
+    string replaceWords(vector<string>& dictionary, string sentence) {
+        buildTrie(dictionary);
+
+        string res = "", str = "";
+        
+        for (char& ch : sentence)
+        {
+            if (ch != ' ') str += ch;
+            else
+            {
+                string prefix = findPrefix(str);
+                if (!prefix.empty()) res += prefix + " ";
+                else res += str + " ";
+                str = "";
+            }
+        }
+
+        res += findPrefix(str) == "" ? str : findPrefix(str);       
+
+        return res;
+    }
+};
+```
+
