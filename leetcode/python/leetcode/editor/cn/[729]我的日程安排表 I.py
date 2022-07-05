@@ -109,3 +109,9 @@ class MyCalendar:
 # obj = MyCalendar()
 # param_1 = obj.book(start,end)
 # leetcode submit region end(Prohibit modification and deletion)
+
+if __name__ == '__main__':
+    mc = MyCalendar()
+    print(mc.book(10, 20))
+    print(mc.book(15, 25))
+    print(mc.book(20, 30))
