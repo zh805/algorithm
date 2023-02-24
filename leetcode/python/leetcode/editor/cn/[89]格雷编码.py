@@ -45,8 +45,28 @@
 #  
 #  👍 482 👎 0
 
+from typing import List
+
 
 # leetcode submit region begin(Prohibit modification and deletion)
 class Solution:
     def grayCode(self, n: int) -> List[int]:
+        """
+        方法1 ：镜像法
+        https://baike.baidu.com/item/%E6%A0%BC%E9%9B%B7%E7%A0%81/6510858 格雷码，百度百科
+        """
+        res = [0]
+        for i in range(n):
+            m = len(res)
+            for j in range(m - 1, -1, -1):
+                res[j] = res[j] << 1
+                res.append(res[j] + 1)
+        return res
+
+
 # leetcode submit region end(Prohibit modification and deletion)
+
+if __name__ == '__main__':
+    n = 2
+    result = Solution().grayCode(n)
+    print(result)
